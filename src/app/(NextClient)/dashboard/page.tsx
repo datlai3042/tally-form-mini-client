@@ -28,15 +28,19 @@ const DashBoardPage = () => {
 	// }, [fetchMe.isSuccess, dispatch, fetchMe]);
 
 	useEffect(() => {
-		try {
-			setLoading(true);
-			UserService.me()
-				.then((data) => setRes(data))
-				.catch(() => console.log("page error"))
-				.finally(() => setLoading(false));
-		} catch (error) {
-			console.log({ error });
-		}
+		const fetchMe = async () => {
+			try {
+				setLoading(true);
+				const res = await UserService.me();
+				setRes(res);
+			} catch (error) {
+				console.log({ error });
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchMe();
 	}, []);
 
 	useEffect(() => {
