@@ -144,43 +144,36 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					const syncToken = await fetch(`${process.env.CLIENT_URL}/v1/api/auth/set-token`, {
 						body: JSON.stringify(bodySyncTokenAPI),
 						method: "POST",
-					}).then(async () => {
-						console.log("gọi api chính lần nũa");
-						const call_again = await fetch(fullUrl, {
-							method,
-							body,
-							credentials: "include",
-							// cache: "no-store",
-							headers: {
-								...baseHeader,
-
-								// Authorization: `Bearer ${access_token}`,
-							} as any,
-						});
-
-						const response_again: Response = await call_again.json();
-						if (!call_again.ok) {
-							console.log("LOI");
-						}
-
-						//FINALLY
-						console.log({ response_again });
-						return response_again;
-						// }
 					});
 
-					// const tokenResponse = await syncToken.json();
+					const tokenResponse = await syncToken.json();
 
 					//AFTER
-					// if (tokenResponse) {
-					// 	const { access_token, client_id } = tokenResponse;
-					// 	console.log({ tokenResponse, syncToken, fullUrl });
 
 					//CALL API AGAIN WITH NEW TOKEN
+					const call_again = await fetch(fullUrl, {
+						method,
+						body,
+						credentials: "include",
+						// cache: "no-store",
+						headers: {
+							...baseHeader,
 
-					// }
-					// console.log("12");
+							// Authorization: `Bearer ${access_token}`,
+						} as any,
+					});
+
+					if (!call_again.ok) {
+						console.log("LOI");
+					}
+
+					//FINALLY
+					const response_again: Response = await call_again.json();
+					console.log({ response_again });
+					return response_again;
 				}
+				// }
+				// console.log("12");
 			}
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
