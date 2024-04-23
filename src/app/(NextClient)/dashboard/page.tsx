@@ -29,8 +29,9 @@ const DashBoardPage = () => {
 	// }, [fetchMe.isSuccess, dispatch, fetchMe.data]);
 
 	try {
-		const a = Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", { credentials: "include" });
-		console.log({ a });
+		Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", { credentials: "include" }).then((data) => {
+			console.log({ data });
+		});
 	} catch (error) {}
 
 	const styleEffect = {
