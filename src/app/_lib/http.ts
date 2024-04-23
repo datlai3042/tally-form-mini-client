@@ -83,7 +83,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
 	console.log({ body, baseHeader, fullUrl, options, method });
-	console.log("fetch");
+	console.log("gọi api chính");
 	const response = await fetch(fullUrl, {
 		headers: {
 			...baseHeader,
@@ -94,7 +94,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		credentials: "include",
 	});
 
-	console.log({ response });
 	const payload: Response = await response.json();
 
 	//RESPONSE: ERROR
@@ -116,9 +115,9 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				const option: RequestInit = {
 					credentials: "include",
 				};
+				console.log("gọi api refresh");
 				const callRefreshToken = await fetch(`${baseUrl}/v1/api/auth/refresh-token`, option);
 				const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
-				console.log({ token_new: refresh_api });
 				//validate refresh-token
 				//---*---//
 
@@ -150,33 +149,35 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					const tokenResponse = await syncToken.json();
 
 					//AFTER
-					// if (tokenResponse) {
-					// const { access_token, client_id } = tokenResponse;
-					// console.log({ tokenResponse, syncToken, fullUrl });
+					if (tokenResponse) {
+						const { access_token, client_id } = tokenResponse;
+						console.log({ tokenResponse, syncToken, fullUrl });
 
-					//CALL API AGAIN WITH NEW TOKEN
-					const call_again = await fetch(fullUrl, {
-						method,
-						body,
-						credentials: "include",
-						// cache: "no-store",
-						headers: {
-							...baseHeader,
+						//CALL API AGAIN WITH NEW TOKEN
+						console.log("gọi api chính lần nữa");
 
-							// Authorization: `Bearer ${access_token}`,
-						} as any,
-					});
+						const call_again = await fetch(fullUrl, {
+							method,
+							body,
+							credentials: "include",
+							// cache: "no-store",
+							headers: {
+								...baseHeader,
 
-					if (!call_again.ok) {
-						console.log("LOI");
+								// Authorization: `Bearer ${access_token}`,
+							} as any,
+						});
+
+						if (!call_again.ok) {
+							console.log("LOI");
+						}
+
+						//FINALLY
+						const response_again: Response = await call_again.json();
+						console.log({ response_again });
+						return response_again;
 					}
-
-					//FINALLY
-					const response_again: Response = await call_again.json();
-					console.log({ response_again });
-					return response_again;
 				}
-				// }
 				// console.log("12");
 			}
 			//TOKEN EXPRIES NEXT-SERVER
