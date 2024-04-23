@@ -12,18 +12,23 @@ const DashBoardPage = () => {
 	const { openSidebar } = useContext(SidebarContext);
 	const dispatch = useDispatch();
 
-	const fetchMe = useQuery({
-		queryKey: ["/me"],
-		queryFn: () => UserService.me(),
-	});
+	// const fetchMe = useQuery({
+	// 	queryKey: ["/me"],
+	// 	queryFn: () => UserService.me(),
+	// });
 
-	useEffect(() => {
-		console.log({ user: fetchMe.data });
-		if (fetchMe.isSuccess) {
-			// const { user } = fetchMe.data.metadata;
-			// dispatch(onFetchUser({ user }));
-		}
-	}, [fetchMe.isSuccess, dispatch, fetchMe]);
+	// useEffect(() => {
+	// 	console.log({ user: fetchMe.data });
+	// 	if (fetchMe.isSuccess) {
+	// 		// const { user } = fetchMe.data.metadata;
+	// 		// dispatch(onFetchUser({ user }));
+	// 	}
+	// }, [fetchMe.isSuccess, dispatch, fetchMe]);
+
+	try {
+		const a = UserService.me();
+		console.log({ a });
+	} catch (error) {}
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
