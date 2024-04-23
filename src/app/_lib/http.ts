@@ -235,6 +235,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		localStorage.removeItem("exprireToken");
 	}
 
+	console.log("check");
 	return payload;
 };
 
