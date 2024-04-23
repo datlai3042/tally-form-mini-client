@@ -64,15 +64,6 @@ let NOT_RETRY: null | Promise<any> = null;
  * @param options các options
  */
 
-const requestAgain = async (fullUrl: string, method: Method, options: CustomRequest) => {
-	const call_again = await fetch(fullUrl, {
-		method,
-		...options,
-	});
-
-	return await call_again.json();
-};
-
 export const resquest = async <Response>(method: Method, url: string, options?: CustomRequest | undefined) => {
 	const body = options?.body
 		? options.body instanceof FormData
@@ -160,31 +151,26 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					//AFTER
 
 					//CALL API AGAIN WITH NEW TOKEN
-					const test = await requestAgain(fullUrl, method, {
+					const call_again = await fetch(fullUrl, {
+						method,
 						body,
-						credentials: "include",
-						cache: "no-store",
+						// credentials: "include",
+						// cache: "no-store",
 						headers: {
 							...baseHeader,
 
 							// Authorization: `Bearer ${access_token}`,
 						} as any,
 					});
-					//FINALLY
-					console.log({ test });
+					console.log({ call_again });
 
-					const dataFinally = await requestAgain(fullUrl, method, {
-						body,
-						credentials: "include",
-						cache: "no-store",
-						headers: {
-							...baseHeader,
+					if (!call_again.ok) {
+						console.log("LOI");
+					}
 
-							// Authorization: `Bearer ${access_token}`,
-						} as any,
-					});
 					//FINALLY
-					return dataFinally;
+					const response_again: Response = await call_again.json();
+					return response_again;
 				}
 				// }
 				// console.log("12");
