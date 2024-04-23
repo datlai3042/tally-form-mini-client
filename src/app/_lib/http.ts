@@ -170,8 +170,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					//FINALLY
 					const response_again: Response = await call_again.json();
 					console.log({ response_again });
-					// return response_again;
-					return 1;
+					return response_again;
 				}
 				// }
 				// console.log("12");
