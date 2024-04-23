@@ -7,11 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 import UserService from "@/app/_services/user.service";
 import { useDispatch } from "react-redux";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
+import { set } from "zod";
 
 const DashBoardPage = () => {
 	const { openSidebar } = useContext(SidebarContext);
 	const dispatch = useDispatch();
 	const [res, setRes] = useState<any>();
+	const [loading, setLoading] = useState<boolean>(false);
 	// const fetchMe = useQuery({
 	// 	queryKey: ["/me"],
 	// 	queryFn: () => UserService.me(),
@@ -27,18 +29,19 @@ const DashBoardPage = () => {
 
 	useEffect(() => {
 		try {
-			const a = UserService.me()
+			setLoading(true);
+			UserService.me()
 				.then((data) => setRes(data))
-				.catch(() => console.log("page error"));
-			console.log({ a });
+				.catch(() => console.log("page error"))
+				.finally(() => setLoading(false));
 		} catch (error) {
 			console.log({ error });
 		}
 	}, []);
 
 	useEffect(() => {
-		console.log({ res });
-	}, [res]);
+		console.log({ res, loading });
+	}, [res, loading]);
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
