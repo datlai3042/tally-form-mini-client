@@ -28,7 +28,9 @@ const DashBoardPage = () => {
 	try {
 		const a = UserService.me();
 		console.log({ a });
-	} catch (error) {}
+	} catch (error) {
+		console.log({ error });
+	}
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
