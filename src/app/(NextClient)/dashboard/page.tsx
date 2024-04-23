@@ -18,8 +18,8 @@ const DashBoardPage = () => {
 	});
 
 	useEffect(() => {
+		console.log({ user: fetchMe.data });
 		if (fetchMe.isSuccess) {
-			console.log({ user: fetchMe.data });
 			const { user } = fetchMe.data.metadata;
 			dispatch(onFetchUser({ user }));
 		}
