@@ -40,7 +40,9 @@ const DashBoardPage = () => {
 			}
 		};
 
-		fetchMe();
+		if (typeof window !== "undefined") {
+			fetchMe();
+		}
 	}, []);
 
 	useEffect(() => {

@@ -154,7 +154,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					const call_again = await fetch(fullUrl, {
 						method,
 						body,
-						// credentials: "include",
+						credentials: "include",
 						// cache: "no-store",
 						headers: {
 							...baseHeader,
