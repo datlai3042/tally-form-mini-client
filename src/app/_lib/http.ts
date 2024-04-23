@@ -154,11 +154,10 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					const call_again = await fetch(fullUrl, {
 						method,
 						body,
-						credentials: "include",
-						// cache: "no-store",
+
 						headers: {
 							...baseHeader,
-
+							Cookie: `access_token=${access_token}`,
 							// Authorization: `Bearer ${access_token}`,
 						} as any,
 					});
