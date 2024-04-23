@@ -157,9 +157,31 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 						console.log("gọi api chính lần nữa");
 						const notBody = method === "GET" || method === "DELETE" ? undefined : body;
 						console.log({ notBody });
+						if (method === "GET" || method === "DELETE") {
+							const call_again = await fetch(fullUrl, {
+								method,
+								credentials: "include",
+								// cache: "no-store",
+								headers: {
+									...baseHeader,
+
+									// Authorization: `Bearer ${access_token}`,
+								} as any,
+							});
+
+							if (!call_again.ok) {
+								console.log("LOI");
+							}
+
+							//FINALLY
+							const response_again: Response = await call_again.json();
+							console.log({ response_again });
+							return response_again;
+						}
+
 						const call_again = await fetch(fullUrl, {
 							method,
-							body: notBody,
+							body,
 							credentials: "include",
 							// cache: "no-store",
 							headers: {
@@ -179,6 +201,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 						return response_again;
 					}
 				}
+
 				// console.log("12");
 			}
 			//TOKEN EXPRIES NEXT-SERVER
