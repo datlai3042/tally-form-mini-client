@@ -160,6 +160,18 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					//AFTER
 
 					//CALL API AGAIN WITH NEW TOKEN
+					const test = await requestAgain(fullUrl, method, {
+						body,
+						credentials: "include",
+						cache: "no-store",
+						headers: {
+							...baseHeader,
+
+							// Authorization: `Bearer ${access_token}`,
+						} as any,
+					});
+					//FINALLY
+					console.log({ test });
 
 					const dataFinally = await requestAgain(fullUrl, method, {
 						body,
