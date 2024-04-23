@@ -162,6 +162,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 							// Authorization: `Bearer ${access_token}`,
 						} as any,
 					});
+					console.log({ call_again });
 
 					if (!call_again.ok) {
 						console.log("LOI");
@@ -169,7 +170,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 					//FINALLY
 					const response_again: Response = await call_again.json();
-					console.log({ response_again });
 					return response_again;
 				}
 				// }
