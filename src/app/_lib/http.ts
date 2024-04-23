@@ -155,10 +155,10 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 						//CALL API AGAIN WITH NEW TOKEN
 						console.log("gọi api chính lần nữa");
-
+						const notBody = method === "GET" || method === "DELETE" ? undefined : body;
 						const call_again = await fetch(fullUrl, {
 							method,
-							body,
+							body: notBody,
 							credentials: "include",
 							// cache: "no-store",
 							headers: {
