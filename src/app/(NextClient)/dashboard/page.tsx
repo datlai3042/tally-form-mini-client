@@ -7,32 +7,23 @@ import { useQuery } from "@tanstack/react-query";
 import UserService from "@/app/_services/user.service";
 import { useDispatch } from "react-redux";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
-import Http from "@/app/_lib/http";
-import { ResponseApi } from "@/app/_schema/api/response.shema";
-import { UserType } from "@/app/_schema/user/user.type";
 
 const DashBoardPage = () => {
 	const { openSidebar } = useContext(SidebarContext);
 	const dispatch = useDispatch();
 
-	// const fetchMe = useQuery({
-	// 	queryKey: ["/me"],
-	// 	queryFn: () => UserService.me(),
-	// });
+	const fetchMe = useQuery({
+		queryKey: ["/me"],
+		queryFn: () => UserService.me(),
+	});
 
-	// useEffect(() => {
-	// 	console.log({ user: fetchMe.data, state: fetchMe.isSuccess, data: fetchMe.data });
-	// 	if (fetchMe.isSuccess) {
-	// 		const { user } = fetchMe.data.metadata;
-	// 		dispatch(onFetchUser({ user }));
-	// 	}
-	// }, [fetchMe.isSuccess, dispatch, fetchMe.data]);
-
-	try {
-		Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", { credentials: "include" }).then((data) => {
-			console.log({ data });
-		});
-	} catch (error) {}
+	useEffect(() => {
+		console.log({ user: fetchMe.data });
+		if (fetchMe.isSuccess) {
+			// const { user } = fetchMe.data.metadata;
+			// dispatch(onFetchUser({ user }));
+		}
+	}, [fetchMe.isSuccess, dispatch, fetchMe]);
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
