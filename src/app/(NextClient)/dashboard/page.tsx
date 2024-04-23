@@ -26,7 +26,7 @@ const DashBoardPage = () => {
 	// }, [fetchMe.isSuccess, dispatch, fetchMe]);
 
 	try {
-		const a = UserService.me();
+		const a = UserService.me().then((data) => console.log({ data }));
 		console.log({ a });
 	} catch (error) {
 		console.log({ error });
