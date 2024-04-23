@@ -18,12 +18,12 @@ const DashBoardPage = () => {
 	});
 
 	useEffect(() => {
-		console.log({ user: fetchMe.data });
+		console.log({ user: fetchMe.data, state: fetchMe.isSuccess, data: fetchMe.data });
 		if (fetchMe.isSuccess) {
 			const { user } = fetchMe.data.metadata;
 			dispatch(onFetchUser({ user }));
 		}
-	}, [fetchMe.isSuccess, dispatch, fetchMe]);
+	}, [fetchMe.isSuccess, dispatch, fetchMe.data]);
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
