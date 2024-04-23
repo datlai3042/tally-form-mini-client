@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DashBoardLeft from "./_components/layout/DashBoardLeft";
 import DashBoardRight from "./_components/layout/DashBoardRight";
 import { SidebarContext } from "./SidebarContext";
@@ -11,7 +11,7 @@ import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
 const DashBoardPage = () => {
 	const { openSidebar } = useContext(SidebarContext);
 	const dispatch = useDispatch();
-
+	const [res, setRes] = useState<any>();
 	// const fetchMe = useQuery({
 	// 	queryKey: ["/me"],
 	// 	queryFn: () => UserService.me(),
@@ -28,13 +28,18 @@ const DashBoardPage = () => {
 	useEffect(() => {
 		try {
 			const a = UserService.me()
-				.then((data) => console.log({ data }))
+				.then((data) => setRes(data))
 				.catch(() => console.log("page error"));
 			console.log({ a });
 		} catch (error) {
 			console.log({ error });
 		}
 	}, []);
+
+	useEffect(() => {
+		console.log({ res });
+	}, [res]);
+
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
 			if (check)
