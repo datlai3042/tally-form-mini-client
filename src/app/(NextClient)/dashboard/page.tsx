@@ -7,25 +7,22 @@ import { useQuery } from "@tanstack/react-query";
 import UserService from "@/app/_services/user.service";
 import { useDispatch } from "react-redux";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
-import { set } from "zod";
+import { UserType } from "@/app/_schema/user/user.type";
 
-const DashBoardPage = () => {
+type TProps = {
+	user: UserType | null;
+};
+
+const DashBoardPage = (props: TProps) => {
 	const { openSidebar } = useContext(SidebarContext);
 	const dispatch = useDispatch();
-	const [res, setRes] = useState<any>();
-	const [loading, setLoading] = useState<boolean>(false);
-	const fetchMe = useQuery({
-		queryKey: ["/me"],
-		queryFn: () => UserService.me(),
-	});
+	const { user } = props;
 
 	useEffect(() => {
-		console.log({ user: fetchMe.data });
-		if (fetchMe.isSuccess) {
-			const { user } = fetchMe.data.metadata;
+		if (user) {
 			dispatch(onFetchUser({ user }));
 		}
-	}, [fetchMe.isSuccess, dispatch, fetchMe]);
+	}, [dispatch, user]);
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
