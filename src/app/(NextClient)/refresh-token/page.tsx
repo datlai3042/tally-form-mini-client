@@ -24,26 +24,7 @@ const RefreshTokenPage = () => {
 	useEffect(() => {
 		const abort = new AbortController();
 		if (refreshTokenQuery.isSuccess) {
-			console.log({ metadata: refreshTokenQuery.data?.metadata });
-			const { client_id } = refreshTokenQuery.data?.metadata as ResponseAuth;
-			const {
-				token: { access_token, refresh_token },
-			} = refreshTokenQuery.data?.metadata as ResponseAuth;
-
-			const signal = abort.signal;
-			Http.post<TokenNextSync>(
-				"/v1/api/auth/set-token",
-				{
-					access_token,
-					refresh_token,
-					client_id,
-				},
-				{ baseUrl: "", signal }
-			).then(() => {
-				console.log("alo");
-				router.refresh();
-				redirect(pathName || "");
-			});
+			router.push(pathName || "");
 		}
 
 		return () => {

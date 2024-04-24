@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
 	const refresh_token = Boolean(request.cookies.get("refresh_token")?.value);
 
 	const requestHeaders = new Headers(request.headers);
-	requestHeaders.set("x-url", request.url);
+	requestHeaders.set("x-url", pathname);
 
 	const response = NextResponse.next({
 		headers: requestHeaders,
