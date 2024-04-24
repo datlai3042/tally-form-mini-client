@@ -12,13 +12,26 @@ import { UserType } from "@/app/_schema/user/user.type";
 const userUpdateSchema = registerSchema.pick({ first_name: true, last_name: true });
 type UserUpdateInfo = z.infer<typeof userUpdateSchema>;
 
+type TProps = {
+	defaulValues: {
+		first_name: string;
+		last_name: string;
+	};
+};
+
 const SettingAccount = () => {
 	const user = useSelector((state: RootState) => state.authReducer.user) as UserType;
 
 	const formUpdate = useForm<UserUpdateInfo>({
-		defaultValues: {
-			first_name: user?.user_first_name || "",
-			last_name: user?.user_last_name || "",
+		defaultValues: async () => {
+			return new Promise((res, rej) => {
+				if (user) {
+					res({
+						first_name: user?.user_first_name || "",
+						last_name: user?.user_last_name || "",
+					});
+				}
+			});
 		},
 		resolver: zodResolver(userUpdateSchema),
 	});
