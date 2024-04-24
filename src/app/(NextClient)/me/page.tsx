@@ -6,13 +6,14 @@ import React from "react";
 
 const ProfileMe = async () => {
 	let me: UserType | null | any = null;
+	let res: any;
 
 	try {
-		const res = await UserService.me();
+		res = await UserService.me();
 		me = res!.metadata.user;
 	} catch (error) {}
 
-	return <div>Me: {JSON.stringify(me) || "none"}</div>;
+	return <div>Me: {JSON.stringify(res) || "none"}</div>;
 };
 
 export default ProfileMe;
