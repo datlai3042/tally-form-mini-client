@@ -34,6 +34,8 @@ const DashboardAccount = () => {
 					/>
 				</>
 			)}
+
+			{!user && <div className="animate-pulse w-full h-full rounded-md bg-slate-100"></div>}
 		</div>
 	);
 };

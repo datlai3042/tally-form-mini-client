@@ -1,3 +1,5 @@
+import { UserType } from "./app/_schema/user/user.type";
+
 type InputType = "email" | "number" | "text" | "password" | "file" | "files";
 type AuthType = {
 	access_token: string;
@@ -23,4 +25,8 @@ type TokenNextSync = {
 	access_token: string;
 	refresh_token: string;
 	_id: string;
+};
+
+type UserProp = {
+	Children: React.ComponentType<{ user: UserType | null }>;
 };
