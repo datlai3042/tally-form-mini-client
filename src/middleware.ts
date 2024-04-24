@@ -11,11 +11,11 @@ export function middleware(request: NextRequest) {
 	const access_token = Boolean(request.cookies.get("access_token")?.value);
 	const refresh_token = Boolean(request.cookies.get("refresh_token")?.value);
 
-	const requestHeaders = new Headers(request.headers);
-	requestHeaders.set("x-url", request.url);
+	// const requestHeaders = new Headers(request.headers);
+	// requestHeaders.set("x-url", request.url);
 
 	const response = NextResponse.next({
-		headers: requestHeaders,
+		// headers: requestHeaders,
 	});
 	if (!access_token && !refresh_token && privateRouter.includes(pathname)) {
 		return NextResponse.redirect(new URL("/", request.url));
