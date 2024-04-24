@@ -47,7 +47,7 @@ const LoginForm = (props: TProps) => {
 				user,
 				token: { access_token, refresh_token },
 				client_id,
-			} = response!.metadata;
+			} = response.metadata;
 			dispatch(onFetchUser({ user }));
 			const setTokenResponse = Http.post<ResponseApi<ResponseAuth>>(
 				"/v1/api/auth/set-token",
