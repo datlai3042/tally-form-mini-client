@@ -17,8 +17,8 @@ const SettingAccount = () => {
 
 	const formUpdate = useForm<UserUpdateInfo>({
 		defaultValues: {
-			first_name: user.user_first_name,
-			last_name: user.user_last_name,
+			first_name: user?.user_first_name || "",
+			last_name: user?.user_last_name || "",
 		},
 		resolver: zodResolver(userUpdateSchema),
 	});
@@ -32,33 +32,47 @@ const SettingAccount = () => {
 
 	return (
 		<div className="flex flex-col ">
-			<form onSubmit={formUpdate.handleSubmit(onSubmit)} id="form_update">
-				<Input<UserUpdateInfo>
-					FieldKey="first_name"
-					placeholder="Nhập first name"
-					register={formUpdate.register}
-					type="text"
-					watch={formUpdate.watch}
-					error={formUpdate.formState.errors}
-				/>
+			{user && (
+				<>
+					<form onSubmit={formUpdate.handleSubmit(onSubmit)} id="form_update">
+						<Input<UserUpdateInfo>
+							FieldKey="first_name"
+							placeholder="Nhập first name"
+							register={formUpdate.register}
+							type="text"
+							watch={formUpdate.watch}
+							error={formUpdate.formState.errors}
+						/>
 
-				<Input<UserUpdateInfo>
-					FieldKey="last_name"
-					placeholder="Nhập last name"
-					register={formUpdate.register}
-					type="text"
-					watch={formUpdate.watch}
-					error={formUpdate.formState.errors}
-				/>
-			</form>
-			<InputLayout placeholder="email" value="123" />
-			<button
-				type="submit"
-				form="form_update"
-				className="w-[10%] p-[.2rem_.8rem] h-[2.7rem] flex justify-center items-center gap-[.8rem] bg-slate-700 text-white rounded-md"
-			>
-				Update
-			</button>
+						<Input<UserUpdateInfo>
+							FieldKey="last_name"
+							placeholder="Nhập last name"
+							register={formUpdate.register}
+							type="text"
+							watch={formUpdate.watch}
+							error={formUpdate.formState.errors}
+						/>
+					</form>
+					<InputLayout placeholder="email" value="123" />
+					<button
+						type="submit"
+						form="form_update"
+						className="w-[10%] p-[.2rem_.8rem] h-[2.7rem] flex justify-center items-center gap-[.8rem] bg-slate-700 text-white rounded-md"
+					>
+						Update
+					</button>
+				</>
+			)}
+
+			{!user && (
+				<div className="flex flex-col gap-[1.8rem]">
+					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
+					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
+					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
+					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
+					<div className="animate-pulse bg-slate-200 w-[10%] p-[.2rem_.8rem] h-[2.7rem] d">Update</div>
+				</div>
+			)}
 		</div>
 	);
 };
