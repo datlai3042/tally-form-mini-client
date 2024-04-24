@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InputLayout from "../../_components/ui/input/InputLayout";
 import { registerSchema } from "@/app/_schema/auth/register.schema";
 import { z } from "zod";
@@ -26,6 +26,8 @@ const SettingAccount = () => {
 	const onSubmit = (dataForm: UserUpdateInfo) => {
 		console.log({ dataForm });
 	};
+
+	useEffect(() => {}, [user]);
 
 	console.log({ errors: formUpdate.formState.errors });
 	console.log({ value: formUpdate.formState.defaultValues });
