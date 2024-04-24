@@ -62,8 +62,6 @@ const SliderImages = (props: TProps) => {
 		};
 	}, [imageIndex]);
 
-	console.log("re-render");
-
 	return (
 		<Image
 			className="!min-w-full h-full opacity-0 transition-all duration-500   object-cover "

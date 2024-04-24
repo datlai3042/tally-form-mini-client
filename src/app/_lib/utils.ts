@@ -1,3 +1,4 @@
+import { JwtPayload } from "@/type";
 import { jwtDecode } from "jwt-decode";
 
 export const validateEmail = (email: string) => {

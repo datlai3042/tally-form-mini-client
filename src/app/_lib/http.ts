@@ -103,16 +103,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		if (+response.status === AUTHORIZATION_ERROR_STATUS) {
 			//TOKEN EXPRIES NEXT-CLIENT
 			if (typeof window !== "undefined") {
-				//refresh-token api
-				// const options: RequestInit = {
-				// 	method: "GET",
-				// 	headers: {
-				// 		authorization: `Bearer ${token_expires}`,
-				// 		"x-client-id": clientId,
-				// 		Cookie: `refresh_token=${refresh_token}`,
-				// 	},
-				// 	cache: "no-store",
-				// };
 				const option: RequestInit = {
 					credentials: "include",
 				};
@@ -154,13 +144,11 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					//CALL API AGAIN WITH NEW TOKEN
 					const call_again = await fetch(fullUrl, {
 						method,
-						// body,
+						body,
 						credentials: "include",
 
 						headers: {
 							...baseHeader,
-							Cookie: `access_token=${access_token}`,
-							// Authorization: `Bearer ${access_token}`,
 						} as any,
 					});
 					console.log({ call_again });
@@ -171,55 +159,48 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 					//FINALLY
 					const response_again: Response = await call_again.json();
-					// return response_again;
 					return response_again;
-					// const product = await fetch(`${process.env.BACK_END_URL}/v1/api/product/get-all-product`, {
-					// 	credentials: "include",
-					// });
-					// const productData = await product.json();
-					// console.log({ productData });
-					// return productData;
 				}
-				// }
-				// console.log("12");
 			}
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				//refresh-token api
 				const { refresh_token } = options?.headers as HeaderToken;
-				const optionsRefreshAPI: RequestInit = {
-					method: "GET",
-					headers: {
-						// "x-client-id": clientId,
-						Cookie: `refresh_token=${refresh_token}`,
-					},
-					credentials: "include",
-					cache: "no-store",
-				};
-				const callRefreshToken = await fetch(`${baseUrl}/v1/api/auth/refresh-token`, { ...optionsRefreshAPI });
-				const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
+				console.log({ options });
+				return null;
+				// const optionsRefreshAPI: RequestInit = {
+				// 	method: "GET",
+				// 	headers: {
+				// 		// "x-client-id": clientId,
+				// 		Cookie: `refresh_token=${refresh_token}`,
+				// 	},
+				// 	credentials: "include",
+				// 	cache: "no-store",
+				// };
+				// const callRefreshToken = await fetch(`${baseUrl}/v1/api/auth/refresh-token`, { ...optionsRefreshAPI });
+				// const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
 
-				//validate refresh-token
-				//---*---//
+				// //validate refresh-token
+				// //---*---//
 
-				//CASE: FAILED
-				if (+refresh_api.code === PERMISSION_ERROR_STATUS) {
-					const payloadError: ConstructorError = {
-						status: +refresh_api.code,
-						payload: payload as ErrorPayload,
-					};
-					console.log({ http: "server-client-side:::logout thooi", refresh_api, token: refresh_token });
-					throw new PermissionError(payloadError);
-				}
-				//CASE: SUCCESS
-				else {
-					const pathName = options?.pathName;
-					const { access_token, refresh_token: newRf } = refresh_api.metadata.token;
-					const { _id: user_id } = refresh_api.metadata.user;
-					redirect(
-						`/refresh-token?token_expires=${refresh_token}&new_access_token=${access_token}&new_refresh_token=${newRf}&user_id=${user_id}&pathName=${pathName}`
-					);
-				}
+				// //CASE: FAILED
+				// if (+refresh_api.code === PERMISSION_ERROR_STATUS) {
+				// 	const payloadError: ConstructorError = {
+				// 		status: +refresh_api.code,
+				// 		payload: payload as ErrorPayload,
+				// 	};
+				// 	console.log({ http: "server-client-side:::logout thooi", refresh_api, token: refresh_token });
+				// 	throw new PermissionError(payloadError);
+				// }
+				// //CASE: SUCCESS
+				// else {
+				// 	const pathName = options?.pathName;
+				// 	const { access_token, refresh_token: newRf } = refresh_api.metadata.token;
+				// 	const { _id: user_id } = refresh_api.metadata.user;
+				// 	redirect(
+				// 		`/refresh-token?token_expires=${refresh_token}&new_access_token=${access_token}&new_refresh_token=${newRf}&user_id=${user_id}&pathName=${pathName}`
+				// 	);
+				// }
 			}
 		} else {
 			throw new HttpError({ status: 500 });

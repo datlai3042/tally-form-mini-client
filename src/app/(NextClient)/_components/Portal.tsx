@@ -8,7 +8,6 @@ type TProps = {
 };
 
 const Portal = (props: TProps) => {
-	console.log(typeof window);
 	const { children } = props;
 	if (typeof window !== "undefined") {
 		return createPortal(children, document.querySelector("body") as HTMLBodyElement);

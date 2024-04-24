@@ -8,44 +8,6 @@ import { set } from "zod";
 import Http from "@/app/_lib/http";
 
 const DashBoardPage = () => {
-	const dispatch = useDispatch();
-	const [res, setRes] = useState<any>();
-	const [loading, setLoading] = useState<boolean>(false);
-	// const fetchMe = useQuery({
-	// 	queryKey: ["/me"],
-	// 	queryFn: () => UserService.me(),
-	// });
-
-	// useEffect(() => {
-	// 	console.log({ user: fetchMe.data });
-	// 	if (fetchMe.isSuccess) {
-	// 		// const { user } = fetchMe.data.metadata;
-	// 		// dispatch(onFetchUser({ user }));
-	// 	}
-	// }, [fetchMe.isSuccess, dispatch, fetchMe]);
-
-	useEffect(() => {
-		const fetchMe = async () => {
-			try {
-				setLoading(true);
-				const res = await Http.get<any>("v1/api/product/get-all-product");
-				setRes(res);
-			} catch (error) {
-				console.log({ error });
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		if (typeof window !== "undefined") {
-			fetchMe();
-		}
-	}, []);
-
-	useEffect(() => {
-		console.log({ res, loading });
-	}, [res, loading]);
-
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
 			if (check)

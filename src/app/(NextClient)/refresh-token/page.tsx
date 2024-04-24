@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 
 import ButtonNavigation from "../_components/ui/button/ButtonNavigation";
 import { abort } from "process";
+import { TokenNextSync } from "@/type";
 
 const RefreshTokenPage = () => {
 	const router = useRouter();

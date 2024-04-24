@@ -22,7 +22,7 @@ const DashBoardLeft = () => {
 	useEffect(() => {
 		console.log({ user: fetchMe.data });
 		if (fetchMe.isSuccess) {
-			const { user } = fetchMe.data.metadata;
+			const { user } = fetchMe.data!.metadata;
 			dispatch(onFetchUser({ user }));
 		}
 	}, [fetchMe.isSuccess, dispatch, fetchMe]);

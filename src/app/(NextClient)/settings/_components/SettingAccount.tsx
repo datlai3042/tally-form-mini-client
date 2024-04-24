@@ -36,13 +36,10 @@ const SettingAccount = () => {
 		resolver: zodResolver(userUpdateSchema),
 	});
 
-	const onSubmit = (dataForm: UserUpdateInfo) => {
-		console.log({ dataForm });
-	};
+	const onSubmit = (dataForm: UserUpdateInfo) => {};
 
 	useEffect(() => {}, [user]);
 
-	console.log({ errors: formUpdate.formState.errors });
 	console.log({ value: formUpdate.formState.defaultValues });
 
 	return (

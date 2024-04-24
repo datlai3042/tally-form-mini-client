@@ -1,15 +1,18 @@
-"use client";
-import { RootState } from "@/app/_lib/redux/store";
 import { UserType } from "@/app/_schema/user/user.type";
+import UserService from "@/app/_services/user.service";
 import React from "react";
-import { useSelector } from "react-redux";
 
 //Không export tào lào trong component
 
-const ProfileMe = () => {
-	const user = useSelector((state: RootState) => state.authReducer.user) as UserType;
+const ProfileMe = async () => {
+	let me: UserType | null = null;
 
-	return <div>ProfileMe {user?.user_email || "none"}</div>;
+	try {
+		const res = await UserService.me();
+		me = res.metadata.user;
+	} catch (error) {}
+
+	return <div>Me: {JSON.stringify(me) || "none"}</div>;
 };
 
 export default ProfileMe;

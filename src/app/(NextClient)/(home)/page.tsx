@@ -271,8 +271,6 @@ const GRID_FOUR: GridIconText[] = [
 ];
 
 const HomePage = () => {
-	console.log({ CustomizeImages });
-
 	return (
 		<div className="flex  w-full min-w-full max-w-full ">
 			<div className="flex w-full flex-col h-max   ">

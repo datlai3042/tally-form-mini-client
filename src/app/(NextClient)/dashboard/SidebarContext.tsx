@@ -18,7 +18,6 @@ type TProps = {
 const SidebarContextProvider = (props: TProps) => {
 	const { children } = props;
 	const [openSidebar, setOpenSidebar] = useState<boolean>(true);
-	console.log({ openSidebar });
 
 	return <SidebarContext.Provider value={{ openSidebar, setOpenSidebar }}>{children}</SidebarContext.Provider>;
 };

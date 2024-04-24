@@ -4,8 +4,6 @@ import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
 	const { access_token, refresh_token, client_id } = await request.json();
-	console.log({ client_id });
-	// const expiresAT = expiresToken(access_token);
 	const expiresRT = expiresToken(refresh_token);
 
 	cookies().set({

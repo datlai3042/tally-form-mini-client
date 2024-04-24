@@ -52,8 +52,6 @@ const FeatureInfoV1 = (props: TProps) => {
 		onCheckMode: () => (Mode.mode === "SLIDER" ? `url(${Mode.DescriptionBgImg})` : ""),
 	};
 
-	console.log({ img: Mode });
-
 	return (
 		<div className="w-full h-full max-h-max flex flex-col  gap-[24px]">
 			{!HiddenTextArea && (

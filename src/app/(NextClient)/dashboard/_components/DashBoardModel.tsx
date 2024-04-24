@@ -30,12 +30,9 @@ const DashBoardModel = (props: TProps) => {
 		}
 	}, []);
 
-	console.log("re");
-
 	useEffect(() => {
 		document.addEventListener("click", controllShowResultSearch);
 		return () => {
-			console.log("remove");
 			document.removeEventListener("click", controllShowResultSearch);
 		};
 	}, [controllShowResultSearch]);
