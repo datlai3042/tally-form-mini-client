@@ -14,40 +14,18 @@ const DashBoardPage = () => {
 	const dispatch = useDispatch();
 	const [res, setRes] = useState<any>();
 	const [loading, setLoading] = useState<boolean>(false);
-	// const fetchMe = useQuery({
-	// 	queryKey: ["/me"],
-	// 	queryFn: () => UserService.me(),
-	// });
-
-	// useEffect(() => {
-	// 	console.log({ user: fetchMe.data });
-	// 	if (fetchMe.isSuccess) {
-	// 		// const { user } = fetchMe.data.metadata;
-	// 		// dispatch(onFetchUser({ user }));
-	// 	}
-	// }, [fetchMe.isSuccess, dispatch, fetchMe]);
+	const fetchMe = useQuery({
+		queryKey: ["/me"],
+		queryFn: () => UserService.me(),
+	});
 
 	useEffect(() => {
-		const fetchMe = async () => {
-			try {
-				setLoading(true);
-				const res = await UserService.me();
-				setRes(res);
-			} catch (error) {
-				console.log({ error });
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		if (typeof window !== "undefined") {
-			fetchMe();
+		console.log({ user: fetchMe.data });
+		if (fetchMe.isSuccess) {
+			// const { user } = fetchMe.data.metadata;
+			// dispatch(onFetchUser({ user }));
 		}
-	}, []);
-
-	useEffect(() => {
-		console.log({ res, loading });
-	}, [res, loading]);
+	}, [fetchMe.isSuccess, dispatch, fetchMe]);
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {
