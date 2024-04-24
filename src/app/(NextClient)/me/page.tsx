@@ -23,7 +23,7 @@ const ProfileMe = async () => {
 		res = await Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", {
 			credentials: "include",
 			headers: {
-				Cookie: `refresh_token=${refresh_token},access_token=${access_token}, client_id=${client_id}`,
+				Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id}`,
 			},
 			pathName: header_url,
 		});
