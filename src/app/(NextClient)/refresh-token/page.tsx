@@ -31,13 +31,13 @@ const RefreshTokenPage = () => {
 			router.refresh();
 			abort.abort();
 		};
-	}, [router, pathName, refreshTokenQuery]);
+	}, [router, pathName, refreshTokenQuery.isSuccess]);
 
 	if (refreshTokenQuery.isError) {
 		return (
 			<div className="w-screen h-screen flex  justify-center items-center gap-[20px]">
 				<div className="w-[500px] h-[500px] flex flex-col justify-center items-center shadow-2xl shadow-blue-400 rounded-xl">
-					<p>Page Không tồn tại {JSON.stringify(process)}</p>;
+					<p>Page Không tồn tại</p>;
 					<ButtonNavigation urlNavigation="/dashboard" textContent="Dashboard" onClick={() => {}} />
 				</div>
 			</div>
