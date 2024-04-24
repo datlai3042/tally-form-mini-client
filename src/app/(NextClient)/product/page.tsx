@@ -28,7 +28,7 @@ const DashBoardPage = () => {
 		const fetchMe = async () => {
 			try {
 				setLoading(true);
-				const res = await Http.get<any>("/get-all-product");
+				const res = await Http.get<any>("v1/api/product/get-all-product");
 				setRes(res);
 			} catch (error) {
 				console.log({ error });
