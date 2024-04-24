@@ -167,7 +167,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				//refresh-token api
 				const { refresh_token } = options?.headers as HeaderToken;
 				console.log({ options });
-				return null;
+				return options as Response;
 				// const optionsRefreshAPI: RequestInit = {
 				// 	method: "GET",
 				// 	headers: {

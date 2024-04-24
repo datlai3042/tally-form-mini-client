@@ -5,7 +5,7 @@ import React from "react";
 //Không export tào lào trong component
 
 const ProfileMe = async () => {
-	let me: UserType | null = null;
+	let me: UserType | null | any = null;
 
 	try {
 		const res = await UserService.me();
