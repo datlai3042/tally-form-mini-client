@@ -35,7 +35,7 @@ const DashboardAccount = () => {
 				</>
 			)}
 
-			{!user && <div className="animate-pulse w-full h-full rounded-md bg-slate-100"></div>}
+			{!user && <div className="animate-pulse w-full h-full rounded-md bg-slate-200"></div>}
 		</div>
 	);
 };
