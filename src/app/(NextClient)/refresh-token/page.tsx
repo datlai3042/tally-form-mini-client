@@ -1,45 +1,42 @@
 "use client";
 
 import Http, { clientToken } from "@/app/_lib/http";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import ButtonNavigation from "../_components/ui/button/ButtonNavigation";
 import { abort } from "process";
 import { TokenNextSync } from "@/type";
+import { useQuery } from "@tanstack/react-query";
+import AuthService from "@/app/_services/auth.service";
 
 const RefreshTokenPage = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const pathName = searchParams.get("pathName");
 
-	const token_expires = searchParams.get("token_expires");
-	const new_access_token = searchParams.get("new_access_token");
-	const new_refresh_token = searchParams.get("new_refresh_token");
-	const user_id = searchParams.get("user_id");
-	const pathName = searchParams.get("pathName") || "/";
-	const [process, setProcess] = useState(false);
+	const refreshTokenQuery = useQuery({
+		queryKey: ["/refresh-token"],
+		queryFn: () => AuthService.refreshToken(),
+	});
 
 	useEffect(() => {
 		const abort = new AbortController();
-		if (token_expires !== clientToken.refreshToken) {
-			// setProcess(true);
-			router.refresh();
-		}
-		if (token_expires === clientToken.refreshToken) {
-			console.log("run api ");
+		if (refreshTokenQuery) {
+			const { access_token, client_id, refresh_token } = refreshTokenQuery.data?.metadata as TokenNextSync;
 			const signal = abort.signal;
 			Http.post<TokenNextSync>(
 				"/v1/api/auth/set-token",
 				{
-					access_token: new_access_token,
-					refresh_token: new_refresh_token,
-					_id: user_id,
+					access_token,
+					refresh_token,
+					client_id,
 				},
 				{ baseUrl: "", signal }
 			).then(() => {
 				console.log("alo");
 				router.refresh();
-				router.push(pathName);
+				redirect(pathName || "");
 			});
 		}
 
@@ -47,9 +44,9 @@ const RefreshTokenPage = () => {
 			router.refresh();
 			abort.abort();
 		};
-	}, [router, new_access_token, new_refresh_token, user_id, token_expires, pathName]);
+	}, [router, pathName, refreshTokenQuery]);
 
-	if (token_expires !== clientToken.refreshToken) {
+	if (refreshTokenQuery.isError) {
 		return (
 			<div className="w-screen h-screen flex  justify-center items-center gap-[20px]">
 				<div className="w-[500px] h-[500px] flex flex-col justify-center items-center shadow-2xl shadow-blue-400 rounded-xl">
@@ -60,13 +57,7 @@ const RefreshTokenPage = () => {
 		);
 	}
 
-	return (
-		<div className="flex flex-col gap-10 ">
-			<p className="w-[360px] break-words">Client ref: {clientToken.refreshToken}</p>
-			<p className="w-[360px] break-words">Server ref: {token_expires}</p>
-			<ButtonNavigation urlNavigation="/dashboard" textContent="Dashboard" onClick={() => {}} />
-		</div>
-	);
+	return <div className="flex flex-col gap-10 ">Đang xử lí</div>;
 };
 
 export default RefreshTokenPage;

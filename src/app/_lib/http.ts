@@ -164,47 +164,12 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			}
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
-				//refresh-token api
-				const { refresh_token } = options?.headers as HeaderToken;
-				console.log({ options });
-				return options as Response;
-				// const optionsRefreshAPI: RequestInit = {
-				// 	method: "GET",
-				// 	headers: {
-				// 		// "x-client-id": clientId,
-				// 		Cookie: `refresh_token=${refresh_token}`,
-				// 	},
-				// 	credentials: "include",
-				// 	cache: "no-store",
-				// };
-				// const callRefreshToken = await fetch(`${baseUrl}/v1/api/auth/refresh-token`, { ...optionsRefreshAPI });
-				// const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
-
-				// //validate refresh-token
-				// //---*---//
-
-				// //CASE: FAILED
-				// if (+refresh_api.code === PERMISSION_ERROR_STATUS) {
-				// 	const payloadError: ConstructorError = {
-				// 		status: +refresh_api.code,
-				// 		payload: payload as ErrorPayload,
-				// 	};
-				// 	console.log({ http: "server-client-side:::logout thooi", refresh_api, token: refresh_token });
-				// 	throw new PermissionError(payloadError);
-				// }
-				// //CASE: SUCCESS
-				// else {
-				// 	const pathName = options?.pathName;
-				// 	const { access_token, refresh_token: newRf } = refresh_api.metadata.token;
-				// 	const { _id: user_id } = refresh_api.metadata.user;
-				// 	redirect(
-				// 		`/refresh-token?token_expires=${refresh_token}&new_access_token=${access_token}&new_refresh_token=${newRf}&user_id=${user_id}&pathName=${pathName}`
-				// 	);
-				// }
+				const pathName = options?.pathName;
+				return redirect(`/refresh-token?pathName=${pathName}`);
 			}
-		} else {
-			throw new HttpError({ status: 500 });
 		}
+	} else {
+		throw new HttpError({ status: 500 });
 	}
 
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
