@@ -42,13 +42,21 @@ const LoginForm = (props: TProps) => {
 			Http.post<ResponseApi<ResponseAuth>>("/v1/api/auth/login", formLogin, {
 				credentials: "include",
 			}),
-		onSuccess: (response) => {
+		onSuccess: (response) => {},
+	});
+
+	const onSubmit = (data: LoginType) => {
+		loginMutation.mutate(data);
+	};
+
+	useEffect(() => {
+		if (loginMutation.isSuccess) {
 			const {
 				user,
 				token: { access_token, refresh_token },
 				client_id,
-			} = response.metadata;
-			console.log({ response });
+			} = loginMutation.data.metadata;
+			// console.log({ response });
 			dispatch(onFetchUser({ user }));
 			const setTokenResponse = Http.post<ResponseApi<ResponseAuth>>(
 				"/v1/api/auth/set-token",
@@ -64,20 +72,8 @@ const LoginForm = (props: TProps) => {
 					onClose(false);
 				}
 			});
-		},
-	});
-
-	const onSubmit = (data: LoginType) => {
-		loginMutation.mutate(data);
-	};
-
-	useEffect(() => {
-		if (loginMutation.isSuccess) {
-			if (onClose) {
-				onClose(false);
-			}
 		}
-	}, [loginMutation.isSuccess, onClose]);
+	}, [loginMutation.isSuccess, onClose, loginMutation.data, dispatch]);
 
 	console.log({ errors: loginForm.formState.errors });
 

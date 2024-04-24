@@ -167,11 +167,10 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				const pathName = options?.pathName;
 				return redirect(`/refresh-token?pathName=${pathName}`);
 			}
+		} else {
+			throw new HttpError({ status: 500 });
 		}
-	} else {
-		throw new HttpError({ status: 500 });
 	}
-
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
 		localStorage.setItem("exprireToken", (payload as ResponseApi<ResponseAuth>).metadata.expireToken);
 	}
