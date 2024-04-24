@@ -166,8 +166,8 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				const pathName = options?.pathName;
-				// return redirect(`/refresh-token?pathName=${pathName}`);
-				return "Dat";
+				redirect(`/refresh-token?pathName=${pathName}`);
+				// return "Dat";
 			}
 		} else {
 			throw new HttpError({ status: 500 });
