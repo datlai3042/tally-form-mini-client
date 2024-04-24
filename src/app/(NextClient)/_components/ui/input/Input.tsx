@@ -2,6 +2,7 @@
 import React, { ReactNode, useId } from "react";
 import { FieldError, FieldErrors, FieldValues, FormState, Path, UseFormRegister, UseFormWatch } from "react-hook-form";
 import InputPassword from "./InputPassword";
+import { InputType } from "@/type";
 
 type TProps<FormType extends FieldValues> = {
 	FieldKey: Path<FormType>;

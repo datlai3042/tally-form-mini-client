@@ -11,9 +11,9 @@ const ProfileMe = async () => {
 	let me: any = {};
 	let res: any;
 	const cookieStore = cookies();
-	const client_id = cookieStore.get("client_id");
-	const access_token = cookieStore.get("access_token");
-	const refresh_token = cookieStore.get("refresh_token");
+	const client_id = cookieStore.get("client_id")?.value;
+	const access_token = cookieStore.get("access_token")?.value;
+	const refresh_token = cookieStore.get("refresh_token")?.value;
 	const headersList = headers();
 
 	const header_url = headersList.get("x-url") || "";

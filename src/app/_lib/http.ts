@@ -9,6 +9,7 @@ import {
 	PermissionError,
 } from "./httpError";
 import { normalizePath } from "./utils";
+import { HeaderToken } from "@/type";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 type CustomRequest = Omit<RequestInit, "method"> & {
@@ -90,6 +91,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			...options?.headers,
 		} as any,
 		body,
+		...options,
 		method,
 		credentials: "include",
 	});
@@ -164,7 +166,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				const pathName = options?.pathName;
-				redirect(`/refresh-token?pathName=${pathName}`);
+				return redirect(`/refresh-token?pathName=${pathName}`);
 			}
 		} else {
 			throw new HttpError({ status: 500 });
