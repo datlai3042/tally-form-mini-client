@@ -152,15 +152,15 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 					//CALL API AGAIN WITH NEW TOKEN
 					const call_again = await fetch(fullUrl, {
-						// method,
+						method,
 						// body,
 						credentials: "include",
 
-						// headers: {
-						// 	...baseHeader,
-						// 	Cookie: `access_token=${access_token}`,
-						// 	// Authorization: `Bearer ${access_token}`,
-						// } as any,
+						headers: {
+							...baseHeader,
+							Cookie: `access_token=${access_token}`,
+							// Authorization: `Bearer ${access_token}`,
+						} as any,
 					});
 					console.log({ call_again });
 
@@ -171,13 +171,13 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					//FINALLY
 					const response_again: Response = await call_again.json();
 					// return response_again;
-
-					const product = await fetch(`${process.env.BACK_END_URL}/v1/api/product/get-all-product`, {
-						credentials: "include",
-					});
-					const productData = await product.json();
-					console.log({ productData });
-					return productData;
+					return response_again;
+					// const product = await fetch(`${process.env.BACK_END_URL}/v1/api/product/get-all-product`, {
+					// 	credentials: "include",
+					// });
+					// const productData = await product.json();
+					// console.log({ productData });
+					// return productData;
 				}
 				// }
 				// console.log("12");
