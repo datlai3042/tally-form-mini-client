@@ -9,7 +9,7 @@ const ProfileMe = async () => {
 
 	try {
 		const res = await UserService.me();
-		me = res.metadata.user;
+		me = res!.metadata.user;
 	} catch (error) {}
 
 	return <div>Me: {JSON.stringify(me) || "none"}</div>;
