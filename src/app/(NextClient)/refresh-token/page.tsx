@@ -24,6 +24,7 @@ const RefreshTokenPage = () => {
 	useEffect(() => {
 		const abort = new AbortController();
 		if (refreshTokenQuery) {
+			console.log({ metadata: refreshTokenQuery.data?.metadata });
 			const { client_id } = refreshTokenQuery.data?.metadata as ResponseAuth;
 			const {
 				token: { access_token, refresh_token },
