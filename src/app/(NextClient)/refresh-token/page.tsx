@@ -9,6 +9,7 @@ import { abort } from "process";
 import { TokenNextSync } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import AuthService from "@/app/_services/auth.service";
+import { ResponseAuth } from "@/app/_schema/api/response.shema";
 
 const RefreshTokenPage = () => {
 	const router = useRouter();
@@ -23,7 +24,11 @@ const RefreshTokenPage = () => {
 	useEffect(() => {
 		const abort = new AbortController();
 		if (refreshTokenQuery) {
-			const { access_token, client_id, refresh_token } = refreshTokenQuery.data?.metadata as TokenNextSync;
+			const { client_id } = refreshTokenQuery.data?.metadata as ResponseAuth;
+			const {
+				token: { access_token, refresh_token },
+			} = refreshTokenQuery.data?.metadata as ResponseAuth;
+
 			const signal = abort.signal;
 			Http.post<TokenNextSync>(
 				"/v1/api/auth/set-token",
