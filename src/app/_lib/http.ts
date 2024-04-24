@@ -9,6 +9,7 @@ import {
 	PermissionError,
 } from "./httpError";
 import { normalizePath } from "./utils";
+import { HeaderToken } from "@/type";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 type CustomRequest = Omit<RequestInit, "method"> & {

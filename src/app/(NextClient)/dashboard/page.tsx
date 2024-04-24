@@ -11,21 +11,6 @@ import { set } from "zod";
 
 const DashBoardPage = () => {
 	const { openSidebar } = useContext(SidebarContext);
-	const dispatch = useDispatch();
-	const [res, setRes] = useState<any>();
-	const [loading, setLoading] = useState<boolean>(false);
-	const fetchMe = useQuery({
-		queryKey: ["/me"],
-		queryFn: () => UserService.me(),
-	});
-
-	useEffect(() => {
-		console.log({ user: fetchMe.data });
-		if (fetchMe.isSuccess) {
-			const { user } = fetchMe.data.metadata;
-			dispatch(onFetchUser({ user }));
-		}
-	}, [fetchMe.isSuccess, dispatch, fetchMe]);
 
 	const styleEffect = {
 		onCheckSidebar: (check: boolean) => {

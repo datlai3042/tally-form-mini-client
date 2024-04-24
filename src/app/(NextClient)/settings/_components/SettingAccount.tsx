@@ -5,15 +5,20 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../../_components/ui/input/Input";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
+import { UserType } from "@/app/_schema/user/user.type";
 
 const userUpdateSchema = registerSchema.pick({ first_name: true, last_name: true });
 type UserUpdateInfo = z.infer<typeof userUpdateSchema>;
 
 const SettingAccount = () => {
+	const user = useSelector((state: RootState) => state.authReducer.user) as UserType;
+
 	const formUpdate = useForm<UserUpdateInfo>({
 		defaultValues: {
-			first_name: "12113",
-			last_name: "411144",
+			first_name: user.user_first_name,
+			last_name: user.user_last_name,
 		},
 		resolver: zodResolver(userUpdateSchema),
 	});
