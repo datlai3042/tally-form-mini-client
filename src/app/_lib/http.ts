@@ -152,7 +152,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 					//CALL API AGAIN WITH NEW TOKEN
 					const call_again = await fetch(fullUrl, {
-						method,
+						// method,
 						// body,
 						credentials: "include",
 
