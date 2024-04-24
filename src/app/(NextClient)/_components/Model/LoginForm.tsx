@@ -48,6 +48,7 @@ const LoginForm = (props: TProps) => {
 				token: { access_token, refresh_token },
 				client_id,
 			} = response.metadata;
+			console.log({ response });
 			dispatch(onFetchUser({ user }));
 			const setTokenResponse = Http.post<ResponseApi<ResponseAuth>>(
 				"/v1/api/auth/set-token",
@@ -58,6 +59,7 @@ const LoginForm = (props: TProps) => {
 				},
 				{ baseUrl: "" }
 			).then((response) => {
+				console.log({ response });
 				if (onClose) {
 					onClose(false);
 				}
