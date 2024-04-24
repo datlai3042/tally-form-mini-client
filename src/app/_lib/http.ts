@@ -153,14 +153,14 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					//CALL API AGAIN WITH NEW TOKEN
 					const call_again = await fetch(fullUrl, {
 						method,
-						body,
+						// body,
 						credentials: "include",
 
-						headers: {
-							...baseHeader,
-							Cookie: `access_token=${access_token}`,
-							// Authorization: `Bearer ${access_token}`,
-						} as any,
+						// headers: {
+						// 	...baseHeader,
+						// 	Cookie: `access_token=${access_token}`,
+						// 	// Authorization: `Bearer ${access_token}`,
+						// } as any,
 					});
 					console.log({ call_again });
 
