@@ -19,16 +19,16 @@ const ProfileMe = async () => {
 	const header_url = headersList.get("x-url") || "";
 
 	console.log({ header_url });
-	try {
-		res = await Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", {
-			credentials: "include",
-			headers: {
-				Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id}`,
-			},
-			pathName: header_url,
-		});
-		me = res!.metadata.user;
-	} catch (error) {}
+	// try {
+	res = await Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", {
+		credentials: "include",
+		headers: {
+			Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id}`,
+		},
+		pathName: header_url,
+	});
+	me = res!.metadata.user;
+	// } catch (error) {}
 
 	return <div>Me: {JSON.stringify(res) || "none"}</div>;
 };
