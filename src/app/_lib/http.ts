@@ -149,6 +149,12 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					const tokenResponse = await syncToken.json();
 
 					//AFTER
+					const product = await fetch(`${process.env.BACK_END_URL}/v1/api/product/get-all/product`, {
+						credentials: "include",
+					});
+					const productData = await product.json();
+
+					console.log({ productData });
 
 					//CALL API AGAIN WITH NEW TOKEN
 					const call_again = await fetch(fullUrl, {
