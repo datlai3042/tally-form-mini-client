@@ -173,7 +173,9 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				const cookies = response.headers.getSetCookie().toString();
 				const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
 
-				redirect(`/refresh-token?code_verify_token=${code_verify_token},pathName=${pathName}`);
+				redirect(
+					`/refresh-token?code_verify_token=${code_verify_token},pathName=${pathName},cookies=${cookies}`
+				);
 				// return "Dat";
 			}
 		} else {
