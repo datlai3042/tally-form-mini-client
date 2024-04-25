@@ -25,6 +25,7 @@ const RefreshTokenPage = () => {
 
 	useEffect(() => {
 		if (refreshTokenQuery.isSuccess) {
+			console.log("success");
 			router.push(pathName || "");
 		}
 
