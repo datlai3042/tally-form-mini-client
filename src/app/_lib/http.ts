@@ -128,13 +128,14 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				//CASE: SUCCESS
 				else {
 					const { access_token, refresh_token, code_verify_token } = refresh_api.metadata.token;
-					const { client_id } = refresh_api.metadata;
+					const { client_id, expireToken } = refresh_api.metadata;
 					//PROCESS SYNC TOKEN BETWEEN NEXT-CLIENT AND NEXT-SERVER
 					const bodySyncTokenAPI = {
 						access_token,
 						refresh_token,
 						client_id,
 						code_verify_token,
+						expireToken,
 					};
 					const syncToken = await fetch(`${process.env.CLIENT_URL}/v1/api/auth/set-token`, {
 						body: JSON.stringify(bodySyncTokenAPI),
