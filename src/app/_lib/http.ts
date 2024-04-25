@@ -90,7 +90,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			...baseHeader,
 			...options?.headers,
 		} as any,
-		body,
+		// body,
 		...options,
 		method,
 		credentials: "include",
