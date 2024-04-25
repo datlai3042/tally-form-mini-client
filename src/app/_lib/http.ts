@@ -171,7 +171,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			else {
 				const pathName = options?.pathName;
 				const cookies = response.headers.getSetCookie().toString();
-				const code_verify_token = getCookieValueHeader("Code_verify_token", cookies);
+				const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
 
 				redirect(`/refresh-token?code_verify_token=${code_verify_token},pathName=${pathName}`);
 				// return "Dat";
