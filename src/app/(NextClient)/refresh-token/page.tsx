@@ -28,7 +28,7 @@ const RefreshTokenPage = () => {
 		}
 
 		return () => {
-			router.refresh();
+			// router.refresh();
 			abort.abort();
 		};
 	}, [router, pathName, refreshTokenQuery.isSuccess]);

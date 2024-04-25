@@ -3,8 +3,11 @@ import Http from "../_lib/http";
 import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
 
 class AuthService {
-	static async refreshToken() {
-		const res = await Http.get<ResponseApi<ResponseAuth>>("/v1/api/auth/refresh-token", { credentials: "include" });
+	static async refreshToken(signal?: AbortSignal) {
+		const res = await Http.get<ResponseApi<ResponseAuth>>("/v1/api/auth/refresh-token", {
+			credentials: "include",
+			signal,
+		});
 		const { access_token, refresh_token } = res.metadata.token;
 		const { client_id } = res.metadata;
 		const body = JSON.stringify({
