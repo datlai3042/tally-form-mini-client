@@ -15,3 +15,14 @@ export const expiresToken = (token: string) => {
 	const expires = new Date(decode.exp * 1000);
 	return Number(expires);
 };
+
+export const getCookieValueHeader = (CookieName: string, CookiesString: string) => {
+	const cookieSplit = CookiesString.split(";");
+	let cookies: { [key: string]: string } = {};
+	cookieSplit.forEach((pair) => {
+		const [name, value] = pair.split("=").map((item) => item.trim());
+		cookies[name] = value;
+	});
+
+	return cookies[CookieName];
+};

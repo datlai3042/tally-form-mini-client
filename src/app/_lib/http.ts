@@ -8,7 +8,7 @@ import {
 	PERMISSION_ERROR_STATUS,
 	PermissionError,
 } from "./httpError";
-import { normalizePath } from "./utils";
+import { getCookieValueHeader, normalizePath } from "./utils";
 import { HeaderToken } from "@/type";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
@@ -169,7 +169,8 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				const pathName = options?.pathName;
-				const code_verify_token = (options?.headers as { code_verify_token: string }).code_verify_token;
+				const cookies = response.headers.getSetCookie().toString();
+				const code_verify_token = getCookieValueHeader("Code_verify_token", cookies);
 
 				redirect(`/refresh-token?code_verify_token=${code_verify_token},pathName=${pathName}`);
 				// return "Dat";
