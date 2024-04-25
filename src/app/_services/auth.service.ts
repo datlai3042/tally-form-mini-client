@@ -8,13 +8,14 @@ class AuthService {
 			credentials: "include",
 			signal,
 		});
-		const { access_token, refresh_token } = res.metadata.token;
+		const { access_token, refresh_token, code_verify_token } = res.metadata.token;
 		const { client_id, expireToken } = res.metadata;
 		const body = JSON.stringify({
 			access_token,
 			refresh_token,
 			client_id,
 			expireToken,
+			code_verify_token,
 		});
 
 		const syncToken = await Http.post<TokenNextSync>("/v1/api/auth/set-token", body, { baseUrl: "" });
