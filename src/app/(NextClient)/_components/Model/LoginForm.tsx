@@ -55,6 +55,7 @@ const LoginForm = (props: TProps) => {
 				user,
 				token: { access_token, refresh_token, code_verify_token },
 				client_id,
+				expireToken,
 			} = loginMutation.data.metadata;
 			// console.log({ response });
 			dispatch(onFetchUser({ user }));
@@ -65,6 +66,7 @@ const LoginForm = (props: TProps) => {
 					refresh_token,
 					client_id,
 					code_verify_token,
+					expireToken,
 				},
 				{ baseUrl: "" }
 			).then((response) => {
