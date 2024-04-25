@@ -53,7 +53,7 @@ const LoginForm = (props: TProps) => {
 		if (loginMutation.isSuccess) {
 			const {
 				user,
-				token: { access_token, refresh_token },
+				token: { access_token, refresh_token, code_verify_token },
 				client_id,
 			} = loginMutation.data.metadata;
 			// console.log({ response });
@@ -64,6 +64,7 @@ const LoginForm = (props: TProps) => {
 					access_token,
 					refresh_token,
 					client_id,
+					code_verify_token,
 				},
 				{ baseUrl: "" }
 			).then((response) => {
