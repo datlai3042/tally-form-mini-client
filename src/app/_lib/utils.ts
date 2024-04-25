@@ -10,10 +10,9 @@ export const normalizePath = (url: string) => {
 	return url.startsWith("/") ? url.slice(1) : url;
 };
 
-export const expiresToken = (token: string) => {
-	const decode = jwtDecode<JwtPayload>(token);
-	const expires = new Date(decode.exp * 1000);
-	return Number(expires);
+export const expiresToken = (expireString: string) => {
+	const expire = Date.parse(expireString);
+	return expire / 1000;
 };
 
 export const getCookieValueHeader = (CookieName: string, CookiesString: string) => {
