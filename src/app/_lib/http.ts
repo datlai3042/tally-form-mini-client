@@ -184,6 +184,20 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 	if (["v1/api/auth/login", "v1/api/auth/register"].some((path) => path === normalizePath(url))) {
 		localStorage.setItem("exprireToken", (payload as ResponseApi<ResponseAuth>).metadata.expireToken);
+		const { access_token, code_verify_token, refresh_token } = (payload as ResponseApi<ResponseAuth>).metadata
+			.token;
+		const { client_id } = (payload as ResponseApi<ResponseAuth>).metadata;
+
+		const body = JSON.stringify({
+			access_token,
+			refresh_token,
+			client_id,
+			code_verify_token,
+		});
+
+		const setTokenResponse = await fetch(`${process.env.CLIENT_URL}/v1/api/auth/set-token`, {
+			body,
+		});
 	}
 
 	if (["v1/api/auth/logout"].includes(normalizePath(url))) {
