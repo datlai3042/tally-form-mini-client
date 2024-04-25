@@ -14,6 +14,7 @@ class AuthService {
 			access_token,
 			refresh_token,
 			client_id,
+			expireToken,
 		});
 
 		const syncToken = await Http.post<TokenNextSync>("/v1/api/auth/set-token", body, { baseUrl: "" });
