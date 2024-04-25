@@ -17,25 +17,30 @@ const RefreshTokenPage = () => {
 	const pathName = searchParams.get("pathName");
 	const abort = new AbortController();
 	const signal = abort.signal;
+	const [error, setError] = useState(false);
 
-	const refreshTokenQuery = useQuery({
-		queryKey: ["/refresh-token"],
-		queryFn: () => AuthService.refreshToken(signal),
-	});
+	// const refreshTokenQuery = useQuery({
+	// 	queryKey: ["/refresh-token"],
+	// 	queryFn: () => AuthService.refreshToken(signal),
+	// });
+
+	// useEffect(() => {
+	// 	if (refreshTokenQuery.isSuccess) {
+	// 		console.log("success");
+	// 		router.push(pathName || "");
+	// 	}
+
+	// 	return () => {
+	// 		// router.refresh();
+	// 		abort.abort();
+	// 	};
+	// }, [router, pathName, refreshTokenQuery.isSuccess]);
 
 	useEffect(() => {
-		if (refreshTokenQuery.isSuccess) {
-			console.log("success");
-			router.push(pathName || "");
-		}
+		AuthService.refreshToken().then((data) => console.log({ data }));
+	}, []);
 
-		return () => {
-			// router.refresh();
-			abort.abort();
-		};
-	}, [router, pathName, refreshTokenQuery.isSuccess]);
-
-	if (refreshTokenQuery.isError) {
+	if (error) {
 		return (
 			<div className="w-screen h-screen flex  justify-center items-center gap-[20px]">
 				<div className="w-[500px] h-[500px] flex flex-col justify-center items-center shadow-2xl shadow-blue-400 rounded-xl">
