@@ -98,6 +98,8 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 	const payload: Response = await response.json();
 
+	console.log({ state: response.ok });
+
 	//RESPONSE: ERROR
 	if (!response.ok) {
 		//ERROR: ACCESS_TOKEN
