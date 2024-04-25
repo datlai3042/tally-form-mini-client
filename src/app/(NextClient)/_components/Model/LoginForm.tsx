@@ -58,20 +58,6 @@ const LoginForm = (props: TProps) => {
 			} = loginMutation.data.metadata;
 			// console.log({ response });
 			dispatch(onFetchUser({ user }));
-			const setTokenResponse = Http.post<ResponseApi<ResponseAuth>>(
-				"/v1/api/auth/set-token",
-				{
-					access_token,
-					refresh_token,
-					client_id,
-				},
-				{ baseUrl: "" }
-			).then((response) => {
-				console.log({ response });
-				if (onClose) {
-					onClose(false);
-				}
-			});
 		}
 	}, [loginMutation.isSuccess, onClose, loginMutation.data, dispatch]);
 
