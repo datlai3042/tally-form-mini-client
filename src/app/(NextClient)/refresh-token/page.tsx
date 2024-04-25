@@ -15,14 +15,15 @@ const RefreshTokenPage = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const pathName = searchParams.get("pathName");
+	const abort = new AbortController();
+	const signal = abort.signal;
 
 	const refreshTokenQuery = useQuery({
 		queryKey: ["/refresh-token"],
-		queryFn: () => AuthService.refreshToken(),
+		queryFn: () => AuthService.refreshToken(signal),
 	});
 
 	useEffect(() => {
-		const abort = new AbortController();
 		if (refreshTokenQuery.isSuccess) {
 			router.push(pathName || "");
 		}
