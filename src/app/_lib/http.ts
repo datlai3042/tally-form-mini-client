@@ -91,7 +91,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			...options?.headers,
 		} as any,
 		body,
-		...options,
 		method,
 		credentials: "include",
 	});
