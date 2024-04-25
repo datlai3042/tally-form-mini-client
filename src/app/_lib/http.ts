@@ -176,7 +176,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		}
 	}
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
-		localStorage.setItem("exprireToken", (payload as ResponseApi<ResponseAuth>).metadata.expireToken);
+		localStorage.setItem("exprireToken", (payload as Omit<ResponseAuth, "user">).expireToken);
 	}
 
 	if (["v1/api/auth/login", "v1/api/auth/register"].some((path) => path === normalizePath(url))) {

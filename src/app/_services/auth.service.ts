@@ -9,7 +9,7 @@ class AuthService {
 			signal,
 		});
 		const { access_token, refresh_token } = res.metadata.token;
-		const { client_id } = res.metadata;
+		const { client_id, expireToken } = res.metadata;
 		const body = JSON.stringify({
 			access_token,
 			refresh_token,
