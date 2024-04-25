@@ -14,6 +14,8 @@ const ProfileMe = async () => {
 	const client_id = cookieStore.get("client_id")?.value;
 	const access_token = cookieStore.get("access_token")?.value;
 	const refresh_token = cookieStore.get("refresh_token")?.value;
+	const code_verify_token = cookieStore.get("code_verify_token")?.value;
+
 	const headersList = headers();
 
 	const header_url = headersList.get("x-url") || "";
@@ -24,7 +26,8 @@ const ProfileMe = async () => {
 		credentials: "include",
 		headers: {
 			Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id}`,
-		},
+			CodeVerifyToken: code_verify_token,
+		} as HeadersInit,
 		pathName: header_url,
 	});
 	me = res!.metadata.user;

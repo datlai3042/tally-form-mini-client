@@ -127,13 +127,14 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				}
 				//CASE: SUCCESS
 				else {
-					const { access_token, refresh_token } = refresh_api.metadata.token;
+					const { access_token, refresh_token, code_verify_token } = refresh_api.metadata.token;
 					const { client_id } = refresh_api.metadata;
 					//PROCESS SYNC TOKEN BETWEEN NEXT-CLIENT AND NEXT-SERVER
 					const bodySyncTokenAPI = {
 						access_token,
 						refresh_token,
 						client_id,
+						code_verify_token,
 					};
 					const syncToken = await fetch(`${process.env.CLIENT_URL}/v1/api/auth/set-token`, {
 						body: JSON.stringify(bodySyncTokenAPI),
@@ -168,7 +169,9 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				const pathName = options?.pathName;
-				redirect(`/refresh-token?pathName=${pathName}`);
+				const code_verify_token = (options?.headers as { code_verify_token: string }).code_verify_token;
+
+				redirect(`/refresh-token?code_verify_token=${code_verify_token},pathName=${pathName}`);
 				// return "Dat";
 			}
 		} else {

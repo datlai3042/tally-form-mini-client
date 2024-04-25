@@ -3,12 +3,20 @@ import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
-	const { access_token, refresh_token, client_id, expiresToken } = await request.json();
+	const { access_token, refresh_token, client_id, expiresToken, code_verify_token } = await request.json();
 	// const expiresRT = expiresToken(refresh_token);
 
 	cookies().set({
 		name: "client_id",
 		value: client_id,
+		httpOnly: true,
+		path: "/",
+		expires: expiresToken,
+	});
+
+	cookies().set({
+		name: "code_verify_token",
+		value: code_verify_token,
 		httpOnly: true,
 		path: "/",
 		expires: expiresToken,

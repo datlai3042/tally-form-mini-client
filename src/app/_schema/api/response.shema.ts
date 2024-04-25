@@ -11,6 +11,7 @@ export type ResponseAuth = {
 	token: {
 		access_token: string;
 		refresh_token: string;
+		code_verify_token: string;
 	};
 	client_id: string;
 	expireToken: string;
