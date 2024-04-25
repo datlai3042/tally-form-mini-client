@@ -38,5 +38,5 @@ export async function POST(request: Request) {
 		expires: expiresRT,
 	});
 
-	return Response.json({ access_token, refresh_token, client_id, expireToken });
+	return Response.json({ access_token, refresh_token, client_id, expireToken, expiresRT });
 }
