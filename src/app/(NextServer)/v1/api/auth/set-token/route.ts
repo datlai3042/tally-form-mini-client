@@ -4,14 +4,14 @@ import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
 	const { access_token, refresh_token, client_id, expiresToken, code_verify_token } = await request.json();
-	// const expiresRT = expiresToken(refresh_token);
+	const expiresRT = Number(expiresToken);
 
 	cookies().set({
 		name: "client_id",
 		value: client_id,
 		httpOnly: true,
 		path: "/",
-		expires: expiresToken,
+		expires: expiresRT,
 	});
 
 	cookies().set({
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 		value: code_verify_token,
 		httpOnly: true,
 		path: "/",
-		expires: expiresToken,
+		expires: expiresRT,
 	});
 
 	cookies().set({
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 		value: access_token,
 		httpOnly: true,
 		path: "/",
-		expires: expiresToken,
+		expires: expiresRT,
 	});
 
 	cookies().set({
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 		value: refresh_token,
 		httpOnly: true,
 		path: "/",
-		expires: expiresToken,
+		expires: expiresRT,
 	});
 
 	return Response.json({ access_token, refresh_token, client_id, expiresToken });
