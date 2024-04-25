@@ -98,7 +98,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 	const payload: Response = await response.json();
 
-	console.log({ state: response.ok });
+	console.log({ state: response.ok, payload });
 
 	//RESPONSE: ERROR
 	if (!response.ok) {
