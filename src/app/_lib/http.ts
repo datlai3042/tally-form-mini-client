@@ -170,7 +170,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				const pathName = options?.pathName;
-				const cookies = response.headers.getSetCookie().toString();
+				const cookies = (options?.headers as any)["Set-cookie"];
 				const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
 
 				redirect(
