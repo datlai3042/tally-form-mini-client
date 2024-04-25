@@ -86,6 +86,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	console.log({ body, baseHeader, fullUrl, options, method });
 	console.log("gọi api chính");
 	const response = await fetch(fullUrl, {
+		...options,
 		headers: {
 			...baseHeader,
 			...options?.headers,
