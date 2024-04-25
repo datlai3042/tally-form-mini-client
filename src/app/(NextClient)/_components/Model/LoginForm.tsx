@@ -56,7 +56,7 @@ const LoginForm = (props: TProps) => {
 				token: { access_token, refresh_token },
 				client_id,
 			} = loginMutation.data.metadata;
-			// console.log({ response });
+			console.log({ response: loginMutation.data.metadata });
 			dispatch(onFetchUser({ user }));
 		}
 	}, [loginMutation.isSuccess, onClose, loginMutation.data, dispatch]);
