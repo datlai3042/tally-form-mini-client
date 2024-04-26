@@ -102,8 +102,8 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	}
 
 	if (["v1/api/auth/logout"].includes(normalizePath(url))) {
-		removeValueLocalStorage("expireToken");
-		removeValueLocalStorage("code_verify_token");
+		// removeValueLocalStorage("expireToken");
+		// removeValueLocalStorage("code_verify_token");
 	}
 
 	return payload;
