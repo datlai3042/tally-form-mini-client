@@ -46,9 +46,10 @@ const RefreshTokenPage = () => {
 		const abort = new AbortController();
 		const signal = abort.signal;
 		if (code_verify_token_cl === code_verify_token_sv) {
-			AuthService.refreshToken(signal).then((data) => console.log({ data }));
-			router.refresh();
-			router.push(pathName || "/");
+			AuthService.refreshToken(signal).then(() => {
+				router.refresh();
+				router.push(pathName || "/");
+			});
 		} else {
 			console.log("set-state");
 			setError(true);
