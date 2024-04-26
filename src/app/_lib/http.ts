@@ -161,6 +161,13 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					);
 
 					const tokenResponse = await syncToken.json();
+					localStorage.setItem(
+						"code_verify_token",
+
+						JSON.stringify(code_verify_token)
+					);
+
+					localStorage.setItem("exprireToken", JSON.stringify(expireToken));
 
 					//AFTER
 
