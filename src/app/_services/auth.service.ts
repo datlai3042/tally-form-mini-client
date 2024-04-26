@@ -27,7 +27,6 @@ class AuthService {
 	}
 
 	static async logoutNextServer(options: CustomRequest) {
-		const pathName = options?.pathName;
 		const cookies = (options?.headers as any)["Cookie"];
 
 		const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
@@ -52,12 +51,11 @@ class AuthService {
 
 		console.log({ body });
 
-		const syncToken = await Http.post<TokenNextSync>("/v1/api/auth/set-token", body, { baseUrl: "", signal });
-		localStorage.setItem(
-			"code_verify_token",
+		if (typeof window !== "undefined") {
+			setValueLocalStorage("code_verify_token", code_verify_token);
+		}
 
-			JSON.stringify(code_verify_token)
-		);
+		const syncToken = await Http.post<TokenNextSync>("/v1/api/auth/set-token", body, { baseUrl: "", signal });
 
 		console.log("da xet local");
 
@@ -80,7 +78,6 @@ class AuthService {
 		const { access_token, refresh_token, code_verify_token } = tokenApi.metadata.token;
 		const { client_id, expireToken } = tokenApi.metadata;
 
-		//PROCESS SYNC TOKEN BETWEEN NEXT-CLIENT AND NEXT-SERVER
 		const bodySyncTokenAPI = {
 			access_token,
 			refresh_token,
