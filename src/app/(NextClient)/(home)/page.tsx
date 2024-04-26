@@ -39,6 +39,7 @@ import Grid6x6, { GridIconText } from "../_components/ui/Grid6x6";
 import ImageAndText from "../_components/ui/ImageAndText";
 import IconTextLink from "../_components/ui/IconTextLink";
 import Grid3x3 from "../_components/ui/Grid3x3";
+import Header from "../_components/Header";
 
 const brandImages = [
 	"/assets/images/HomePage/notion.png",
@@ -275,6 +276,8 @@ const HomePage = () => {
 		<div className="flex  w-full min-w-full max-w-full ">
 			<div className="flex w-full flex-col h-max   ">
 				<div className="flex flex-col ">
+					<Header />
+
 					<div className=" relative   sm:mt-[160px] mt-[128px]  min-h-screen h-max mb-[380px] sm:mb-[180px] xl:mb-[240px] ">
 						<div
 							className="absolute hidden xl:block top-[230px] left-0 w-[350px] h-full "
