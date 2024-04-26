@@ -49,16 +49,11 @@ const LoginForm = (props: TProps) => {
 
 	useEffect(() => {
 		if (loginMutation.isSuccess) {
-			const {
-				user,
-				token: { access_token, refresh_token, code_verify_token },
-				client_id,
-				expireToken,
-			} = loginMutation.data.metadata;
-			// console.log({ response });
+			const { user } = loginMutation.data.metadata;
+			router.push("/dashboard");
 			dispatch(onFetchUser({ user }));
 		}
-	}, [loginMutation.isSuccess, onClose, loginMutation.data, dispatch]);
+	}, [loginMutation.isSuccess, onClose, loginMutation.data, dispatch, router]);
 
 	console.log({ errors: loginForm.formState.errors });
 

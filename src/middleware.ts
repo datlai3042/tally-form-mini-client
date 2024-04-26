@@ -2,14 +2,17 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const privateRouter = ["/dashboard", "/me"];
-const authRouter = ["/login", "/register"];
+const authRouter = ["/login", "/register", "/"];
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	const access_token = Boolean(request.cookies.get("next_access_token")?.value);
-	const refresh_token = Boolean(request.cookies.get("next_refresh_token")?.value);
+	const access_token = request.cookies.get("next_access_token")?.value;
+	const refresh_token = request.cookies.get("next_refresh_token")?.value;
+	const client_id = request.cookies.get("next_client_id")?.value;
+
+	const authentication = !!client_id && !!access_token && !!refresh_token;
 
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.set("x-url", pathname);
@@ -28,6 +31,10 @@ export function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL("/dashboard", request.url));
 	}
 
+	if (!authentication) {
+		return NextResponse.redirect(new URL("/", request.url));
+	}
+
 	return response;
 }
 
@@ -35,5 +42,5 @@ const matcher = [...privateRouter, authRouter, "/"];
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ["/dashboard", "/me", "/login", "/register"],
+	matcher: ["/dashboard", "/me", "/login", "/register", "/"],
 };

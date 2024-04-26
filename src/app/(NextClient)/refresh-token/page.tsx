@@ -10,6 +10,8 @@ import { TokenNextSync } from "@/type";
 import { useQuery } from "@tanstack/react-query";
 import AuthService from "@/app/_services/auth.service";
 import { ResponseAuth } from "@/app/_schema/api/response.shema";
+import LayoutTokenFailure from "../_components/Layout/LayoutTokenFailure";
+import LayoutRequestLoading from "../_components/Layout/LayoutRequestLoading";
 
 const RefreshTokenPage = () => {
 	const router = useRouter();
@@ -45,8 +47,8 @@ const RefreshTokenPage = () => {
 		};
 	}, []);
 
-	if (error) return <div>Yêu cầu không hợp lệ</div>;
-	return <div className="flex flex-col gap-10 ">Đang xử lí</div>;
+	if (error) return <LayoutTokenFailure message="Yêu cầu không hợp lệ" />;
+	return <LayoutRequestLoading message="Đang xử lí" />;
 };
 
 export default RefreshTokenPage;

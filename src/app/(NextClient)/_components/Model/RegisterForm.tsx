@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import WrapperAuthLayout from "../Layout/WrapperAuthLayout";
 
 import { useForm } from "react-hook-form";
@@ -51,30 +51,15 @@ const RegisterForm = (props: TProps) => {
 		// mutationFn: (formRegister: Omit<RegisterType, "confirm_password">) =>
 		mutationFn: (formRegister: Omit<RegisterType, "confirm_password">) =>
 			AuthService.register<Omit<RegisterType, "confirm_password">, ResponseApi<ResponseAuth>>(formRegister),
-		onSuccess: async (response) => {
-			const {
-				user,
-				token: { access_token, refresh_token },
-				client_id,
-			} = response!.metadata;
-			dispatch(onFetchUser({ user }));
-			const setTokenResponse = await Http.post<ResponseApi<ResponseAuth>>(
-				"/v1/api/auth/set-token",
-				{
-					access_token,
-					refresh_token,
-					client_id: client_id,
-				},
-				{ baseUrl: "" }
-			);
-			if (setTokenResponse) {
-				router.push("/dashboard");
-			}
-			if (onClose) {
-				onClose(true);
-			}
-		},
 	});
+
+	useEffect(() => {
+		if (registerMutation.isSuccess) {
+			const { user } = registerMutation.data.metadata;
+			router.push("/dashboard");
+			dispatch(onFetchUser({ user }));
+		}
+	}, [registerMutation.isSuccess, onClose, registerMutation.data, dispatch, router]);
 
 	const onSubmit = (data: RegisterType) => {
 		registerMutation.mutate(data);

@@ -275,30 +275,6 @@ const HomePage = () => {
 		<div className="flex  w-full min-w-full max-w-full ">
 			<div className="flex w-full flex-col h-max   ">
 				<div className="flex flex-col ">
-					<header className="p-[10px] xl:p-[20px] flex justify-between items-center ">
-						<Image
-							src={"/assets/images/icon/logo_v2.png"}
-							width={70}
-							height={28}
-							alt="logo"
-							className="w-[70px] h-[28px]"
-						/>
-						<div className="flex gap-[20px]">
-							<ButtonNavigation urlNavigation="/login" textContent="Đăng nhập" />
-							<ButtonNavigation urlNavigation="/register" textContent="Đăng kí" />
-							<ButtonNavigation
-								urlNavigation="/logout"
-								textContent="Đăng xuất"
-								className="hidden xl:flex"
-							/>
-							<ButtonCreateForm
-								urlNavigation="/dashboard"
-								textContent="Tạo Form"
-								className="[&]:hidden [&]:xl:flex"
-							/>
-						</div>
-					</header>
-
 					<div className=" relative   sm:mt-[160px] mt-[128px]  min-h-screen h-max mb-[380px] sm:mb-[180px] xl:mb-[240px] ">
 						<div
 							className="absolute hidden xl:block top-[230px] left-0 w-[350px] h-full "
