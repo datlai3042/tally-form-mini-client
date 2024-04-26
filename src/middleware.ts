@@ -8,8 +8,8 @@ const authRouter = ["/login", "/register"];
 export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	const access_token = Boolean(request.cookies.get("access_token")?.value);
-	const refresh_token = Boolean(request.cookies.get("refresh_token")?.value);
+	const access_token = Boolean(request.cookies.get("next_access_token")?.value);
+	const refresh_token = Boolean(request.cookies.get("next_refresh_token")?.value);
 
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.set("x-url", pathname);

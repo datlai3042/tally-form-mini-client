@@ -19,10 +19,6 @@ const RefreshTokenPage = () => {
 
 	const [error, setError] = useState(false);
 
-	let code_verify_token_cl = "";
-	if (typeof window !== "undefined") {
-		code_verify_token_cl = JSON.parse(localStorage.getItem("code_verify_token") || "");
-	}
 	// const refreshTokenQuery = useQuery({
 	// 	queryKey: ["/refresh-token"],
 	// 	queryFn: () => AuthService.refreshToken(signal),
@@ -40,11 +36,16 @@ const RefreshTokenPage = () => {
 	// 	};
 	// }, [router, pathName, refreshTokenQuery.isSuccess]);
 
-	console.log({ code_verify_token_cl, code_verify_token_sv });
-
 	useEffect(() => {
 		const abort = new AbortController();
 		const signal = abort.signal;
+		const code_verify_token_cl = JSON.parse(localStorage.getItem("code_verify_token") || "");
+
+		if (!code_verify_token_cl) {
+			setError(true);
+			return;
+		}
+		console.log({ code_verify_token_cl, code_verify_token_sv });
 		if (code_verify_token_cl === code_verify_token_sv) {
 			AuthService.refreshToken(signal).then(() => {
 				router.refresh();
