@@ -16,7 +16,8 @@ export const expiresToken = (expireString: string) => {
 };
 
 export const getCookieValueHeader = (CookieName: string, CookiesString: string) => {
-	const cookieSplit = CookiesString.split(";");
+	console.log({ CookieName, CookiesString });
+	const cookieSplit = CookiesString?.split(";");
 	let cookies: { [key: string]: string } = {};
 	cookieSplit.forEach((pair) => {
 		const [name, value] = pair.split("=").map((item) => item.trim());

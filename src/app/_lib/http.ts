@@ -79,12 +79,20 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					"Content-Type": "application/json",
 			  };
 
-	const baseUrl = options?.baseUrl === undefined ? process.env.BACK_END_URL : options.baseUrl;
+	console.log({ mode: process.env.NEXT_PUBLIC_MODE });
+
+	const baseUrl =
+		options?.baseUrl === undefined
+			? process.env.NEXT_PUBLIC_MODE === "DEV"
+				? "http://localhost:4000"
+				: process.env.BACK_END_URL
+			: options.baseUrl;
 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
 	console.log({ body, baseHeader, fullUrl, options, method });
 	console.log("gọi api chính");
+
 	const response = await fetch(fullUrl, {
 		...options,
 		headers: {
@@ -110,7 +118,12 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					credentials: "include",
 				};
 				console.log("gọi api refresh");
-				const callRefreshToken = await fetch(`${baseUrl}/v1/api/auth/refresh-token`, option);
+				const callRefreshToken = await fetch(
+					`${
+						process.env.MODE === "DEV" ? "http:localhost:4000" : process.env.BACK_END_URL
+					}/v1/api/auth/refresh-token`,
+					option
+				);
 				const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
 				//validate refresh-token
 				//---*---//
@@ -137,10 +150,15 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 						code_verify_token,
 						expireToken,
 					};
-					const syncToken = await fetch(`${process.env.CLIENT_URL}/v1/api/auth/set-token`, {
-						body: JSON.stringify(bodySyncTokenAPI),
-						method: "POST",
-					});
+					const syncToken = await fetch(
+						`${
+							process.env.NEXT_PUBLIC_MODE === "DEV" ? "http:/localhost:3000" : process.env.CLIENT_URL
+						}/v1/api/auth/set-token`,
+						{
+							body: JSON.stringify(bodySyncTokenAPI),
+							method: "POST",
+						}
+					);
 
 					const tokenResponse = await syncToken.json();
 
@@ -170,12 +188,12 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			//TOKEN EXPRIES NEXT-SERVER
 			else {
 				const pathName = options?.pathName;
-				const cookies = (options?.headers as any)["Set-cookie"];
+				const cookies = (options?.headers as any)["Cookie"];
+				console.log({ header: (options?.headers as any)["Cookie"] });
 				const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
+				console.log({ code_verify_token });
 
-				redirect(
-					`/refresh-token?code_verify_token=${code_verify_token},pathName=${pathName},cookies=${cookies}`
-				);
+				redirect(`/refresh-token?code_verify_token=${code_verify_token}&pathName=${pathName}`);
 				// return "Dat";
 			}
 		} else {
