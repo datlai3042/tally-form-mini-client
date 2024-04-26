@@ -25,7 +25,10 @@ class AuthService {
 
 		removeValueLocalStorage("expireToken");
 		removeValueLocalStorage("code_verify_token");
-		return redirect("/");
+		if (typeof window !== "undefined") {
+			return (window.location.href = "/");
+		}
+		return null;
 	}
 
 	static async logoutNextServer(options: CustomRequest) {
