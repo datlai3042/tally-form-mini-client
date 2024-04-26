@@ -27,6 +27,8 @@ class AuthService {
 			JSON.stringify(code_verify_token)
 		);
 
+		console.log("da xet local");
+
 		return syncToken;
 	}
 }
