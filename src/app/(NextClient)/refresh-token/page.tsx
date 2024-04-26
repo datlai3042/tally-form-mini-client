@@ -19,27 +19,12 @@ const RefreshTokenPage = () => {
 
 	const [error, setError] = useState(false);
 
-	// const refreshTokenQuery = useQuery({
-	// 	queryKey: ["/refresh-token"],
-	// 	queryFn: () => AuthService.refreshToken(signal),
-	// });
-
-	// useEffect(() => {
-	// 	if (refreshTokenQuery.isSuccess) {
-	// 		console.log("success");
-	// 		router.push(pathName || "");
-	// 	}
-
-	// 	return () => {
-	// 		// router.refresh();
-	// 		abort.abort();
-	// 	};
-	// }, [router, pathName, refreshTokenQuery.isSuccess]);
-
 	useEffect(() => {
 		const abort = new AbortController();
 		const signal = abort.signal;
-		const code_verify_token_cl = JSON.parse(localStorage.getItem("code_verify_token") || "");
+
+		const codeLocal = localStorage.getItem("code_verify_token");
+		const code_verify_token_cl = codeLocal ? JSON.parse(codeLocal) : "";
 
 		if (!code_verify_token_cl) {
 			setError(true);
