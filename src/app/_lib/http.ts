@@ -152,7 +152,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 					};
 					const syncToken = await fetch(
 						`${
-							process.env.NEXT_PUBLIC_MODE === "DEV" ? "http:/localhost:3000" : process.env.CLIENT_URL
+							process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:3000" : process.env.CLIENT_URL
 						}/v1/api/auth/set-token`,
 						{
 							body: JSON.stringify(bodySyncTokenAPI),
@@ -193,7 +193,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 				const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
 				console.log({ code_verify_token });
 
-				redirect(`/refresh-token?code_verify_token=${code_verify_token}&pathName=${pathName}`);
+				return redirect(`/refresh-token?code_verify_token=${code_verify_token}&pathName=${pathName}`);
 				// return "Dat";
 			}
 		} else {
@@ -205,21 +205,44 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	}
 
 	if (["v1/api/auth/login", "v1/api/auth/register"].some((path) => path === normalizePath(url))) {
-		localStorage.setItem("exprireToken", (payload as ResponseApi<ResponseAuth>).metadata.expireToken);
-		// const { access_token, code_verify_token, refresh_token } = (payload as ResponseApi<ResponseAuth>).metadata
-		// 	.token;
-		// const { client_id } = (payload as ResponseApi<ResponseAuth>).metadata;
+		localStorage.setItem(
+			"exprireToken",
+			JSON.stringify((payload as ResponseApi<ResponseAuth>).metadata.expireToken)
+		);
+		localStorage.setItem(
+			"code_verify_token",
 
-		// const body = JSON.stringify({
-		// 	access_token,
-		// 	refresh_token,
-		// 	client_id,
-		// 	code_verify_token,
-		// });
+			JSON.stringify((payload as ResponseApi<ResponseAuth>).metadata.token.code_verify_token)
+		);
 
-		// const setTokenResponse = await fetch(`${process.env.CLIENT_URL}/v1/api/auth/set-token`, {
-		// 	body,
-		// });
+		const { access_token, code_verify_token, refresh_token } = (payload as ResponseApi<ResponseAuth>).metadata
+			.token;
+		const { client_id } = (payload as ResponseApi<ResponseAuth>).metadata;
+		const { expireToken } = (payload as ResponseApi<ResponseAuth>).metadata;
+
+		const body = JSON.stringify({
+			access_token,
+			refresh_token,
+			client_id,
+			code_verify_token,
+			expireToken,
+		});
+		console.log({
+			url: normalizePath(url),
+			fullUrl:
+				process.env.NEXT_PUBLIC_MODE === "DEV"
+					? "http://localhost:3000" + "/v1/api/auth/set-token"
+					: process.env.CLIENT_URL,
+		});
+
+		const setTokenResponse = await fetch(
+			`${process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:3000" : process.env.CLIENT_URL}
+/v1/api/auth/set-token`,
+			{
+				body,
+				method: "POST",
+			}
+		);
 	}
 
 	if (["v1/api/auth/logout"].includes(normalizePath(url))) {

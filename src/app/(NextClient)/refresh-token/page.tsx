@@ -15,10 +15,14 @@ const RefreshTokenPage = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const pathName = searchParams.get("pathName");
-	const abort = new AbortController();
-	const signal = abort.signal;
+	const code_verify_token_sv = searchParams.get("code_verify_token");
+
 	const [error, setError] = useState(false);
 
+	let code_verify_token_cl = "";
+	if (typeof window !== "undefined") {
+		code_verify_token_cl = JSON.parse(localStorage.getItem("code_verify_token") || "");
+	}
 	// const refreshTokenQuery = useQuery({
 	// 	queryKey: ["/refresh-token"],
 	// 	queryFn: () => AuthService.refreshToken(signal),
@@ -36,21 +40,25 @@ const RefreshTokenPage = () => {
 	// 	};
 	// }, [router, pathName, refreshTokenQuery.isSuccess]);
 
+	console.log({ code_verify_token_cl, code_verify_token_sv });
+
 	useEffect(() => {
-		AuthService.refreshToken().then((data) => console.log({ data }));
+		const abort = new AbortController();
+		const signal = abort.signal;
+		if (code_verify_token_cl === code_verify_token_sv) {
+			AuthService.refreshToken(signal).then((data) => console.log({ data }));
+			router.refresh();
+			router.push(pathName || "/");
+		} else {
+			console.log("set-state");
+			setError(true);
+		}
+		return () => {
+			abort.abort();
+		};
 	}, []);
 
-	if (error) {
-		return (
-			<div className="w-screen h-screen flex  justify-center items-center gap-[20px]">
-				<div className="w-[500px] h-[500px] flex flex-col justify-center items-center shadow-2xl shadow-blue-400 rounded-xl">
-					<p>Page Không tồn tại</p>;
-					<ButtonNavigation urlNavigation="/dashboard" textContent="Dashboard" onClick={() => {}} />
-				</div>
-			</div>
-		);
-	}
-
+	if (error) return <div>Yêu cầu không hợp lệ</div>;
 	return <div className="flex flex-col gap-10 ">Đang xử lí</div>;
 };
 
