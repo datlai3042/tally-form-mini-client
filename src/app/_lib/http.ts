@@ -84,6 +84,8 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		}
 	}
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
+		console.log({ payload });
+
 		const expireTokenJSON = (payload as Omit<ResponseAuth, "user">).expireToken;
 		setValueLocalStorage("expireToken", expireTokenJSON);
 
