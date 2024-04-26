@@ -1,21 +1,10 @@
-import { redirect } from "next/navigation";
 import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
-import {
-	AUTHORIZATION_ERROR_STATUS,
-	ConstructorError,
-	ErrorPayload,
-	HttpError,
-	PERMISSION_ERROR_STATUS,
-	PermissionError,
-} from "./httpError";
-import { getCookieValueHeader, normalizePath } from "./utils";
-import { HeaderToken } from "@/type";
-
-type Method = "GET" | "POST" | "PUT" | "DELETE";
-type CustomRequest = Omit<RequestInit, "method"> & {
-	baseUrl?: string;
-	pathName?: string;
-};
+import { AUTHORIZATION_ERROR_STATUS, ErrorPayload, HttpError, PERMISSION_ERROR_STATUS } from "./httpError";
+import { generateInfoRequest, normalizePath, removeValueLocalStorage, setValueLocalStorage } from "./utils";
+import { CustomRequest, Method } from "@/type";
+import AuthService from "../_services/auth.service";
+import { redirect } from "next/navigation";
+import { httpCaseErrorNextClient, httpCaseErrorNextServer } from "./httpCase";
 
 class ClientToken {
 	private _access_token: string = "";
@@ -66,34 +55,10 @@ let NOT_RETRY: null | Promise<any> = null;
  */
 
 export const resquest = async <Response>(method: Method, url: string, options?: CustomRequest | undefined) => {
-	const body = options?.body
-		? options.body instanceof FormData
-			? options.body
-			: JSON.stringify(options.body)
-		: undefined;
-
-	const baseHeader =
-		options?.body instanceof FormData
-			? {}
-			: {
-					"Content-Type": "application/json",
-			  };
-
-	console.log({ mode: process.env.NEXT_PUBLIC_MODE });
-
-	const baseUrl =
-		options?.baseUrl === undefined
-			? process.env.NEXT_PUBLIC_MODE === "DEV"
-				? "http://localhost:4000"
-				: process.env.BACK_END_URL
-			: options.baseUrl;
-
-	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
-
-	console.log({ body, baseHeader, fullUrl, options, method });
+	const { body, baseHeader, fullUrl } = generateInfoRequest(url, options as CustomRequest);
 	console.log("gọi api chính");
 
-	const response = await fetch(fullUrl, {
+	const optionsRequest: RequestInit = {
 		...options,
 		headers: {
 			...baseHeader,
@@ -102,158 +67,43 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		body,
 		method,
 		credentials: "include",
-	});
+	};
+
+	const response = await fetch(fullUrl, optionsRequest);
 
 	const payload: Response = await response.json();
-
-	console.log({ state: response.ok, payload });
 
 	//RESPONSE: ERROR
 	if (!response.ok) {
 		//ERROR: ACCESS_TOKEN
-		if (+response.status === AUTHORIZATION_ERROR_STATUS) {
-			//TOKEN EXPRIES NEXT-CLIENT
-			if (typeof window !== "undefined") {
-				const option: RequestInit = {
-					credentials: "include",
-				};
-				console.log("gọi api refresh");
-				const callRefreshToken = await fetch(
-					`${
-						process.env.MODE === "DEV" ? "http:localhost:4000" : process.env.BACK_END_URL
-					}/v1/api/auth/refresh-token`,
-					option
-				);
-				const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
-				//validate refresh-token
-				//---*---//
-
-				//CASE: FAILED
-
-				if (+refresh_api.code === PERMISSION_ERROR_STATUS) {
-					const payloadError: ConstructorError = {
-						status: +refresh_api.code,
-						payload: payload as ErrorPayload,
-					};
-					console.log({ http: "token-client-side:::logout thooi" });
-					throw new PermissionError(payloadError);
-				}
-				//CASE: SUCCESS
-				else {
-					const { access_token, refresh_token, code_verify_token } = refresh_api.metadata.token;
-					const { client_id, expireToken } = refresh_api.metadata;
-					//PROCESS SYNC TOKEN BETWEEN NEXT-CLIENT AND NEXT-SERVER
-					const bodySyncTokenAPI = {
-						access_token,
-						refresh_token,
-						client_id,
-						code_verify_token,
-						expireToken,
-					};
-					const syncToken = await fetch(
-						`${
-							process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:3000" : process.env.CLIENT_URL
-						}/v1/api/auth/set-token`,
-						{
-							body: JSON.stringify(bodySyncTokenAPI),
-							method: "POST",
-						}
-					);
-
-					const tokenResponse = await syncToken.json();
-					localStorage.setItem(
-						"code_verify_token",
-
-						JSON.stringify(code_verify_token)
-					);
-
-					localStorage.setItem("exprireToken", JSON.stringify(expireToken));
-
-					//AFTER
-
-					//CALL API AGAIN WITH NEW TOKEN
-					const call_again = await fetch(fullUrl, {
-						method,
-						body,
-						credentials: "include",
-
-						headers: {
-							...baseHeader,
-						} as any,
-					});
-					console.log({ call_again });
-
-					if (!call_again.ok) {
-						console.log("LOI");
-					}
-
-					//FINALLY
-					const response_again: Response = await call_again.json();
-					return response_again;
-				}
-			}
-			//TOKEN EXPRIES NEXT-SERVER
-			else {
-				const pathName = options?.pathName;
-				const cookies = (options?.headers as any)["Cookie"];
-				console.log({ header: (options?.headers as any)["Cookie"] });
-				const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
-				console.log({ code_verify_token });
-
-				return redirect(`/refresh-token?code_verify_token=${code_verify_token}&pathName=${pathName}`);
-				// return "Dat";
-			}
+		if (typeof window !== "undefined") {
+			const result = await httpCaseErrorNextClient<Response>(+response.status, method, fullUrl, optionsRequest);
+			return result;
 		} else {
-			throw new HttpError({ status: 500 });
+			return await httpCaseErrorNextServer(+response.status, options as CustomRequest);
 		}
 	}
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
-		localStorage.setItem("exprireToken", (payload as Omit<ResponseAuth, "user">).expireToken);
+		const expireTokenJSON = (payload as Omit<ResponseAuth, "user">).expireToken;
+		setValueLocalStorage("expireToken", expireTokenJSON);
+
+		const codeVerifyTokenJSON = (payload as Omit<ResponseAuth, "user">).token.code_verify_token;
+		setValueLocalStorage("code_verify_token", codeVerifyTokenJSON);
 	}
 
 	if (["v1/api/auth/login", "v1/api/auth/register"].some((path) => path === normalizePath(url))) {
-		localStorage.setItem(
-			"exprireToken",
-			JSON.stringify((payload as ResponseApi<ResponseAuth>).metadata.expireToken)
-		);
-		localStorage.setItem(
-			"code_verify_token",
+		const expireTokenJSON = (payload as ResponseApi<ResponseAuth>).metadata.expireToken;
+		setValueLocalStorage("expireToken", expireTokenJSON);
 
-			JSON.stringify((payload as ResponseApi<ResponseAuth>).metadata.token.code_verify_token)
-		);
+		const codeVerifyTokenJSON = (payload as ResponseApi<ResponseAuth>).metadata.token.code_verify_token;
+		setValueLocalStorage("code_verify_token", codeVerifyTokenJSON);
 
-		const { access_token, code_verify_token, refresh_token } = (payload as ResponseApi<ResponseAuth>).metadata
-			.token;
-		const { client_id } = (payload as ResponseApi<ResponseAuth>).metadata;
-		const { expireToken } = (payload as ResponseApi<ResponseAuth>).metadata;
-
-		const body = JSON.stringify({
-			access_token,
-			refresh_token,
-			client_id,
-			code_verify_token,
-			expireToken,
-		});
-		console.log({
-			url: normalizePath(url),
-			fullUrl:
-				process.env.NEXT_PUBLIC_MODE === "DEV"
-					? "http://localhost:3000" + "/v1/api/auth/set-token"
-					: process.env.CLIENT_URL,
-		});
-
-		const setTokenResponse = await fetch(
-			`${process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:3000" : process.env.CLIENT_URL}
-/v1/api/auth/set-token`,
-			{
-				body,
-				method: "POST",
-			}
-		);
+		await AuthService.syncNextToken(payload as ResponseApi<ResponseAuth>);
 	}
 
 	if (["v1/api/auth/logout"].includes(normalizePath(url))) {
-		localStorage.removeItem("exprireToken");
+		removeValueLocalStorage("expireToken");
+		removeValueLocalStorage("code_verify_token");
 	}
 
 	return payload;

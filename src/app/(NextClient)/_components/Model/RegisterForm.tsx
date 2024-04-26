@@ -24,6 +24,7 @@ import Link from "next/link";
 import Input from "../ui/input/Input";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
 import { useRouter } from "next/navigation";
+import AuthService from "@/app/_services/auth.service";
 type TProps = {
 	onClose?: (state: boolean) => void;
 };
@@ -47,8 +48,9 @@ const RegisterForm = (props: TProps) => {
 
 	const registerMutation = useMutation({
 		mutationKey: ["register"],
+		// mutationFn: (formRegister: Omit<RegisterType, "confirm_password">) =>
 		mutationFn: (formRegister: Omit<RegisterType, "confirm_password">) =>
-			Http.post<ResponseApi<ResponseAuth>>("/v1/api/auth/register", formRegister, {}),
+			AuthService.register<Omit<RegisterType, "confirm_password">, ResponseApi<ResponseAuth>>(formRegister),
 		onSuccess: async (response) => {
 			const {
 				user,

@@ -18,6 +18,7 @@ import Input from "../ui/input/Input";
 import Button from "../ui/button/Button";
 import Link from "next/link";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
+import AuthService from "@/app/_services/auth.service";
 
 type TProps = {
 	onClose?: (state: boolean) => void;
@@ -38,10 +39,7 @@ const LoginForm = (props: TProps) => {
 
 	const loginMutation = useMutation({
 		mutationKey: ["login"],
-		mutationFn: (formLogin: LoginType) =>
-			Http.post<ResponseApi<ResponseAuth>>("/v1/api/auth/login", formLogin, {
-				credentials: "include",
-			}),
+		mutationFn: (formLogin: LoginType) => AuthService.login<LoginType, ResponseApi<ResponseAuth>>(formLogin),
 		onSuccess: (response) => {},
 	});
 

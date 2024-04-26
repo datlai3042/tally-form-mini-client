@@ -31,3 +31,11 @@ type TokenNextSync = {
 type UserProp = {
 	Children: React.ComponentType<{ user: UserType | null }>;
 };
+
+type Method = "GET" | "POST" | "PUT" | "DELETE";
+type CustomRequest = Omit<RequestInit, "method"> & {
+	baseUrl?: string;
+	pathName?: string;
+};
+
+type MessageResponse = { message: string };

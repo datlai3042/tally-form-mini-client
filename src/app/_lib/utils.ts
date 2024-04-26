@@ -1,4 +1,4 @@
-import { JwtPayload } from "@/type";
+import { CustomRequest, JwtPayload } from "@/type";
 import { jwtDecode } from "jwt-decode";
 
 export const validateEmail = (email: string) => {
@@ -16,7 +16,6 @@ export const expiresToken = (expireString: string) => {
 };
 
 export const getCookieValueHeader = (CookieName: string, CookiesString: string) => {
-	console.log({ CookieName, CookiesString });
 	const cookieSplit = CookiesString?.split(";");
 	let cookies: { [key: string]: string } = {};
 	cookieSplit.forEach((pair) => {
@@ -25,4 +24,38 @@ export const getCookieValueHeader = (CookieName: string, CookiesString: string) 
 	});
 
 	return cookies[CookieName];
+};
+
+export const setValueLocalStorage = (key: string, value: any) => {
+	localStorage.setItem(key, JSON.stringify(value));
+};
+
+export const removeValueLocalStorage = (key: string) => {
+	localStorage.removeItem(key);
+};
+
+export const generateInfoRequest = (url: string, options: CustomRequest) => {
+	const body = options?.body
+		? options.body instanceof FormData
+			? options.body
+			: JSON.stringify(options.body)
+		: undefined;
+
+	const baseHeader =
+		options?.body instanceof FormData
+			? {}
+			: {
+					"Content-Type": "application/json",
+			  };
+
+	const baseUrl =
+		options?.baseUrl === undefined
+			? process.env.NEXT_PUBLIC_MODE === "DEV"
+				? "http://localhost:4000"
+				: process.env.BACK_END_URL
+			: options.baseUrl;
+
+	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
+
+	return { body, baseHeader, baseUrl, fullUrl };
 };
