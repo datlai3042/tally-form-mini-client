@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 	console.log({ access_token, refresh_token, client_id, expireToken, code_verify_token });
 
 	cookies().set({
-		name: "client_id",
+		name: "next_client_id",
 		value: client_id,
 		httpOnly: true,
 		path: "/",
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 	});
 
 	cookies().set({
-		name: "code_verify_token",
+		name: "next_code_verify_token",
 		value: code_verify_token,
 		httpOnly: true,
 		path: "/",
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 	});
 
 	cookies().set({
-		name: "access_token",
+		name: "next_access_token",
 		value: access_token,
 		httpOnly: true,
 		path: "/",
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 	});
 
 	cookies().set({
-		name: "refresh_token",
+		name: "next_refresh_token",
 		value: refresh_token,
 		httpOnly: true,
 		path: "/",
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
 	});
 
 	cookies().set({
-		name: "flag",
+		name: "next_flag",
 		value: expiresRT.toString(),
 		httpOnly: true,
 		path: "/",

@@ -26,6 +26,7 @@ type TokenNextSync = {
 	refresh_token: string;
 	client_id: string;
 	expireToken: string;
+	code_verify_token: string;
 };
 
 type UserProp = {

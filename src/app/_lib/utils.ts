@@ -1,5 +1,4 @@
-import { CustomRequest, JwtPayload } from "@/type";
-import { jwtDecode } from "jwt-decode";
+import { CustomRequest } from "@/type";
 
 export const validateEmail = (email: string) => {
 	const regex = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;

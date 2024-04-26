@@ -11,10 +11,10 @@ const ProfileMe = async () => {
 	let me: any = {};
 	let res: any;
 	const cookieStore = cookies();
-	const client_id = cookieStore.get("client_id")?.value;
-	const access_token = cookieStore.get("access_token")?.value;
-	const refresh_token = cookieStore.get("refresh_token")?.value;
-	const code_verify_token = cookieStore.get("code_verify_token")?.value;
+	const client_id = cookieStore.get("next_client_id")?.value;
+	const access_token = cookieStore.get("next_access_token")?.value;
+	const refresh_token = cookieStore.get("next_refresh_token")?.value;
+	const code_verify_token = cookieStore.get("next_code_verify_token")?.value;
 
 	const headersList = headers();
 

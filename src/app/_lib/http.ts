@@ -1,9 +1,7 @@
 import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
-import { AUTHORIZATION_ERROR_STATUS, ErrorPayload, HttpError, PERMISSION_ERROR_STATUS } from "./httpError";
 import { generateInfoRequest, normalizePath, removeValueLocalStorage, setValueLocalStorage } from "./utils";
-import { CustomRequest, Method } from "@/type";
+import { CustomRequest, Method, TokenNextSync } from "@/type";
 import AuthService from "../_services/auth.service";
-import { redirect } from "next/navigation";
 import { httpCaseErrorNextClient, httpCaseErrorNextServer } from "./httpCase";
 
 class ClientToken {
@@ -86,10 +84,10 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
 		console.log({ payload });
 
-		const expireTokenJSON = (payload as Omit<ResponseAuth, "user">).expireToken;
+		const expireTokenJSON = (payload as TokenNextSync).expireToken;
 		setValueLocalStorage("expireToken", expireTokenJSON);
 
-		const codeVerifyTokenJSON = (payload as Omit<ResponseAuth, "user">).token.code_verify_token;
+		const codeVerifyTokenJSON = (payload as TokenNextSync).code_verify_token;
 		setValueLocalStorage("code_verify_token", codeVerifyTokenJSON);
 	}
 
