@@ -51,10 +51,6 @@ class AuthService {
 
 		console.log({ body });
 
-		if (typeof window !== "undefined") {
-			setValueLocalStorage("code_verify_token", code_verify_token);
-		}
-
 		const syncToken = await Http.post<TokenNextSync>("/v1/api/auth/set-token", body, { baseUrl: "", signal });
 
 		console.log("da xet local");
