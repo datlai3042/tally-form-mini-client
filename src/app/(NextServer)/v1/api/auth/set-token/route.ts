@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
 	cookies().set({
 		name: "flag",
-		value: "yes",
+		value: expiresRT.toString(),
 		httpOnly: true,
 		path: "/",
 		expires: expiresRT,
