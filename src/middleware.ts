@@ -20,19 +20,15 @@ export function middleware(request: NextRequest) {
 	const response = NextResponse.next({
 		headers: requestHeaders,
 	});
-	if (!access_token && !refresh_token && privateRouter.includes(pathname)) {
+	if (!authentication && privateRouter.includes(pathname)) {
 		return NextResponse.redirect(new URL("/", request.url));
 	}
-	if ((access_token || refresh_token) && authRouter.includes(pathname)) {
+	if (authentication && authRouter.includes(pathname)) {
 		return NextResponse.redirect(new URL("/dashboard", request.url));
 	}
 
-	if ((access_token || refresh_token) && pathname === "/") {
+	if (authentication && pathname === "/") {
 		return NextResponse.redirect(new URL("/dashboard", request.url));
-	}
-
-	if (!authentication) {
-		return NextResponse.redirect(new URL("/", request.url));
 	}
 
 	return response;
