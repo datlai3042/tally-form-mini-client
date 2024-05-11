@@ -1,4 +1,5 @@
-import { CustomRequest } from "@/type";
+import { CustomRequest, FormCore, InputCore, ReactCustom } from "@/type";
+import { SetStateAction } from "react";
 
 export const validateEmail = (email: string) => {
 	const regex = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
@@ -57,4 +58,35 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
 	return { body, baseHeader, baseUrl, fullUrl };
+};
+
+export const addInputFirstItem = (cb: React.Dispatch<SetStateAction<FormCore.Form>>) => {
+	return cb((prev) => ({
+		...prev,
+		form_inputs: prev.form_inputs.concat({ type: "TEXT" }),
+	}));
+};
+
+export const removeInputFirstItem: FormCore.Func.RemoveInputItemFirst = (cb: ReactCustom.Form) => {
+	return cb((prev) => {
+		const newArray = [...prev.form_inputs];
+		newArray.shift();
+
+		return {
+			...prev,
+			form_inputs: newArray,
+		};
+	});
+};
+
+export const removeInputWithIndex: FormCore.Func.RemoveInputItemWithIndex = (cb: ReactCustom.Form, index: number) => {
+	return cb((prev) => {
+		const newArray = [...prev.form_inputs];
+		newArray.splice(index, 1);
+
+		return {
+			...prev,
+			form_inputs: newArray,
+		};
+	});
 };

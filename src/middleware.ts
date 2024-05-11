@@ -20,9 +20,17 @@ export function middleware(request: NextRequest) {
 	const response = NextResponse.next({
 		headers: requestHeaders,
 	});
+
+	const regexUrlFormEdit = /^\/form\/[a-zA-Z0-9]+\/edit$/;
+
+	if (regexUrlFormEdit.test(pathname) && !authentication) {
+		return NextResponse.redirect(new URL("/login", request.url));
+	}
+
 	if (!authentication && privateRouter.includes(pathname)) {
 		return NextResponse.redirect(new URL("/", request.url));
 	}
+
 	if (authentication && authRouter.includes(pathname)) {
 		return NextResponse.redirect(new URL("/dashboard", request.url));
 	}
@@ -38,5 +46,5 @@ const matcher = [...privateRouter, authRouter, "/"];
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ["/dashboard", "/me", "/login", "/register", "/"],
+	matcher: ["/dashboard", "/me", "/login", "/register", "/", "/form/:path*"],
 };

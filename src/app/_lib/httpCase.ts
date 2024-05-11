@@ -2,12 +2,14 @@ import { redirect } from "next/navigation";
 import AuthService from "../_services/auth.service";
 import { AUTHORIZATION_ERROR_STATUS, HttpError, PERMISSION_ERROR_STATUS } from "./httpError";
 import { CustomRequest, Method } from "@/type";
+import { removeValueLocalStorage } from "./utils";
 
 type RetryAPI = RequestInit;
 
 export const httpCaseErrorNextClient = async <Response>(
 	statusCode: number,
 	method: Method,
+	url: string,
 	fullUrl: string,
 	options: RetryAPI
 ) => {
@@ -16,7 +18,7 @@ export const httpCaseErrorNextClient = async <Response>(
 			return await nextClient401<Response>(method, fullUrl, options);
 
 		case PERMISSION_ERROR_STATUS:
-			return await nextClient403();
+			return await nextClient403(url);
 
 		default:
 			throw new HttpError({ status: 500 });
@@ -33,6 +35,7 @@ export const nextClient401 = async <Response>(method: Method, fullUrl: string, o
 		return redirect("/");
 	}
 	//CASE: SUCCESS
+
 	await AuthService.syncNextToken(refresh_api);
 	//AFTER
 	//CALL API AGAIN WITH NEW TOKEN
@@ -47,8 +50,16 @@ export const nextClient401 = async <Response>(method: Method, fullUrl: string, o
 	return response_again;
 };
 
-export const nextClient403 = async () => {
-	await AuthService.logoutNextClient();
+export const nextClient403 = async (url: string) => {
+	if (url === "v1/api/auth/logout") {
+		if (typeof window !== "undefined") {
+			removeValueLocalStorage("expireToken");
+			removeValueLocalStorage("code_verify_token");
+			window.location.href = "/";
+		}
+	} else {
+		await AuthService.logoutNextClient();
+	}
 	return redirect("/");
 };
 

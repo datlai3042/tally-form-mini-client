@@ -40,6 +40,9 @@ import ImageAndText from "../_components/ui/ImageAndText";
 import IconTextLink from "../_components/ui/IconTextLink";
 import Grid3x3 from "../_components/ui/Grid3x3";
 import Header from "../_components/Header";
+import DivNative from "../_components/ui/NativeHtml/DivNative";
+import ParagraphNative from "../_components/ui/NativeHtml/ParagraphNative";
+import SpanNative from "../_components/ui/NativeHtml/SpanNative";
 
 const brandImages = [
 	"/assets/images/HomePage/notion.png",
@@ -273,22 +276,22 @@ const GRID_FOUR: GridIconText[] = [
 
 const HomePage = () => {
 	return (
-		<div className="flex  w-full min-w-full max-w-full ">
-			<div className="flex w-full flex-col h-max   ">
-				<div className="flex flex-col ">
+		<DivNative className="flex  w-full min-w-full max-w-full ">
+			<DivNative className="flex w-full flex-col h-max   ">
+				<DivNative className="flex flex-col ">
 					<Header />
 
-					<div className=" relative   sm:mt-[160px] mt-[128px]  min-h-screen h-max mb-[380px] sm:mb-[180px] xl:mb-[240px] ">
-						<div
+					<DivNative className=" relative   sm:mt-[160px] mt-[128px]  min-h-screen h-max mb-[380px] sm:mb-[180px] xl:mb-[240px] ">
+						<DivNative
 							className="absolute hidden xl:block top-[230px] left-0 w-[350px] h-full "
 							style={{
 								backgroundImage: "url('/assets/images/HomePage/faces-left.png')",
 								backgroundRepeat: "no-repeat",
 								backgroundSize: "cover",
 							}}
-						></div>
+						></DivNative>
 
-						<div
+						<DivNative
 							className="absolute hidden xl:block top-[230px] right-0 w-[500px] h-full  "
 							style={{
 								backgroundImage: "url('/assets/images/HomePage/faces-right.png')",
@@ -296,17 +299,17 @@ const HomePage = () => {
 								backgroundSize: "contain",
 								backgroundPositionX: "right",
 							}}
-						></div>
+						></DivNative>
 
-						<div
+						<DivNative
 							className="mt-[20px]  absolute block xl:hidden top-[-120px] left-[50%] translate-x-[-50%] w-[80%] sm:w-[50%] h-[120px] overflow-hidden"
 							style={{
 								backgroundImage: "url('/assets/images/HomePage/faces-mobile.png')",
 								backgroundRepeat: "no-repeat",
 								backgroundSize: "contain",
 							}}
-						></div>
-						<div className="absolute mt-[20px] top-0 left-[50%] translate-x-[-50%] w-full xl:w-[1024px] h-max flex flex-col justify-center items-center gap-[32px] ">
+						></DivNative>
+						<DivNative className="absolute mt-[20px] top-0 left-[50%] translate-x-[-50%] w-full xl:w-[1024px] h-max flex flex-col justify-center items-center gap-[32px] ">
 							<h1 className="relative text-[20px] xl:text-[60px] font-bold text-center">
 								The simplest way to create forms
 								<Image
@@ -317,10 +320,12 @@ const HomePage = () => {
 									alt="highlight-text"
 								/>
 							</h1>
-							<p className="w-full xl:w-[50%] text-[13px] xl:text-[20px] text-justify sm:text-center break-words">
+							<ParagraphNative
+								className="w-full xl:w-[50%] text-[13px] xl:text-[20px] text-justify sm:text-center break-words"
+								textContent="
 								Say goodbye to boring forms. Meet Tally — the free, intuitive form builder you’ve been
-								looking for.
-							</p>
+								looking for."
+							/>
 
 							<ButtonCreateForm
 								urlNavigation="create-form"
@@ -332,11 +337,13 @@ const HomePage = () => {
 								<source src="/assets/videos/homePage/intro.mp4" />
 							</video>
 
-							<div className="mt-[40px] w-[80%] flex items-center flex-col gap-[60px] ">
-								<span className="text-[1.8rem] text-textMain  font-medium">
-									Powering 200,000+ teams at the world’s best companies
-								</span>
-								<div className="w-full min-h-max flex flex-wrap xl:flex-nowrap gap-[24px] xl:gap-[16px] items-center justify-between">
+							<DivNative className="mt-[40px] w-[80%] flex items-center flex-col gap-[60px] ">
+								<SpanNative
+									className="text-[1.8rem] text-textMain  font-medium"
+									textContent="Powering 200,000+ teams at the world’s best companies"
+								/>
+
+								<DivNative className="w-full min-h-max flex flex-wrap xl:flex-nowrap gap-[24px] xl:gap-[16px] items-center justify-between">
 									{brandImages.map((img) => (
 										<Image
 											key={img}
@@ -347,7 +354,7 @@ const HomePage = () => {
 											className="w-[42%] sm:w-[20%] xl:w-[104px]  xl:h-[40px]"
 										/>
 									))}
-								</div>
+								</DivNative>
 
 								<Link href={"/register"}>
 									<Image
@@ -358,61 +365,71 @@ const HomePage = () => {
 										className="w-[250px] h-[54px]"
 									/>
 								</Link>
-							</div>
-						</div>
-					</div>
+							</DivNative>
+						</DivNative>
+					</DivNative>
 					<main className="w-full xl:w-[1024px]  sm:mt-[70px] xl:mt-[370px] flex flex-col gap-[80px] mx-auto h-max">
-						<div className="flex flex-col gap-[24px] ">
+						<DivNative className="flex flex-col gap-[24px] ">
 							<h2 className="text-h2 ">A form builder like no other</h2>
-							<p className="text-[2rem] w-full xl:w-[60%] break-words text-textMain text-justify">
-								Tally makes it simple for anyone to build free online forms. No need to code — just type
-								your questions like you would in a doc.
-							</p>
-							<div className="relative w-full min-h-[360px] h-max rounded-xl shadow-shadowPink ">
-								<div className="p-[24px] flex flex-col gap-[18px]">
+							<ParagraphNative
+								className="text-[2rem] w-full xl:w-[60%] break-words text-textMain text-justify"
+								textContent="Tally makes it simple for anyone to build free online forms. No need to code — just type
+								your questions like you would in a doc."
+							/>
+
+							<DivNative className="relative w-full min-h-[360px] h-max rounded-xl shadow-shadowPink ">
+								<DivNative className="p-[24px] flex flex-col gap-[18px]">
 									<h3 className="text-[rgb(248_28_229)] text-h3">
 										Unlimited forms and submissions for free
 									</h3>
-									<p className="text-[1.2rem] xl:text-[1.8rem] text-slate-500 text-justify">
-										Paywalls getting in the way of great forms? Here at Tally, we provide unlimited
+									<ParagraphNative
+										className="text-[1.2rem] xl:text-[1.8rem] text-slate-500 text-justify"
+										textContent="Paywalls getting in the way of great forms? Here at Tally, we provide unlimited
 										forms, submissions, and everything you need to create professional forms and
-										surveys — all free of charge as long as you stay within our{" "}
-										<span className="underline text-textMain">fair usage guidelines.</span>
-									</p>
-								</div>
+										surveys — all free of charge as long as you stay within our"
+									>
+										<SpanNative
+											className="underline text-textMain"
+											textContent="fair usage guidelines."
+										/>
+									</ParagraphNative>
+								</DivNative>
 								<Image
 									width={1160}
 									height={279}
 									alt="bg"
-									src={"/assets/images/HomePage/dive-in.png"}
+									src={"/assets/images/HomePage/DivNativee-in.png"}
 									className="absolute bottom-0 left-0 w-full h-[140px] xl:h-[200px]"
 								/>
-							</div>
-						</div>
+							</DivNative>
+						</DivNative>
 
-						<div className=" flex flex-col xl:flex-row gap-[40px]">
-							<div className="border-shadow-normal w-full xl:w-[60%] h-[365px] xl:h-[510px]  flex flex-col gap-[10px] overflow-hidden">
-								<div className="p-[16px] xl:p-[30px] flex flex-col gap-[20px]">
+						<DivNative className=" flex flex-col xl:flex-row gap-[40px]">
+							<DivNative className="border-shadow-normal w-full xl:w-[60%] h-[365px] xl:h-[510px]  flex flex-col gap-[10px] overflow-hidden">
+								<DivNative className="p-[16px] xl:p-[30px] flex flex-col gap-[20px]">
 									<Command className="text-pinkCustom" />
 									<h4 className="text-h4 font-semibold">Just start typing</h4>
-									<p className="text-[1.4rem] xl:text-[1.6rem]">
-										Tally is a new type of online form builder that works like a text document. Just
-										start typing on the page and insert blocks same as Notion.
-									</p>
-								</div>
+									<ParagraphNative
+										className="text-[1.4rem] xl:text-[1.6rem]"
+										textContent="Tally is a new type of online form builder that works like a text document. Just
+										start typing on the page and insert blocks same as Notion."
+									/>
+								</DivNative>
 								<video playsInline autoPlay muted loop className="flex-1 w-full">
 									<source src="/assets/videos/homePage/just-type-card.mp4" className="w-full" />
 								</video>
-							</div>
-							<div className="border-shadow-normal w-full xl:w-[40%] h-[365px] xl:h-[510px]  flex flex-col gap-[10px] overflow-hidden">
-								<div className="p-[16px] xl:p-[30px] flex flex-col gap-[20px]">
+							</DivNative>
+							<DivNative className="border-shadow-normal w-full xl:w-[40%] h-[365px] xl:h-[510px]  flex flex-col gap-[10px] overflow-hidden">
+								<DivNative className="p-[16px] xl:p-[30px] flex flex-col gap-[20px]">
 									<Lock className="text-pinkCustom" />
 									<h4 className="text-h4 font-semibold">Privacy-friendly form builder</h4>
-									<p className="text-[1.4rem] xl:text-[1.6rem]">
-										Your data privacy and security are our top priorities. We are
-										<span className="text-highlight">GDPR compliant</span>
-										and treat your data with care and confidentiality.
-									</p>
+									<ParagraphNative
+										className="text-[1.4rem] xl:text-[1.6rem] "
+										textContent="Your data privacy and security are our top priorities. We are"
+									>
+										<SpanNative className="text-highlight" textContent="GDPR compliant" />
+										<SpanNative textContent="and treat your data with care and confidentiality." />
+									</ParagraphNative>
 									<p className="text-[1.4rem] xl:text-[1.6rem]">
 										Tally is <span className="text-highlight"> hosted in Europe</span>, we don’t use
 										cookie-tracking, and all form data is securely stored, and{" "}
@@ -420,15 +437,15 @@ const HomePage = () => {
 										both in transit and at rest.{" "}
 										<span className="underline text-textMain">Learn more about Tally & GDPR.</span>
 									</p>
-								</div>
+								</DivNative>
 								<Image
 									width={380}
 									height={240}
 									src={"/assets/images/HomePage/encryption.png"}
 									alt="description"
 								/>
-							</div>
-						</div>
+							</DivNative>
+						</DivNative>
 						<BlockQuote
 							BlockquoteContent="“Loving Tally! Not sure why I only started using it now, so good!”"
 							ImagePath="/assets/images/HomePage/quote-ben.jpg"
@@ -436,7 +453,7 @@ const HomePage = () => {
 							Description="Angel investor, previously at Notion"
 						/>
 
-						<div className="h-max">
+						<DivNative className="h-max">
 							<FeatureInfoV1
 								BeforeTextHighlight="Simple"
 								TextHighlight="but"
@@ -457,12 +474,12 @@ const HomePage = () => {
 								}}
 								Postion={{ mode: "BOTTOM" }}
 							/>
-						</div>
-						<div className="w-full  mt-[40px]">
+						</DivNative>
+						<DivNative className="w-full  mt-[40px]">
 							<Grid6x6 ElementGrid={GRID_ONE} />
-						</div>
+						</DivNative>
 
-						<div className="h-max">
+						<DivNative className="h-max">
 							<FeatureInfoV1
 								BeforeTextHighlight="Craft"
 								TextHighlight="intelligent"
@@ -481,10 +498,10 @@ const HomePage = () => {
 								}}
 								Postion={{ mode: "BOTTOM" }}
 							/>
-						</div>
+						</DivNative>
 
-						<div className="flex flex-col xl:flex-row gap-[40px]  h-max">
-							<div className="w-full xl:w-[50%] min-h-full">
+						<DivNative className="flex flex-col xl:flex-row gap-[40px]  h-max">
+							<DivNative className="w-full xl:w-[50%] min-h-full">
 								<FeatureInfoV1
 									HiddenTextArea={true}
 									DescriptionIcon={<Sigma className="text-pinkCustom" />}
@@ -496,8 +513,8 @@ const HomePage = () => {
 									}}
 									Postion={{ mode: "BOTTOM" }}
 								/>
-							</div>
-							<div className="w-full xl:w-[50%] min-h-full">
+							</DivNative>
+							<DivNative className="w-full xl:w-[50%] min-h-full">
 								<FeatureInfoV1
 									HiddenTextArea={true}
 									DescriptionIcon={<EyeOff className="text-pinkCustom" />}
@@ -509,12 +526,12 @@ const HomePage = () => {
 									}}
 									Postion={{ mode: "BOTTOM" }}
 								/>
-							</div>
-						</div>
+							</DivNative>
+						</DivNative>
 
-						<div className="w-full  mt-[40px]">
+						<DivNative className="w-full  mt-[40px]">
 							<Grid6x6 ElementGrid={GRID_TWO} />
-						</div>
+						</DivNative>
 						<BlockQuote
 							BlockquoteContent="“Tally is doing to forms what Notion did to docs & sheets.”"
 							ImagePath="/assets/images/HomePage/quote-nathan.png"
@@ -522,7 +539,7 @@ const HomePage = () => {
 							Description="Head of Growth, Gelt"
 						/>
 
-						<div className="h-max">
+						<DivNative className="h-max">
 							<FeatureInfoV1
 								BeforeTextHighlight="Make forms uniquely"
 								TextHighlight="yours"
@@ -539,12 +556,12 @@ const HomePage = () => {
 								}}
 								Postion={{ mode: "BOTTOM" }}
 							/>
-						</div>
-						<div className="w-full  mt-[40px]">
+						</DivNative>
+						<DivNative className="w-full  mt-[40px]">
 							<Grid6x6 ElementGrid={GRID_THREE} />
-						</div>
+						</DivNative>
 
-						<div className="flex flex-col gap-[20px] h-max">
+						<DivNative className="flex flex-col gap-[20px] h-max">
 							<ImageAndText
 								BeforeTextHighlight=""
 								TextHighlight="Share"
@@ -554,8 +571,8 @@ const HomePage = () => {
 								ImageRight="/assets/images/HomePage/paper-plane.png"
 								Position={{ mode: "WRAPPER" }}
 							/>
-							<div className="flex  flex-col xl:flex-row gap-[20px] h-max ">
-								<div className="w-full xl:w-[60%] min-h-max xl:min-h-full ">
+							<DivNative className="flex  flex-col xl:flex-row gap-[20px] h-max ">
+								<DivNative className="w-full xl:w-[60%] min-h-max xl:min-h-full ">
 									<FeatureInfoV1
 										HiddenTextArea={true}
 										DescriptionIcon={<LayoutPanelLeft className="text-pinkCustom" />}
@@ -569,8 +586,8 @@ const HomePage = () => {
 										}}
 										Postion={{ mode: "BOTTOM" }}
 									/>
-								</div>
-								<div className="w-full xl:w-[40%] flex flex-col  gap-[20px]">
+								</DivNative>
+								<DivNative className="w-full xl:w-[40%] flex flex-col  gap-[20px]">
 									<IconTextLink
 										Icon={<PictureInPicture2 className="text-pinkCustom" />}
 										Title="Popup"
@@ -598,11 +615,11 @@ const HomePage = () => {
 										LinkTextColor="text-slate-700 font-medium"
 										TextLink="forms.yourdomain.com/feedback"
 									/>
-								</div>
-							</div>
-						</div>
+								</DivNative>
+							</DivNative>
+						</DivNative>
 
-						<div className="flex flex-col gap-[80px]">
+						<DivNative className="flex flex-col gap-[80px]">
 							<ImageAndText
 								BeforeTextHighlight=""
 								TextHighlight="Connect"
@@ -613,10 +630,10 @@ const HomePage = () => {
 								Position={{ mode: "BOTTOM" }}
 							/>
 
-							<div className="">
+							<DivNative className="">
 								<Grid3x3 ElementGrid={GRID_FOUR} />
-							</div>
-						</div>
+							</DivNative>
+						</DivNative>
 
 						<BlockQuote
 							BlockquoteContent="“Can attest that Tally >>> Typeform hands down”
@@ -627,7 +644,7 @@ const HomePage = () => {
 							ImagePath="/assets/images/HomePage/quote-steven.jpg"
 						/>
 
-						<div className="flex items-center flex-col gap-[10px]">
+						<DivNative className="flex items-center flex-col gap-[10px]">
 							<Image
 								src={"/assets/images/HomePage/roll-up-sleeves.png"}
 								width={500}
@@ -644,7 +661,7 @@ const HomePage = () => {
 							</p>
 
 							<ButtonCreateForm textContent="Create a free form" urlNavigation="/" />
-						</div>
+						</DivNative>
 
 						<BlockQuote
 							BlockquoteContent="“Absolutely adore Tally! A game-changer - incredibly powerful, yet ridiculously user-friendly. It enabled me to effortlessly gather inputs, add forms with ease, and even pre-fill them. And the icing on the cake - absolutely free to use!”"
@@ -653,9 +670,9 @@ const HomePage = () => {
 							ImagePath="/assets/images/HomePage/quote-shyam.png"
 						/>
 					</main>
-				</div>
-			</div>
-		</div>
+				</DivNative>
+			</DivNative>
+		</DivNative>
 	);
 };
 

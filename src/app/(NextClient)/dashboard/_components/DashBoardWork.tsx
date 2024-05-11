@@ -8,7 +8,7 @@ const WorkItem = [
 	{ Title: "Search", Icon: <Search className="w-[1.8rem]" />, Model: "search" },
 	{ Title: "Menbers", Icon: <Users className="w-[1.8rem]" />, Model: "users" },
 	{ Title: "Domains", Icon: <Globe className="w-[1.8rem]" />, Href: "/domain" },
-	{ Title: "Settings", Icon: <Settings className="w-[1.8rem]" />, Href: "settings" },
+	{ Title: "Settings", Icon: <Settings className="w-[1.8rem]" />, Href: "/settings" },
 ];
 
 const DashBoardWork = () => {

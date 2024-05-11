@@ -4,6 +4,9 @@ import React from "react";
 import { ButtonCustomProps } from "./Button";
 import { ButtonCustomNavigation } from "./ButtonNavigation";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import FormService from "@/app/_services/form.service";
+import { useRouter } from "next/navigation";
 
 interface TProps extends ButtonCustomNavigation {
 	icon?: React.ReactNode;
@@ -13,8 +16,19 @@ interface TProps extends ButtonCustomNavigation {
 const ButtonCreateForm = (props: TProps) => {
 	const { textContent, urlNavigation, position = "LEFT", icon, ...AnchorProps } = props;
 
+	const router = useRouter();
+	const createNewForm = useMutation({
+		mutationKey: ["create-new-form"],
+		mutationFn: () => FormService.createForm(),
+		onSuccess: (dataResponse) => {
+			const { form_id } = dataResponse.metadata;
+			router.push(`/form/${form_id}/edit`);
+		},
+	});
+
 	return (
 		<Link
+			onClick={() => createNewForm.mutate()}
 			tabIndex={-1}
 			href={urlNavigation}
 			{...AnchorProps}

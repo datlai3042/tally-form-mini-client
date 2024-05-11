@@ -9,6 +9,7 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
+				textHeader: "rgb(119, 118, 114)",
 				textMain: "rgb(55, 53, 47)",
 				pinkCustom: "rgb(248, 28, 229)",
 				textGray: "rgb(137,136,132)",
@@ -36,8 +37,13 @@ const config: Config = {
 				changeColor: "changeColor 4s forwards",
 				rotate: "rotate 1s infinite",
 				shipRun: "shipRun 10s forwards",
+				modeScreen: "modeScreen .3s forwards",
 			},
 			keyframes: {
+				modeScreen: {
+					"0%": { transform: "scale(.8)" },
+					"100%": { transform: "none" },
+				},
 				scaleIn: {
 					"0%": { backgroundPosition: "10%" },
 					"50%": { backgroundPosition: "50%" },

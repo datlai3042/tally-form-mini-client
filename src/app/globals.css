@@ -20,6 +20,10 @@
 	html {
 		font-size: 62.5%;
 	}
+
+	[contentEditable="true"]:empty:not(:focus):before {
+		content: attr(data-text);
+	}
 }
 
 @layer utilities {

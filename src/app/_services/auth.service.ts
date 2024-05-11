@@ -39,13 +39,14 @@ class AuthService {
 		return redirect(`/refresh-token?code_verify_token=${code_verify_token}`);
 	}
 
-	static async refreshToken(signal?: AbortSignal) {
+	static async refreshTokenServer(signal?: AbortSignal) {
 		const res = await Http.get<ResponseApi<ResponseAuth>>("/v1/api/auth/refresh-token", {
 			credentials: "include",
 			signal,
 		});
 		const { access_token, refresh_token, code_verify_token } = res.metadata.token;
 		const { client_id, expireToken } = res.metadata;
+
 		const body = {
 			access_token,
 			refresh_token,
@@ -64,11 +65,12 @@ class AuthService {
 	}
 
 	static async refreshTokenClient() {
+		console.log({ mode: process.env.NEXT_PUBLIC_MODE });
 		const option: RequestInit = {
 			credentials: "include",
 		};
 
-		const urlRequest = process.env.MODE === "DEV" ? "http:localhost:4000" : process.env.BACK_END_URL;
+		const urlRequest = process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:4000" : process.env.BACK_END_URL;
 
 		const callRefreshToken = await fetch(`${urlRequest}/v1/api/auth/refresh-token`, option);
 		const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();

@@ -5,6 +5,16 @@ const nextConfig = {
 		BACK_END_URL: process.env.NEXT_PUBLIC_BACK_END_URL,
 		CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
 	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "res.cloudinary.com",
+				port: "",
+				pathname: "/cloud304/image/**",
+			},
+		],
+	},
 	// reactStrictMode: false,
 };
 

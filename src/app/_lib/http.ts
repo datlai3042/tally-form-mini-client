@@ -75,15 +75,19 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	if (!response.ok) {
 		//ERROR: ACCESS_TOKEN
 		if (typeof window !== "undefined") {
-			const result = await httpCaseErrorNextClient<Response>(+response.status, method, fullUrl, optionsRequest);
+			const result = await httpCaseErrorNextClient<Response>(
+				+response.status,
+				method,
+				url,
+				fullUrl,
+				optionsRequest
+			);
 			return result;
 		} else {
 			return await httpCaseErrorNextServer(+response.status, options as CustomRequest);
 		}
 	}
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
-		console.log({ payload });
-
 		const expireTokenJSON = (payload as TokenNextSync).expireToken;
 		setValueLocalStorage("expireToken", expireTokenJSON);
 
