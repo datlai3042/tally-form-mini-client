@@ -35,7 +35,6 @@ export const nextClient401 = async <Response>(method: Method, fullUrl: string, o
 		return redirect("/");
 	}
 	//CASE: SUCCESS
-
 	await AuthService.syncNextToken(refresh_api);
 	//AFTER
 	//CALL API AGAIN WITH NEW TOKEN
