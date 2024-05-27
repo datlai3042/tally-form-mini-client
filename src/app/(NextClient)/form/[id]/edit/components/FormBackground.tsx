@@ -60,7 +60,7 @@ const FormBackground = () => {
 					<DivNative className="hidden group-hover:block absolute right-[2rem] xl:right-[6rem] bottom-[2rem] z-[3]">
 						<ButtonNative
 							onClick={() => setOpenModel(true)}
-							textContent="Change cover"
+							textContent="Thay đổi ảnh bìa"
 							className="w-[12rem] h-[4rem] px-[1rem] border-[.1rem] border-slate-150 bg-[#ffffff] rounded-lg"
 						/>
 					</DivNative>

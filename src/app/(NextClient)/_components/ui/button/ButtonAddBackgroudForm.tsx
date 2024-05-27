@@ -11,7 +11,7 @@ export interface ButtonAddBackgroundFormProps extends React.ButtonHTMLAttributes
 const ButtonAddBackgroundForm = (props: ButtonAddBackgroundFormProps) => {
 	const { formInitial, setFormInitial } = useContext(FormEditContext);
 
-	const { textContent = "Add cover", ...buttonProps } = props;
+	const { textContent = "Thêm ảnh bìa", ...buttonProps } = props;
 
 	const onAddBackgroud = () => {
 		const backgroundUrl = formInitial.form_setting_default.form_background_default_url;

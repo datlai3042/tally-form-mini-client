@@ -11,7 +11,7 @@ export interface ButtonAddAvatarFormProps extends React.ButtonHTMLAttributes<HTM
 const ButtonAddAvatarForm = (props: ButtonAddAvatarFormProps) => {
 	const { formInitial, setFormInitial } = useContext(FormEditContext);
 
-	const { textContent = "Add Logo", ...buttonProps } = props;
+	const { textContent = "Thêm Avatar", ...buttonProps } = props;
 
 	const onAddAvatar = () => {
 		const avatarUrlDefault = formInitial.form_setting_default.form_avatar_default_url;
