@@ -398,7 +398,7 @@ const HomePage = () => {
 									width={1160}
 									height={279}
 									alt="bg"
-									src={"/assets/images/HomePage/DivNativee-in.png"}
+									src={"/assets/images/HomePage/dive-in.png"}
 									className="absolute bottom-0 left-0 w-full h-[140px] xl:h-[200px]"
 								/>
 							</DivNative>

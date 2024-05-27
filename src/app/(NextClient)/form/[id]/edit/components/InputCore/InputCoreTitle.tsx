@@ -18,10 +18,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 	const [value, setValue] = useState<string>(formInitial.form_title ? formInitial.form_title : "");
 	const { modeScreen } = useContext(FormModeScreenContext);
 
-	console.log({ title: formInitial.form_title });
-
 	const onPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		console.log({ key: e.key });
 		if (e.key === "Enter") {
 			setFormInitial((prev) => {
 				return { ...prev, form_title: divContentRef.current?.textContent || "" };
@@ -38,15 +35,9 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 				return { ...prev, form_title: divContentRef.current?.textContent || "" };
 			});
 		}
-		// if(e.currentTarget.t)
 	};
 
 	useEffect(() => {
-		// if (divContentRef.current) {
-		// 	divContentRef!.current!.textContent = value;
-		// }
-		console.log({ value });
-
 		setFormInitial((prev) => {
 			return { ...prev, form_title: value };
 		});
@@ -63,7 +54,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} group min-h-[8rem] w-max max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold  `}
+					className={`${styleEffect.onCheckTitle()} group min-h-[8rem] w-max max-w-full xl:max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold  `}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}
@@ -73,14 +64,14 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 					data-text={`${formInitial.form_title || "Form Title"}`}
 					tabIndex={0}
 				>
-					{value || ""}
+					{formInitial.form_title || ""}
 				</DivNativeRef>
 			)}
 
 			{modeScreen === "FULL" && (
 				<ParagraphNative
-					textContent={value}
-					className="w-max max-w-[80rem] text-[4rem]  font-extrabold   break-all whitespace-pre-wrap"
+					textContent={formInitial.form_title.toUpperCase()}
+					className="w-max max-w-[80rem] text-[6rem]  font-black   break-all whitespace-pre-wrap"
 				/>
 			)}
 		</React.Fragment>

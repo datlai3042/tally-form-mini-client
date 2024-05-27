@@ -11,7 +11,7 @@ export interface ButtonRemoveBackgroudFormProps extends React.ButtonHTMLAttribut
 const ButtonRemoveBackgroudForm = (props: ButtonRemoveBackgroudFormProps) => {
 	const { formInitial, setFormInitial } = useContext(FormEditContext);
 
-	const { textContent = "Remove cover", ...buttonProps } = props;
+	const { textContent = "Change cover", ...buttonProps } = props;
 
 	const onRemoveBackgroudForm = () => {
 		setFormInitial((prev) => {

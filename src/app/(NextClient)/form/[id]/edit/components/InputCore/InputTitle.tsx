@@ -2,8 +2,9 @@ import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEdi
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
+import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 
 type TProps = {
 	indexItem: number;
@@ -16,31 +17,40 @@ const InputTitle = (props: TProps) => {
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
 
 	const [focus, setFocus] = useState<boolean>(false);
-	const titleRef = useRef<HTMLInputElement | null>(null);
+	const titleRef = useRef<HTMLDivElement | null>(null);
 	const [value, setValue] = useState<string>(titleValue || "");
 
-	console.log({ titleValue });
+	console.log({ value });
 
 	useEffect(() => {
 		titleRef.current?.focus();
 		setFocus(true);
 	}, []);
 
-	const onSetTitle = () => {
-		setFormInitial((prev) => {
-			const newArray = [...prev.form_inputs];
-			const itemEdit = newArray[indexItem];
-			if (itemEdit.type !== "Date" && itemEdit.type !== "IMAGE") {
-				newArray[indexItem] = { ...itemEdit, input_heading: value, input_heading_type: "TITLE" };
+	const onSetTitle = (e: React.ChangeEvent<HTMLDivElement>) => {
+		if (titleRef.current) {
+			titleRef!.current!.textContent = e.target.textContent;
+			setValue(titleRef.current.textContent as string);
 
-				return {
-					...prev,
-					form_inputs: newArray,
-				};
-			}
-			return prev;
-		});
-		setFocus(false);
+			setFormInitial((prev) => {
+				const newArray = [...prev.form_inputs];
+				const itemEdit = newArray[indexItem];
+				if (itemEdit.type !== "Date" && itemEdit.type !== "IMAGE") {
+					newArray[indexItem] = {
+						...itemEdit,
+						input_heading: titleRef!.current!.textContent as string,
+						input_heading_type: "TITLE",
+					};
+
+					return {
+						...prev,
+						form_inputs: newArray,
+					};
+				}
+				return prev;
+			});
+			setFocus(false);
+		}
 	};
 
 	const onPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -51,21 +61,30 @@ const InputTitle = (props: TProps) => {
 	};
 
 	return (
-		<DivNative className=" min-h-full h-[4rem] w-[70%] flex gap-[.5rem] ">
-			<input
-				className="group max-w-full break-words whitespace-pre-wrap h-max border-none outline-none resize-none text-[2.4rem] bg-[#ffffff]"
-				autoFocus={true}
-				ref={titleRef}
-				onKeyDown={onPressEnter}
-				onBlur={onSetTitle}
-				defaultValue={value}
-				disabled={modeScreen === "NORMAL" ? false : true}
-				value={value}
-				onChange={(e) => setValue(e.target.value)}
-				suppressContentEditableWarning={true}
-				placeholder={`Title`}
-				tabIndex={0}
-			/>
+		<DivNative className=" min-h-[4rem] h-max w-[70%] flex gap-[.5rem] ">
+			{modeScreen === "NORMAL" && (
+				<DivNativeRef
+					className="group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2.8rem] bg-[#ffffff]"
+					autoFocus={true}
+					ref={titleRef}
+					onKeyDown={onPressEnter}
+					onBlur={onSetTitle}
+					contentEditable={true}
+					defaultValue={titleValue || ""}
+					suppressContentEditableWarning={true}
+					tabIndex={0}
+					spellCheck={false}
+				>
+					{titleValue}
+				</DivNativeRef>
+			)}
+
+			{modeScreen === "FULL" && (
+				<ParagraphNative
+					textContent={value}
+					className="w-max max-w-[80rem] text-[2.8rem]  font-medium   break-all whitespace-pre-wrap"
+				/>
+			)}
 			{/* {!focus && !value && (
 					<SpanNative
 						className="flex group-focus:hidden opacity-55 font-bold text-textGray text-[2rem]"
@@ -77,4 +96,4 @@ const InputTitle = (props: TProps) => {
 	);
 };
 
-export default InputTitle;
+export default memo(InputTitle);

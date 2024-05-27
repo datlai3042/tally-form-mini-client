@@ -10,6 +10,7 @@ import SectionLabelTitle from "../SectionLabelTitle";
 import SectionOption from "../SectionOption";
 import DivWrapper from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
+import InputSettingWrapper from "../InputSettings/InputSettingWrapper";
 
 type TProps = {
 	type: FormCore.InputType;
@@ -21,18 +22,14 @@ type TProps = {
 };
 
 const InputCore = (props: TProps) => {
-	const { indexItem, InputComponent, labelValue, titleValue, inputHeading } = props;
+	const { indexItem, InputComponent, labelValue, titleValue, inputHeading, type } = props;
 
 	const [label, setLabel] = useState<boolean>(labelValue);
 	const [title, setTitle] = useState<boolean>(titleValue);
 	const [focus, setFocus] = useState<boolean>(false);
 
-	console.log({ inputHeading });
-
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
+	const { setFormInitial } = useContext(FormEditContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
-
-	const [openModel, setOpenModel] = useState<boolean>(false);
 
 	const removeFormItem = () => {
 		if (typeof indexItem === "number") {
@@ -46,7 +43,7 @@ const InputCore = (props: TProps) => {
 	};
 
 	return (
-		<DivWrapper className="flex flex-col gap-[.5rem] ">
+		<DivWrapper className="flex flex-col gap-[.5rem]  ">
 			{label && <InputLabel labelValue={inputHeading} indexItem={indexItem} />}
 			{title && <InputTitle titleValue={inputHeading} indexItem={indexItem} />}
 			<DivWrapper
@@ -55,11 +52,7 @@ const InputCore = (props: TProps) => {
 				onBlur={() => setFocus(false)}
 			>
 				{modeScreen === "NORMAL" && (
-					<SectionOption
-						funcRemoveInput={removeFormItem}
-						funcOpenModelAddInput={setOpenModel}
-						focus={focus}
-					/>
+					<SectionOption funcRemoveInput={removeFormItem} indexItem={indexItem} type={type} focus={focus} />
 				)}
 
 				<DivWrapper className="w-full h-max flex flex-col gap-[2rem]">{InputComponent}</DivWrapper>
@@ -67,7 +60,6 @@ const InputCore = (props: TProps) => {
 				{!label && !title && modeScreen === "NORMAL" && (
 					<SectionLabelTitle setLabel={setLabel} setTitle={setTitle} focus={focus} />
 				)}
-				{openModel && <ModelInputType setOpenModel={setOpenModel} indexItem={indexItem} />}
 			</DivWrapper>
 		</DivWrapper>
 	);

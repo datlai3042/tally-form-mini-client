@@ -1,5 +1,6 @@
 import { CustomRequest, FormCore, InputCore, ReactCustom } from "@/type";
 import { SetStateAction } from "react";
+import { inputSettingText } from "../_constant/input.constant";
 
 export const validateEmail = (email: string) => {
 	const regex = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
@@ -63,7 +64,7 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 export const addInputFirstItem = (cb: React.Dispatch<SetStateAction<FormCore.Form>>) => {
 	return cb((prev) => ({
 		...prev,
-		form_inputs: prev.form_inputs.concat({ type: "TEXT" }),
+		form_inputs: prev.form_inputs.concat({ type: "TEXT", setting: inputSettingText }),
 	}));
 };
 

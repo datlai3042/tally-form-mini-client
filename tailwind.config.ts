@@ -38,6 +38,7 @@ const config: Config = {
 				rotate: "rotate 1s infinite",
 				shipRun: "shipRun 10s forwards",
 				modeScreen: "modeScreen .3s forwards",
+				runLTR: "runLTR 5s forwards",
 			},
 			keyframes: {
 				modeScreen: {
@@ -104,6 +105,15 @@ const config: Config = {
 				changeColorSea: {
 					"0": { opacity: "0", backgroundColor: "transparent" },
 					"100%": { backgroundColor: "rgb(254 240 138)", opacity: ".25" },
+				},
+
+				runLTR: {
+					"0%": {
+						left: "0px",
+					},
+					"100%": {
+						right: "0px",
+					},
 				},
 			},
 		},

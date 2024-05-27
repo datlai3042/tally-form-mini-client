@@ -46,15 +46,30 @@ namespace InputCore {
 	export type InputCommon = {
 		input_heading?: string;
 		input_heading_type?: "LABEL" | "TITLE";
-		input_error?: string;
 	};
 
 	namespace InputEmail {
 		export interface InputTypeEmail extends InputCore.InputCommon {
 			type: "EMAIL";
-			placeholder?: string;
+			setting?: InputCore.InputEmail.InputSettingEmail;
 			input_value?: string;
 		}
+
+		export type InputSettingEmail = {
+			require: boolean;
+			placeholder?: string;
+			minLength: number;
+			maxLength: number;
+			input_error?: string;
+		};
+
+		export const inputSettingEmail: InputCore.InputEmail.InputSettingEmail = {
+			maxLength: 100,
+			minLength: 8,
+			require: false,
+			input_error: "Email không hợp lệ",
+			placeholder: "Nhập email của bạn",
+		};
 	}
 
 	namespace InputDate {
@@ -73,8 +88,20 @@ namespace InputCore {
 	}
 
 	namespace InputText {
+		export type InputSettingText = {
+			require: boolean;
+			placeholder?: string;
+			minLength: number;
+			maxLength: number;
+			input_error?: string;
+		};
+
+		export const inputSettingText: InputCore.InputText.InputSettingText = {};
 		export type InputText = "TEXT";
-		export type InputTypeText = InputCore.InputCommon & { type: InputText; placeholder?: string };
+		export type InputTypeText = InputCore.InputCommon & {
+			type: InputText;
+			setting?: InputCore.InputText.InputSettingText;
+		};
 	}
 
 	namespace InputOption {
@@ -92,18 +119,20 @@ namespace InputCore {
 		};
 	}
 
-	export type InputForm =
-		| InputEmail.InputTypeEmail
-		| InputText.InputTypeText
-		| InputOption.InputTypeOption
-		| InputDate.InputTypeDate
-		| InputImage.InputTypeImage;
+	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText;
+	// | InputOption.InputTypeOption
+	// | InputDate.InputTypeDate
+	// | InputImage.InputTypeImage;
 }
 
 namespace FormCore {
 	namespace Func {
 		export type RemoveInputItemFirst = (cb: ReactCustom.Form) => void;
 		export type RemoveInputItemWithIndex = (cb: ReactCustom.Form, index: number) => void;
+	}
+
+	export interface uploadFile extends FormData {
+		append(name: "file" | "form_id", value: string | Blob, fileName?: string): void;
 	}
 
 	export type InputType = "EMAIL" | "NUMBER" | "TEXT" | "DATE" | "UNTYPE";

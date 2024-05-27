@@ -15,6 +15,9 @@ import ButtonAddAvatarForm from "@/app/(NextClient)/_components/ui/button/Button
 import ButtonAddBackgroundForm from "@/app/(NextClient)/_components/ui/button/ButtonAddBackgroudForm";
 import ButtonRemoveAvatarForm from "@/app/(NextClient)/_components/ui/button/ButtonRemoveAvatarForm";
 import ButtonRemoveBackgroudForm from "@/app/(NextClient)/_components/ui/button/ButtonRemoveBackgroudForm";
+import FormAvatar from "./FormAvatar";
+import FormBackground from "./FormBackground";
+import FormImage from "./FormImage";
 
 export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNode => {
 	return Inputs.map((ele, index) => {
@@ -68,13 +71,8 @@ const FormCore = () => {
 		console.log({ form: formInitial });
 	};
 
-	const onSetScreen = () => {
-		if (modeScreen === "FULL") return setModeScreen("NORMAL");
-		return setModeScreen("FULL");
-	};
-
 	return (
-		<DivNative className="w-full h-max flex flex-col gap-[3rem]">
+		<DivNative className="w-full h-max flex flex-col gap-[3rem] pb-[30rem]">
 			{modeScreen === "FULL" && (
 				<DivNative
 					className="absolute right-[4rem] top-[3rem] flex items-center justify-center z-[51]"
@@ -87,49 +85,7 @@ const FormCore = () => {
 					/>
 				</DivNative>
 			)}
-			{(formInitial.form_avatar || formInitial.form_background) && (
-				<DivNative className="relative w-full min-h-[20rem]">
-					{formInitial.form_background && (
-						<DivNative
-							style={{
-								backgroundImage: `url("${formInitial.form_setting_default.form_background_default_url}")`,
-							}}
-							className="absolute inset-0 z-[2]"
-						>
-							{modeScreen === "NORMAL" && (
-								<DivNative className="flex xl:hidden absolute right-[1rem] top-[1rem]  gap-[1rem]">
-									<DivNative className=" flex items-center justify-center " title="Review">
-										<ButtonNative
-											textContent={`Review ${modeScreen}`}
-											className="p-[.8rem] rounded-md bg-blue-500 text-white"
-											onClick={onSetScreen}
-										/>
-									</DivNative>
-
-									<ButtonSave />
-
-									<DivNative className=" flex items-center justify-center " title="Publish">
-										<ButtonNative
-											textContent="Publish"
-											className="p-[.8rem] rounded-md bg-blue-500 text-white"
-										/>
-									</DivNative>
-								</DivNative>
-							)}
-						</DivNative>
-					)}
-
-					{formInitial.form_avatar && (
-						<Image
-							width={110}
-							height={110}
-							src={formInitial.form_setting_default.form_avatar_default_url}
-							alt="avatar"
-							className="absolute left-[calc(25%-6.4rem)] bottom-0 z-[3] translate-y-[50%] w-[11rem] h-[11rem] rounded-full"
-						/>
-					)}
-				</DivNative>
-			)}
+			{(formInitial.form_avatar || formInitial.form_background) && <FormImage />}
 			{modeScreen === "FULL" ? null : (
 				<React.Fragment>
 					<DivNative
@@ -144,16 +100,16 @@ const FormCore = () => {
 							</DivNative>
 						</DivNative>
 					</DivNative>
-					<DivNative className="h-[4rem] flex gap-[2rem] ">
+					{/* <DivNative className="h-[4rem] flex gap-[2rem] ">
 						<ButtonRemoveBackgroudForm />
 						<ButtonRemoveAvatarForm />
-					</DivNative>
+					</DivNative> */}
 				</React.Fragment>
 			)}
 
 			<DivNative
 				className={`${
-					modeScreen === "NORMAL" ? "mt-0" : "mt-[8rem]"
+					modeScreen === "NORMAL" ? "mt-0" : "mt-[12rem]"
 				} w-full xl:min-w-[100rem] xl:w-max h-max px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem] `}
 			>
 				<InputCoreTitle setFirstEnter={setFirstEnter} />

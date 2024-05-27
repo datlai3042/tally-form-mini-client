@@ -120,7 +120,7 @@ const RegisterForm = (props: TProps) => {
 					watch={registerForm.watch}
 					error={registerForm.formState.errors}
 				/>
-				<Button type="submit" textContent="Đăng nhập" className="!w-full !h-[4rem] !bg-blue-600 " />
+				<Button type="submit" textContent="Đăng kí" className="!w-full !h-[4rem] !bg-blue-600 " />
 			</form>
 
 			<p className="text-[1.4rem]">
