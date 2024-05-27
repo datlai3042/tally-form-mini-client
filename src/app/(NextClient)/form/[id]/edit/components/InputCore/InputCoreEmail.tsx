@@ -7,6 +7,7 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
 import { InputCore as TInputCore } from "@/type";
+import { inputSettingText } from "@/app/_constant/input.constant";
 
 type TProps = {
 	indexItem: number;
@@ -37,7 +38,7 @@ const InputCoreEmail = (props: TProps) => {
 			}
 			setFormInitial((prev) => ({
 				...prev,
-				form_inputs: prev.form_inputs.concat({ type: "TEXT", placeholder: "" }),
+				form_inputs: prev.form_inputs.concat({ type: "TEXT", setting: inputSettingText }),
 			}));
 		}
 	};

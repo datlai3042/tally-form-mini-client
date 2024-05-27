@@ -35,18 +35,18 @@ const InputTitle = (props: TProps) => {
 			setFormInitial((prev) => {
 				const newArray = [...prev.form_inputs];
 				const itemEdit = newArray[indexItem];
-				if (itemEdit.type !== "Date" && itemEdit.type !== "IMAGE") {
-					newArray[indexItem] = {
-						...itemEdit,
-						input_heading: titleRef!.current!.textContent as string,
-						input_heading_type: "TITLE",
-					};
+				// if (itemEdit.type !== "Date" && itemEdit.type !== "IMAGE") {
+				newArray[indexItem] = {
+					...itemEdit,
+					input_heading: titleRef!.current!.textContent as string,
+					input_heading_type: "TITLE",
+				};
 
-					return {
-						...prev,
-						form_inputs: newArray,
-					};
-				}
+				return {
+					...prev,
+					form_inputs: newArray,
+				};
+				// }
 				return prev;
 			});
 			setFocus(false);

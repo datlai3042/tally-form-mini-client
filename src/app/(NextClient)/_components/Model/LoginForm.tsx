@@ -80,7 +80,13 @@ const LoginForm = (props: TProps) => {
 					error={loginForm.formState.errors}
 					watch={loginForm.watch}
 				/>
-				<Button type="submit" textContent="Đăng nhập" className="!w-full !h-[4rem] !bg-blue-600 " />
+				<Button
+					disabled={loginMutation.isPending}
+					loading={loginMutation.isPaused}
+					type="submit"
+					textContent="Đăng nhập"
+					className="!w-full !h-[4rem] !bg-blue-600 "
+				/>
 			</form>
 
 			<p className="text-[1.4rem]">

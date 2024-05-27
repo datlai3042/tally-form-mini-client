@@ -58,8 +58,8 @@ const InputCoreText = (props: TProps) => {
 						className="flex group-focus:hidden opacity-55"
 						tabIndex={-1}
 						textContent={
-							(formInitial.form_inputs[indexItem] as TInputCore.InputText.InputTypeText).placeholder ||
-							"Typing your text"
+							(formInitial.form_inputs[indexItem] as TInputCore.InputText.InputTypeText).setting
+								?.placeholder || "Typing your text"
 						}
 					/>
 				)}
