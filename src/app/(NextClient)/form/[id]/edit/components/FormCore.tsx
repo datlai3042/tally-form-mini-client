@@ -100,10 +100,6 @@ const FormCore = () => {
 							</DivNative>
 						</DivNative>
 					</DivNative>
-					<DivNative className="w-full h-[4rem] flex justify-center gap-[2rem] ">
-						<ButtonRemoveBackgroudForm />
-						<ButtonRemoveAvatarForm />
-					</DivNative>
 				</React.Fragment>
 			)}
 
