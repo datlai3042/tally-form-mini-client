@@ -124,7 +124,7 @@ const RegisterForm = (props: TProps) => {
 					type="submit"
 					textContent="Đăng kí"
 					disabled={registerMutation.isPending}
-					loading={registerMutation.isPaused}
+					loading={registerMutation.isPending}
 					className="!w-full !h-[4rem] !bg-blue-600 "
 				/>
 			</form>

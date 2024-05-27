@@ -82,7 +82,7 @@ const LoginForm = (props: TProps) => {
 				/>
 				<Button
 					disabled={loginMutation.isPending}
-					loading={loginMutation.isPaused}
+					loading={loginMutation.isPending}
 					type="submit"
 					textContent="Đăng nhập"
 					className="!w-full !h-[4rem] !bg-blue-600 "
