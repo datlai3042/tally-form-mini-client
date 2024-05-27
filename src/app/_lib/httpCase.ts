@@ -13,9 +13,11 @@ export const httpCaseErrorNextClient = async <Response>(
 	fullUrl: string,
 	options: RetryAPI
 ) => {
+	const abort = new AbortController();
+	const signal = abort.signal;
 	switch (statusCode) {
 		case AUTHORIZATION_ERROR_STATUS:
-			return await nextClient401<Response>(method, fullUrl, options);
+			return await nextClient401<Response>(method, fullUrl, options, signal);
 
 		case PERMISSION_ERROR_STATUS:
 			return await nextClient403(url);
@@ -25,8 +27,14 @@ export const httpCaseErrorNextClient = async <Response>(
 	}
 };
 
-export const nextClient401 = async <Response>(method: Method, fullUrl: string, options: RetryAPI) => {
-	const refresh_api = await AuthService.refreshTokenClient();
+let flag: any;
+export const nextClient401 = async <Response>(
+	method: Method,
+	fullUrl: string,
+	options: RetryAPI,
+	signal: AbortSignal
+) => {
+	const refresh_api = await AuthService.refreshTokenClient(signal);
 	//CASE: FAILED
 
 	if (+refresh_api.code === PERMISSION_ERROR_STATUS) {

@@ -64,7 +64,7 @@ class AuthService {
 		return syncToken;
 	}
 
-	static async refreshTokenClient() {
+	static async refreshTokenClient(signal: AbortSignal) {
 		console.log({ mode: process.env.NEXT_PUBLIC_MODE });
 		const option: RequestInit = {
 			credentials: "include",

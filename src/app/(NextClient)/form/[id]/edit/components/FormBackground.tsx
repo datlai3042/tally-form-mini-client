@@ -61,7 +61,7 @@ const FormBackground = () => {
 						<ButtonNative
 							onClick={() => setOpenModel(true)}
 							textContent="Thay đổi ảnh bìa"
-							className="w-[12rem] h-[4rem] px-[1rem] border-[.1rem] border-slate-150 bg-[#ffffff] rounded-lg"
+							className="w-[15rem] h-[4rem] px-[1rem] border-[.1rem] border-slate-150 bg-[#ffffff] rounded-lg"
 						/>
 					</DivNative>
 				</React.Fragment>

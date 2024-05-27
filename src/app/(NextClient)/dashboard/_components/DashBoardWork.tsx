@@ -1,7 +1,11 @@
 "use client";
-import { Flower, Globe, Search, Settings, Users } from "lucide-react";
+import { Flower, Globe, LogOut, Search, Settings, Users } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import Button from "../../_components/ui/button/Button";
+import { useMutation } from "@tanstack/react-query";
+import AuthService from "@/app/_services/auth.service";
+import { useRouter } from "next/navigation";
 
 const WorkItem = [
 	{ Title: "Home", Icon: <Flower className="w-[1.8rem]" />, Href: "/dashboard" },
@@ -14,6 +18,15 @@ const WorkItem = [
 const DashBoardWork = () => {
 	const [openModelDomain, setOpenModelDomain] = useState<boolean>(false);
 	const [openModelSearch, setopenModelSearch] = useState<boolean>(false);
+	const router = useRouter();
+
+	const logoutMutation = useMutation({
+		mutationKey: ["logout"],
+		mutationFn: () => AuthService.logoutNextClient(),
+		onSuccess: () => {
+			router.push("/");
+		},
+	});
 
 	return (
 		<div className="flex flex-col gap-[.4rem] text-[1.4rem] ">
@@ -53,6 +66,14 @@ const DashBoardWork = () => {
 						</button>
 					);
 			})}
+
+			<button
+				className="p-[.2rem_.8rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
+				onClick={() => logoutMutation.mutate()}
+			>
+				<LogOut />
+				Đăng xuất
+			</button>
 		</div>
 	);
 };
