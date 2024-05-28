@@ -3,6 +3,7 @@ import React from "react";
 import ButtonNavigation from "./ui/button/ButtonNavigation";
 import ButtonCreateForm from "./ui/button/ButtonCreateForm";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 const Header = () => {
 	const cookieStore = cookies();
@@ -32,11 +33,19 @@ const Header = () => {
 				{authentication && (
 					<ButtonNavigation urlNavigation="/logout" textContent="Đăng xuất" className="hidden xl:flex" />
 				)}{" "}
-				<ButtonCreateForm
+				<Link
+					href={"/login"}
+					// urlNavigation="create-form"
+					// textContent="Tạo một form miễn phí"
+					className="!mt-[10px] !xl:mt-[50px]"
+				>
+					Tạo form miễn phí
+				</Link>
+				{/* <ButtonCreateForm
 					urlNavigation="/dashboard"
 					textContent="Tạo Form"
 					className="[&]:hidden [&]:xl:flex"
-				/>
+				/> */}
 			</div>
 		</header>
 	);

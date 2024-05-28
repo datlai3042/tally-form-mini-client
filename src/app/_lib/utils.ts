@@ -61,6 +61,7 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 	return { body, baseHeader, baseUrl, fullUrl };
 };
 
+// Handle Form
 export const addInputFirstItem = (cb: React.Dispatch<SetStateAction<FormCore.Form>>) => {
 	return cb((prev) => ({
 		...prev,

@@ -323,14 +323,17 @@ const HomePage = () => {
 							<ParagraphNative
 								className="w-full xl:w-[50%] text-[13px] xl:text-[20px] text-justify sm:text-center break-words"
 								textContent="
-								Project dựa trên ý tưởng về giao diện của tally.so"
+								Project dựa trên ý tưởng về giao diện của tally.so, dự án vẫn đang trong quá trình xây dựng"
 							/>
 
-							<ButtonCreateForm
-								urlNavigation="create-form"
-								textContent="Tạo một form miễn phí"
+							<Link
+								href={"/login"}
+								// urlNavigation="create-form"
+								// textContent="Tạo một form miễn phí"
 								className="!mt-[10px] !xl:mt-[50px]"
-							/>
+							>
+								Tạo form miễn phí
+							</Link>
 
 							<video playsInline autoPlay muted loop className="w-full  border-shadow-normal">
 								<source src="/assets/videos/homePage/intro.mp4" />

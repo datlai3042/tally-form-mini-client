@@ -54,7 +54,7 @@ export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNo
 };
 
 const FormCore = () => {
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
+	const { formInitial } = useContext(FormEditContext);
 	const [firstEnter, setFirstEnter] = useState<boolean>(formInitial.form_title ? true : false);
 
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
