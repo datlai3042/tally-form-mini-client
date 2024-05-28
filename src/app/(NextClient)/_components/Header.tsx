@@ -41,11 +41,11 @@ const Header = () => {
 				>
 					Tạo form miễn phí
 				</Link>
-				<ButtonCreateForm
+				{/* <ButtonCreateForm
 					urlNavigation="/dashboard"
 					textContent="Tạo Form"
 					className="[&]:hidden [&]:xl:flex"
-				/>
+				/> */}
 			</div>
 		</header>
 	);
