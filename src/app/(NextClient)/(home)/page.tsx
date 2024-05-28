@@ -311,7 +311,7 @@ const HomePage = () => {
 						></DivNative>
 						<DivNative className="absolute mt-[20px] top-0 left-[50%] translate-x-[-50%] w-full xl:w-[1024px] h-max flex flex-col justify-center items-center gap-[32px] ">
 							<h1 className="relative text-[20px] xl:text-[60px] font-bold text-center">
-								The simplest way to create forms
+								Dự án tạo form thu thập thông tin như Google Form
 								<Image
 									src={"/assets/images/HomePage/title-highlight-2.png"}
 									width={181}
@@ -323,8 +323,7 @@ const HomePage = () => {
 							<ParagraphNative
 								className="w-full xl:w-[50%] text-[13px] xl:text-[20px] text-justify sm:text-center break-words"
 								textContent="
-								Say goodbye to boring forms. Meet Tally — the free, intuitive form builder you’ve been
-								looking for."
+								Project dựa trên ý tưởng về giao diện của tally.so"
 							/>
 
 							<ButtonCreateForm

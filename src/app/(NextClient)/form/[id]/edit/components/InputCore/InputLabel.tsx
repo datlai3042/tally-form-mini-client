@@ -71,23 +71,12 @@ const InputLabel = (props: TProps) => {
 					ref={labelRef}
 					onKeyDown={onPressEnter}
 					onBlur={onSetLabel}
-					// defaultValue={value}
-					// onClick={() => divContentRef.current?.focus()}
-					// onKeyDown={onPressEnter}
 					contentEditable={true}
-					// onBlur={onSetTitle}
 					defaultValue={labelValue || ""}
 					suppressContentEditableWarning={true}
 					data-text={`${labelValue || "Label"}`}
 					spellCheck={false}
 					tabIndex={0}
-
-					// disabled={modeScreen === "NORMAL" ? false : true}
-					// value={value}
-					// onChange={(e) => setValue(e.target.value)}
-					// suppressContentEditableWarning={true}
-					// placeholder={`Title`}
-					// tabIndex={0}
 				>
 					{labelValue}
 				</DivNativeRef>

@@ -49,7 +49,7 @@ const LoginForm = (props: TProps) => {
 
 	useEffect(() => {
 		if (loginMutation.isSuccess) {
-			const { user } = loginMutation.data.metadata;
+			const { user } = loginMutation?.data.metadata;
 			router.push("/dashboard");
 			dispatch(onFetchUser({ user }));
 		}

@@ -23,7 +23,21 @@
 
 	[contentEditable="true"]:empty:not(:focus):before {
 		content: attr(data-text);
-		font-size: 1.3rem;
+		font-size: 1.5rem;
+		opacity: 0.4;
+		font-weight: 600;
+	}
+
+	.title-input[contentEditable="true"]:empty:not(:focus):before {
+		content: attr(data-text);
+		font-size: 1.9rem;
+		opacity: 0.4;
+		font-weight: 600;
+	}
+
+	.title-core[contentEditable="true"]:empty:not(:focus):before {
+		content: attr(data-text);
+		font-size: 5rem;
 		opacity: 0.4;
 		font-weight: 600;
 	}

@@ -15,10 +15,10 @@ const InputTitle = (props: TProps) => {
 	const { indexItem, titleValue } = props;
 	const { setFormInitial } = useContext(FormEditContext);
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
-
+	console.log({ titleValue });
 	const [focus, setFocus] = useState<boolean>(false);
 	const titleRef = useRef<HTMLDivElement | null>(null);
-	const [value, setValue] = useState<string>(titleValue || "");
+	const [value, setValue] = useState<string>(titleValue || "Title");
 
 	console.log({ value });
 
@@ -64,13 +64,14 @@ const InputTitle = (props: TProps) => {
 		<DivNative className=" min-h-[4rem] h-max w-[70%] flex gap-[.5rem] ">
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
-					className="group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2.8rem] bg-[#ffffff]"
+					className="title-input group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2.8rem] bg-[#ffffff]"
 					autoFocus={true}
 					ref={titleRef}
 					onKeyDown={onPressEnter}
 					onBlur={onSetTitle}
 					contentEditable={true}
-					defaultValue={titleValue || ""}
+					defaultValue={value || "False"}
+					data-text={`${value || "Title"}`}
 					suppressContentEditableWarning={true}
 					tabIndex={0}
 					spellCheck={false}

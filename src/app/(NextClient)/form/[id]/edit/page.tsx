@@ -46,7 +46,7 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 		<DivNative className="relative w-screen  min-h-screen h-max flex overflow-x-hidden ">
 			{openSidebar && (
 				<aside
-					className={` absolute z-[2] w-[0%] sm:w-[35%] xl:w-[16.5%] min-h-full h-max border-r-[.1rem]  border-b-[.1rem] border-slate-200 hidden sm:block transition-[width]  duration-1000  bg-[#ffffff] `}
+					className={` absolute z-[2] w-[0%] sm:w-[35%] xl:w-[16.5%] min-h-full h-max  hidden sm:block transition-[width]  duration-1000  bg-[#ffffff] `}
 				>
 					{openSidebar && <DashBoardLeft />}
 				</aside>
@@ -56,7 +56,7 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 					openSidebar
 				)} ${styleEffect.onCheckModeScreen()} absolute  h-full  transition-all    `}
 			>
-				<DivNative className=" min-h-screen  h-max  flex flex-col text-[1.4rem] bg-[#ffffff] max-w-full overflow-hidden">
+				<DivNative className=" min-h-screen  h-max  flex flex-col text-[1.4rem] bg-[#ffffff]  border-l-[.1rem]  border-slate-200 max-w-full overflow-hidden">
 					<HeaderEditForm />
 					<FormCore />
 				</DivNative>

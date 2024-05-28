@@ -54,7 +54,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} group min-h-[8rem] w-max max-w-full xl:max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold  `}
+					className={`${styleEffect.onCheckTitle()} title-core group min-h-[8rem] w-max max-w-full xl:max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold  `}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}

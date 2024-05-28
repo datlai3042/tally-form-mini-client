@@ -3,6 +3,7 @@ import AuthService from "../_services/auth.service";
 import { AUTHORIZATION_ERROR_STATUS, HttpError, PERMISSION_ERROR_STATUS } from "./httpError";
 import { CustomRequest, Method } from "@/type";
 import { removeValueLocalStorage } from "./utils";
+import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
 
 type RetryAPI = RequestInit;
 
@@ -27,34 +28,39 @@ export const httpCaseErrorNextClient = async <Response>(
 	}
 };
 
-let flag: any;
+let refreshTokenPromise: Promise<ResponseApi<ResponseAuth>> | null = null;
 export const nextClient401 = async <Response>(
 	method: Method,
 	fullUrl: string,
 	options: RetryAPI,
 	signal: AbortSignal
 ) => {
-	const refresh_api = await AuthService.refreshTokenClient(signal);
-	//CASE: FAILED
-
-	if (+refresh_api.code === PERMISSION_ERROR_STATUS) {
-		// AuthService.tokenPermission(refresh_api.code, payload as ErrorPayload);
-		await AuthService.logoutNextClient();
-		return redirect("/");
+	if (!refreshTokenPromise) {
+		refreshTokenPromise = AuthService.refreshTokenClient(signal).finally(() => (refreshTokenPromise = null));
+		//CASE: FAILED
+		//AFTER
+		//CALL API AGAIN WITH NEW TOKEN
 	}
-	//CASE: SUCCESS
-	await AuthService.syncNextToken(refresh_api);
-	//AFTER
-	//CALL API AGAIN WITH NEW TOKEN
-	const call_again = await fetch(fullUrl, options);
+	return refreshTokenPromise.then(async (res) => {
+		if (+res.code === PERMISSION_ERROR_STATUS) {
+			// AuthService.tokenPermission(res.code, payload as ErrorPayload);
+			await AuthService.logoutNextClient();
+			return redirect("/");
+		}
+		//CASE: SUCCESS
+		console.log("async");
+		await AuthService.syncNextToken(res);
+		const call_again = await fetch(fullUrl, options);
 
-	if (!call_again.ok) {
-		throw new HttpError({ status: 500 });
-	}
+		if (!call_again.ok) {
+			throw new HttpError({ status: 500 });
+		}
 
-	//FINALLY
-	const response_again: Response = await call_again.json();
-	return response_again;
+		//FINALLY
+		const response_again: Response = await call_again.json();
+
+		return response_again;
+	});
 };
 
 export const nextClient403 = async (url: string) => {
