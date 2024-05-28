@@ -68,9 +68,9 @@ const RegisterForm = (props: TProps) => {
 	return (
 		<div className="relative  xl:w-[70rem] mx-auto h-[80rem]  bg-[#ffffff] flex justify-start xl:justify-center items-center flex-col  gap-[2rem] rounded-[1.2rem] p-[2.4rem_2rem]">
 			<div className="mb-[4rem] flex items-center flex-col gap-[.2rem] ">
-				<p className="text-[2.4rem] xl:text-[3.8rem] font-semibold text-center">Create your Tally account</p>
+				<p className="text-[2.4rem] xl:text-[3.8rem] font-semibold text-center">Tạo tài khoản</p>
 				<p className="text-[1.6rem] xl:text-[1.8rem] text-slate-400 text-center">
-					Don’t lose access to your forms by creating a Tally account.
+					Đăng kí tài khoản để tạo cho bạn.
 				</p>
 			</div>
 			<form
@@ -130,9 +130,9 @@ const RegisterForm = (props: TProps) => {
 			</form>
 
 			<p className="text-[1.4rem]">
-				Do have an account yet?{" "}
+				Bạn có đã có tài khoản?{" "}
 				<Link href={"/login"} className="text-blue-400 underline">
-					Login
+					Đăng nhập
 				</Link>
 			</p>
 

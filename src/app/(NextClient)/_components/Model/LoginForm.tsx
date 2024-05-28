@@ -90,9 +90,9 @@ const LoginForm = (props: TProps) => {
 			</form>
 
 			<p className="text-[1.4rem]">
-				Don't have an account yet?{" "}
+				Bạn chưa có tài khoản?{" "}
 				<Link href={"/register"} className="text-blue-400 underline">
-					Register
+					đăng kí nhé
 				</Link>
 			</p>
 
