@@ -37,15 +37,15 @@ const Header = () => {
 					href={"/login"}
 					// urlNavigation="create-form"
 					// textContent="Tạo một form miễn phí"
-					className="!mt-[10px] !xl:mt-[50px]"
+					className="!mt-[10px] !xl:mt-[50px] p-[6px_12px] flex  justify-center items-center gap-[.8rem] text-[1.8rem] text-[#ffffff] bg-[rgb(0_112_215)] opacity-[.95] hover:opacity-100 transition-colors duration-200 rounded-[.6rem]"
 				>
 					Tạo form miễn phí
 				</Link>
-				{/* <ButtonCreateForm
+				<ButtonCreateForm
 					urlNavigation="/dashboard"
 					textContent="Tạo Form"
 					className="[&]:hidden [&]:xl:flex"
-				/> */}
+				/>
 			</div>
 		</header>
 	);
