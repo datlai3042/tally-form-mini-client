@@ -70,7 +70,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 
 			{modeScreen === "FULL" && (
 				<ParagraphNative
-					textContent={formInitial.form_title.toUpperCase()}
+					textContent={value?.toUpperCase()}
 					className="w-max max-w-[80rem] text-[6rem]  font-black   break-all whitespace-pre-wrap"
 				/>
 			)}
