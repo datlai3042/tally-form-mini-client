@@ -3,6 +3,9 @@
 import { Hexagon, PanelTop } from "lucide-react";
 import React, { useContext } from "react";
 import { FormEditContext } from "../../provider/FormEditProvider";
+import { useMutation } from "@tanstack/react-query";
+import FormService from "@/app/_services/form.service";
+import { FormCore } from "@/type";
 
 export interface ButtonAddBackgroundFormProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	textContent?: string;
@@ -13,9 +16,17 @@ const ButtonAddBackgroundForm = (props: ButtonAddBackgroundFormProps) => {
 
 	const { textContent = "Thêm ảnh bìa", ...buttonProps } = props;
 
+	const addBackgroundMutation = useMutation({
+		mutationKey: ["add-background"],
+		mutationFn: (form: FormCore.Form) => FormService.addBackground(formInitial),
+		onSuccess: (res) => {
+			const { form } = res.metadata;
+			setFormInitial(form);
+		},
+	});
+
 	const onAddBackgroud = () => {
-		const backgroundUrl = formInitial.form_setting_default.form_background_default_url;
-		setFormInitial((prev) => ({ ...prev, form_background: { form_background_iamge_url: backgroundUrl } }));
+		addBackgroundMutation.mutate(formInitial);
 	};
 
 	return (

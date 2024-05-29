@@ -1,4 +1,4 @@
-import { FormCore } from "@/type";
+import { FormCore, InputCore } from "@/type";
 import Http from "../_lib/http";
 import { ResponseApi } from "../_schema/api/response.shema";
 
@@ -36,6 +36,30 @@ class FormService {
 
 	static async deleteCover(form_id: string) {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/delete-cover", { form_id });
+	}
+
+	static async updateSettingInput(
+		form: FormCore.Form,
+		input_id: string,
+		input_id_setting: InputCore.InputSettingTextCommon
+	) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-input-item-setting", {
+			form,
+			input_id,
+			input_id_setting,
+		});
+	}
+
+	static async addBackground(form: FormCore.Form) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-background", {
+			form,
+		});
+	}
+
+	static async addAvatar(form: FormCore.Form) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-avatar", {
+			form,
+		});
 	}
 }
 

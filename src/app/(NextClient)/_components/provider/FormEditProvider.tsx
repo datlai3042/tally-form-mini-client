@@ -10,6 +10,8 @@ type TFormEditContext = {
 export const FormEditContext = createContext<TFormEditContext>({
 	formInitial: {
 		_id: "",
+		form_avatar_state: false,
+		form_background_state: false,
 		form_title: "",
 		form_button_label: "",
 		form_inputs: [],
@@ -30,6 +32,8 @@ const FormEditContextProvider = (props: TProps) => {
 		_id: "",
 		form_title: "",
 		form_button_label: "",
+		form_avatar_state: false,
+		form_background_state: false,
 		form_inputs: [],
 		form_setting_default: {
 			form_avatar_default_url: "",

@@ -2,16 +2,18 @@ import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEdi
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
-import React, { useContext, useRef, useState } from "react";
+import { InputCore } from "@/type";
+import React, { SetStateAction, useContext, useRef, useState } from "react";
 
 type TProps = {
-	indexItem: number;
+	inputItem: InputCore.InputCommonText;
+	setInputItemString: React.Dispatch<SetStateAction<InputCore.InputCommonText>>;
 };
 
 const InputSettingMaxLength = (props: TProps) => {
-	const { indexItem } = props;
+	const { inputItem, setInputItemString } = props;
 	const { formInitial, setFormInitial } = useContext(FormEditContext);
-	const [maxLength, setMaxLength] = useState<number>(formInitial.form_inputs[indexItem].setting?.maxLength || 100);
+	const [maxLength, setMaxLength] = useState<number>(inputItem.setting.maxLength || 100);
 
 	const maxLengthRef = useRef<HTMLInputElement | null>(null);
 
@@ -21,11 +23,20 @@ const InputSettingMaxLength = (props: TProps) => {
 		}
 	};
 
+	const handleMaxLengthInput = (e: React.ChangeEvent<HTMLDivElement>) => {
+		setInputItemString((prev) => {
+			const newSetting = { ...prev };
+			newSetting.setting.minLength = maxLength;
+			return newSetting;
+		});
+	};
+
 	return (
 		<DivNative className="flex items-center justify-between gap-[.5rem]">
 			<SpanNative textContent={`Max`} onClick={labelClick} className="hover:cursor-pointer" />
 			<input
 				ref={maxLengthRef}
+				onBlur={handleMaxLengthInput}
 				onChange={(e) => setMaxLength(+e.target.value)}
 				type="number"
 				value={maxLength}

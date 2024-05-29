@@ -9,9 +9,9 @@ const FormImage = () => {
 
 	return (
 		<DivNative className="group relative w-full min-h-[15rem] h-[30rem]">
-			{formInitial.form_background && <FormBackground />}
+			{(formInitial.form_background || formInitial.form_background_state) && <FormBackground />}
 
-			{formInitial.form_avatar && <FormAvatar />}
+			{(formInitial.form_avatar || formInitial.form_avatar_state) && <FormAvatar />}
 		</DivNative>
 	);
 };

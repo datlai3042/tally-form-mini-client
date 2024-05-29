@@ -29,12 +29,9 @@ const FormAvatarUpload = () => {
 	const deleteCoverMutaion = useMutation({
 		mutationKey: ["delete-avatar-form"],
 		mutationFn: (id: string) => FormService.deleteCover(id),
-		onSuccess: () => {
-			setFormInitial((prev) => {
-				const newObject = { ...prev };
-				delete newObject["form_avatar"];
-				return newObject;
-			});
+		onSuccess: (res) => {
+			const { form } = res.metadata;
+			setFormInitial(form);
 		},
 	});
 

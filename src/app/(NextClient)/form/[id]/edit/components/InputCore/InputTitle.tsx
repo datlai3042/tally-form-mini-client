@@ -4,52 +4,35 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
+import { setTitleInput } from "@/app/_lib/utils";
+import { InputCore } from "@/type";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 
 type TProps = {
-	indexItem: number;
-	titleValue: string;
+	inputItem: InputCore.InputForm;
 };
 
 const InputTitle = (props: TProps) => {
-	const { indexItem, titleValue } = props;
-	const { setFormInitial } = useContext(FormEditContext);
-	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
-	console.log({ titleValue });
-	const [focus, setFocus] = useState<boolean>(false);
+	const { inputItem } = props;
+	const { formInitial, setFormInitial } = useContext(FormEditContext);
+	const { modeScreen } = useContext(FormModeScreenContext);
 	const titleRef = useRef<HTMLDivElement | null>(null);
-	const [value, setValue] = useState<string>(titleValue || "Title");
+	const [value, setValue] = useState<string>(inputItem.input_heading || "Title");
 
 	console.log({ value });
 
 	useEffect(() => {
 		titleRef.current?.focus();
-		setFocus(true);
 	}, []);
 
-	const onSetTitle = (e: React.ChangeEvent<HTMLDivElement>) => {
+	const onSetTitle = async (e: React.ChangeEvent<HTMLDivElement>) => {
 		if (titleRef.current) {
 			titleRef!.current!.textContent = e.target.textContent;
-			setValue(titleRef.current.textContent as string);
-
-			setFormInitial((prev) => {
-				const newArray = [...prev.form_inputs];
-				const itemEdit = newArray[indexItem];
-				// if (itemEdit.type !== "Date" && itemEdit.type !== "IMAGE") {
-				newArray[indexItem] = {
-					...itemEdit,
-					input_heading: titleRef!.current!.textContent as string,
-					input_heading_type: "TITLE",
-				};
-
-				return {
-					...prev,
-					form_inputs: newArray,
-				};
-				// }
-				return prev;
-			});
-			setFocus(false);
+			const titleCurrent = titleRef.current.textContent || "";
+			const newFormUpdate = await setTitleInput(titleCurrent, inputItem, formInitial);
+			const { form } = newFormUpdate.metadata;
+			setFormInitial(form);
+			setValue(titleCurrent);
 		}
 	};
 
@@ -76,7 +59,7 @@ const InputTitle = (props: TProps) => {
 					tabIndex={0}
 					spellCheck={false}
 				>
-					{titleValue}
+					{inputItem.input_heading}
 				</DivNativeRef>
 			)}
 

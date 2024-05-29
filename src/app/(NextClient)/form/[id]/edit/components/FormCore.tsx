@@ -27,7 +27,6 @@ export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNo
 					<InputCoreText
 						// setArrayInput={setArrayInput}
 						inputItem={ele as InputCore.InputText.InputTypeText}
-						indexItem={index}
 						key={ele.type + index}
 					/>
 				);
@@ -36,7 +35,7 @@ export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNo
 					<InputCoreEmail
 						inputItem={ele as InputCore.InputEmail.InputTypeEmail}
 						// setArrayInput={setArrayInput}
-						indexItem={index}
+
 						key={ele.type + index}
 					/>
 				);
@@ -45,7 +44,7 @@ export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNo
 					<InputCoreText
 						inputItem={ele as InputCore.InputText.InputTypeText}
 						// setArrayInput={setArrayInput}
-						indexItem={index}
+
 						key={ele.type + index}
 					/>
 				);
@@ -89,17 +88,24 @@ const FormCore = () => {
 					/>
 				</DivNative>
 			)}
-			{(formInitial.form_avatar || formInitial.form_background) && <FormImage />}
+			{(formInitial.form_avatar ||
+				formInitial.form_background ||
+				formInitial.form_background_state ||
+				formInitial.form_avatar_state) && <FormImage />}
 			{modeScreen === "FULL" ? null : (
 				<React.Fragment>
 					<DivNative
 						className={`${!(formInitial.form_avatar || formInitial.form_background) ? "mt-[4rem]" : ""}`}
 					>
-						<DivNative className={`${formInitial.form_avatar ? "mt-[10rem]" : "mt-0"} group h-[6rem]`}>
+						<DivNative className={`${formInitial.form_avatar ? "pt-[10rem]" : "pt-0"} group h-[6rem]`}>
 							<DivNative className="w-full xl:min-w-[100rem] xl:w-max h-full px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%]">
 								<DivNative className="hidden group-hover:flex w-full h-[4rem]   gap-[2rem]">
-									{!formInitial.form_background && <ButtonAddBackgroundForm />}
-									{!formInitial.form_avatar && <ButtonAddAvatarForm />}
+									{!formInitial.form_background_state && !formInitial.form_background && (
+										<ButtonAddBackgroundForm />
+									)}
+									{!formInitial.form_avatar_state && !formInitial.form_avatar && (
+										<ButtonAddAvatarForm />
+									)}
 								</DivNative>
 							</DivNative>
 						</DivNative>
@@ -109,7 +115,9 @@ const FormCore = () => {
 
 			<DivNative
 				className={`${modeScreen === "NORMAL" ? "  px-[1rem]  pl-[25%]" : " px-[5rem]"} ${
-					formInitial.form_avatar && modeScreen === "FULL" ? "mt-[12rem]" : "mt-0"
+					(formInitial.form_avatar || formInitial.form_avatar_state) && modeScreen === "FULL"
+						? "mt-[12rem]"
+						: "mt-0"
 				} w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
 			>
 				<InputCoreTitle setFirstEnter={setFirstEnter} />

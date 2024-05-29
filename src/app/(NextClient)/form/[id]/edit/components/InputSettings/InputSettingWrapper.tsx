@@ -1,30 +1,29 @@
 import Portal from "@/app/(NextClient)/_components/Portal";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
-import { FormCore, ReactCustom } from "@/type";
+import { FormCore, InputCore, ReactCustom } from "@/type";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import InputSettingEmail from "./InputSettingEmail";
 import InputSettingText from "./InputSettingText";
 
 type TProps = {
-	indexItem: number;
-	InputType: FormCore.InputType;
+	inputItem: InputCore.InputForm;
 	setOpenModel: ReactCustom.SetStateBoolean;
 };
 
-const renderChildren = (type: FormCore.InputType, indexItem: number) => {
-	switch (type) {
+const renderChildren = (inputItem: InputCore.InputForm) => {
+	switch (inputItem.type) {
 		case "EMAIL":
 			return <InputSettingEmail />;
 		case "TEXT":
-			return <InputSettingText indexItem={indexItem} />;
+			return <InputSettingText inputItem={inputItem} />;
 		default:
-			return <InputSettingText indexItem={indexItem} />;
+			return <InputSettingText inputItem={inputItem} />;
 	}
 };
 
 const InputSettingWrapper = (props: TProps) => {
-	const { indexItem, InputType, setOpenModel } = props;
+	const { inputItem, setOpenModel } = props;
 
 	const modelRef = useRef<HTMLDivElement | null>(null);
 
@@ -38,8 +37,8 @@ const InputSettingWrapper = (props: TProps) => {
 	);
 
 	const children = useMemo(() => {
-		return renderChildren(InputType, indexItem);
-	}, [InputType, indexItem]) as React.ReactNode;
+		return renderChildren(inputItem);
+	}, [inputItem]) as React.ReactNode;
 
 	console.log("click");
 

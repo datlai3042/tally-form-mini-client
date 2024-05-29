@@ -48,28 +48,24 @@ namespace InputCore {
 		input_heading_type?: "LABEL" | "TITLE";
 	};
 
+	type InputSettingTextCommon = {
+		require: boolean;
+		placeholder?: string;
+		minLength: number;
+		maxLength: number;
+		input_error?: string;
+	};
+
+	type InputCommonText = { setting: InputSettingTextCommon; _id?: string };
+
 	namespace InputEmail {
-		export interface InputTypeEmail extends InputCore.InputCommon {
+		export interface InputTypeEmail extends InputCore.InputCommon, InputCore.InputCommonText {
 			type: "EMAIL";
 			setting?: InputCore.InputEmail.InputSettingEmail;
 			input_value?: string;
 		}
 
-		export type InputSettingEmail = {
-			require: boolean;
-			placeholder?: string;
-			minLength: number;
-			maxLength: number;
-			input_error?: string;
-		};
-
-		export const inputSettingEmail: InputCore.InputEmail.InputSettingEmail = {
-			maxLength: 100,
-			minLength: 8,
-			require: false,
-			input_error: "Email không hợp lệ",
-			placeholder: "Nhập email của bạn",
-		};
+		export type InputSettingEmail = InputCore.InputSettingTextCommon;
 	}
 
 	namespace InputDate {
@@ -88,20 +84,15 @@ namespace InputCore {
 	}
 
 	namespace InputText {
-		export type InputSettingText = {
-			require: boolean;
-			placeholder?: string;
-			minLength: number;
-			maxLength: number;
-			input_error?: string;
-		};
+		export type InputSettingText = InputCore.InputSettingTextCommon;
 
 		export const inputSettingText: InputCore.InputText.InputSettingText = {};
 		export type InputText = "TEXT";
-		export type InputTypeText = InputCore.InputCommon & {
-			type: InputText;
-			setting?: InputCore.InputText.InputSettingText;
-		};
+		export type InputTypeText = InputCore.InputCommon &
+			InputCore.InputCommonText & {
+				type: InputText;
+				// setting?: InputCore.InputText.InputSettingText;
+			};
 	}
 
 	namespace InputOption {
@@ -109,17 +100,19 @@ namespace InputCore {
 	}
 
 	namespace InputImage {
-		export type InputTypeImage = {
+		export type InputTypeImage = InputCore.InputCommon & {
 			type: "IMAGE";
+			_id?: string;
 			caption: string;
 			alt: string;
 			url: string;
 			secure_url: string;
 			public_id: string;
+			setting: { a: number };
 		};
 	}
 
-	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText;
+	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText | InputImage.InputTypeImage;
 	// | InputOption.InputTypeOption
 	// | InputDate.InputTypeDate
 	// | InputImage.InputTypeImage;
@@ -157,6 +150,8 @@ namespace FormCore {
 	export type Form = {
 		_id: string;
 		form_title: FormCore.FormTitle;
+		form_background_state: boolean;
+		form_avatar_state: boolean;
 
 		form_background?: FormCore.FormBackground;
 		form_setting_default: FormCore.FormSettingDefault;

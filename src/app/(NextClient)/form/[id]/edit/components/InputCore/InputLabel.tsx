@@ -4,23 +4,22 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
+import { setLabelInput } from "@/app/_lib/utils";
+import { InputCore } from "@/type";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 
 type TProps = {
-	indexItem: number;
-	labelValue: string;
+	inputItem: InputCore.InputForm;
 };
 
 const InputLabel = (props: TProps) => {
-	const { indexItem, labelValue } = props;
+	const { inputItem } = props;
 	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
 
 	const [focus, setFocus] = useState<boolean>(false);
 	const labelRef = useRef<HTMLDivElement | null>(null);
-	const [value, setValue] = useState<string>(labelValue);
-
-	console.log({ value });
+	const [value, setValue] = useState<string>(inputItem.input_heading || "");
 
 	useEffect(() => {
 		labelRef.current?.focus();
@@ -34,33 +33,17 @@ const InputLabel = (props: TProps) => {
 		}
 	};
 
-	const onSetLabel = (e: React.ChangeEvent<HTMLDivElement>) => {
+	const onSetLabel = async (e: React.ChangeEvent<HTMLDivElement>) => {
 		if (labelRef.current) {
 			labelRef!.current!.textContent = e.target.textContent;
-			setValue(labelRef.current.textContent as string);
-
-			setFormInitial((prev) => {
-				const newArray = [...prev.form_inputs];
-				const itemEdit = newArray[indexItem];
-				// if (itemEdit.type !== "Date" && itemEdit.type !== "IMAGE") {
-				newArray[indexItem] = {
-					...itemEdit,
-					input_heading: labelRef!.current!.textContent as string,
-					input_heading_type: "TITLE",
-				};
-
-				return {
-					...prev,
-					form_inputs: newArray,
-				};
-				// }
-				return prev;
-			});
+			const labelCurrent = labelRef.current.textContent || "";
+			console.log({ inputItem });
+			const newFormUpdate = await setLabelInput(labelCurrent, inputItem, formInitial);
+			const { form } = newFormUpdate.metadata;
+			setFormInitial(form);
 			setFocus(false);
 		}
 	};
-
-	console.log({ label: labelValue });
 
 	return (
 		<DivNative className=" min-h-full h-max w-[70%] flex gap-[.5rem] ">
@@ -72,13 +55,13 @@ const InputLabel = (props: TProps) => {
 					onKeyDown={onPressEnter}
 					onBlur={onSetLabel}
 					contentEditable={true}
-					defaultValue={labelValue || ""}
+					defaultValue={inputItem.input_heading || ""}
 					suppressContentEditableWarning={true}
-					data-text={`${labelValue || "Label"}`}
+					data-text={`${inputItem.input_heading || "Label"}`}
 					spellCheck={false}
 					tabIndex={0}
 				>
-					{labelValue}
+					{inputItem.input_heading}
 				</DivNativeRef>
 			)}
 

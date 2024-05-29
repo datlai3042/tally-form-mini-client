@@ -4,16 +4,17 @@ import { ButtonCustomProps } from "./Button";
 
 export type TProps = {
 	Icon: React.ReactNode;
-} & Omit<ButtonCustomProps, "textContent">;
+} & Partial<ButtonCustomProps>;
 
 const ButtonIcon = (props: TProps) => {
-	const { Icon, ...buttonProps } = props;
+	const { textContent, Icon, ...buttonProps } = props;
 
 	return (
 		<button
 			{...buttonProps}
-			className={`${buttonProps.className} w-[30px] h-[30px] flex justify-center items-center `}
+			className={`${buttonProps.className} min-w-[3rem] min-h-[3rem] w-max h-max flex justify-center items-center gap-[.5rem] `}
 		>
+			{textContent && textContent}
 			{Icon}
 		</button>
 	);

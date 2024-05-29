@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { addInputFirstItem } from "@/app/_lib/utils";
+import { addInputFirstItem, addInputToSectionTitle, setTitleForm } from "@/app/_lib/utils";
 import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import { ReactCustom } from "@/type";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
@@ -18,22 +18,24 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 	const [value, setValue] = useState<string>(formInitial.form_title ? formInitial.form_title : "");
 	const { modeScreen } = useContext(FormModeScreenContext);
 
-	const onPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+	const onPressEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
-			setFormInitial((prev) => {
-				return { ...prev, form_title: divContentRef.current?.textContent || "" };
-			});
 			addInputFirstItem(setFormInitial);
+			const title = divContentRef.current?.innerHTML || "";
+			const newFormUpdate = await addInputToSectionTitle(title, formInitial);
+			const { form } = newFormUpdate.metadata;
+			setFormInitial(form);
 		}
 	};
 
-	const onChangeTitle = (e: React.ChangeEvent<HTMLDivElement>) => {
+	const onChangeTitle = async (e: React.ChangeEvent<HTMLDivElement>) => {
 		if (divContentRef.current) {
 			divContentRef!.current!.textContent = e.target.textContent;
+			const titleCurrent = divContentRef.current.textContent;
 			setValue(divContentRef.current.textContent as string);
-			setFormInitial((prev) => {
-				return { ...prev, form_title: divContentRef.current?.textContent || "" };
-			});
+			const newFormUpdate = await setTitleForm(titleCurrent || "", formInitial);
+			const { form } = newFormUpdate.metadata;
+			setFormInitial(form);
 		}
 	};
 

@@ -3,6 +3,9 @@
 import { Hexagon } from "lucide-react";
 import React, { useContext } from "react";
 import { FormEditContext } from "../../provider/FormEditProvider";
+import { useMutation } from "@tanstack/react-query";
+import { FormCore } from "@/type";
+import FormService from "@/app/_services/form.service";
 
 export interface ButtonAddAvatarFormProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	textContent?: string;
@@ -13,9 +16,17 @@ const ButtonAddAvatarForm = (props: ButtonAddAvatarFormProps) => {
 
 	const { textContent = "Thêm Avatar", ...buttonProps } = props;
 
+	const addAvatarMutation = useMutation({
+		mutationKey: ["add-background"],
+		mutationFn: (form: FormCore.Form) => FormService.addAvatar(formInitial),
+		onSuccess: (res) => {
+			const { form } = res.metadata;
+			setFormInitial(form);
+		},
+	});
+
 	const onAddAvatar = () => {
-		const avatarUrlDefault = formInitial.form_setting_default.form_avatar_default_url;
-		setFormInitial((prev) => ({ ...prev, form_avatar: { form_avatar_url: avatarUrlDefault } }));
+		addAvatarMutation.mutate(formInitial);
 	};
 
 	return (

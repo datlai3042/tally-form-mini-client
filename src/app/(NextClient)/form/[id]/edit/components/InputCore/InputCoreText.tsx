@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { addInputFirstItem } from "@/app/_lib/utils";
 import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
@@ -10,14 +10,13 @@ import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative
 
 type TProps = {
 	inputItem: TInputCore.InputText.InputTypeText;
-	indexItem: number;
 };
 
 const InputCoreText = (props: TProps) => {
 	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
 
-	const { indexItem, inputItem } = props;
+	const { inputItem } = props;
 
 	const divContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +32,7 @@ const InputCoreText = (props: TProps) => {
 			if (modeScreen === "FULL") {
 				return null;
 			}
-			addInputFirstItem(setFormInitial);
+			// addInputFirstItem(setFormInitial);
 			// setArrayInput((prev) => prev.concat({ type: "TEXT", placeholder: "" }));
 			e.preventDefault();
 		}
@@ -63,7 +62,7 @@ const InputCoreText = (props: TProps) => {
 				onKeyDown={onPressEnter}
 				contentEditable={true}
 				onInput={(e) => setValue(e.currentTarget.textContent || "")}
-				data-text={`${formInitial.form_inputs[indexItem].setting?.placeholder || "Typing your text"}`}
+				data-text={`${inputItem.setting?.placeholder || "Typing your text"}`}
 				suppressContentEditableWarning={true}
 				tabIndex={0}
 			>
@@ -84,10 +83,10 @@ const InputCoreText = (props: TProps) => {
 			labelValue={label}
 			titleValue={title}
 			inputHeading={input_heading}
-			indexItem={indexItem}
+			inputItem={inputItem}
 			type={"TEXT"}
 		/>
 	);
 };
 
-export default InputCoreText;
+export default memo(InputCoreText);

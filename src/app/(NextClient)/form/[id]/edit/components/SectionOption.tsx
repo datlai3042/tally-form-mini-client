@@ -1,5 +1,5 @@
 import DivWrapper from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
-import { FormCore, ReactCustom } from "@/type";
+import { FormCore, InputCore, ReactCustom } from "@/type";
 import { GripVertical, Plus, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import ModelInputType from "./ModelInputType";
@@ -8,12 +8,12 @@ import InputSettingWrapper from "./InputSettings/InputSettingWrapper";
 type TProps = {
 	funcRemoveInput: () => void;
 	focus: boolean;
-	indexItem: number;
+	inputItem: InputCore.InputForm;
 	type: FormCore.InputType;
 };
 
 const SectionOption = (props: TProps) => {
-	const { focus, indexItem, type, funcRemoveInput } = props;
+	const { focus, inputItem, type, funcRemoveInput } = props;
 
 	const [openSelectType, setOpenSelectType] = useState<boolean>(false);
 	const [openSetting, setSetting] = useState<boolean>(false);
@@ -32,12 +32,10 @@ const SectionOption = (props: TProps) => {
 				<Plus size={18} onClick={() => setOpenSelectType(true)} className="hover:cursor-pointer" />
 				<DivWrapper>
 					<GripVertical size={18} onClick={() => setSetting(true)} className="hover:cursor-pointer" />
-					{openSetting && (
-						<InputSettingWrapper setOpenModel={setSetting} indexItem={indexItem} InputType={type} />
-					)}
+					{openSetting && <InputSettingWrapper setOpenModel={setSetting} inputItem={inputItem} />}
 				</DivWrapper>
 			</DivWrapper>
-			{openSelectType && <ModelInputType setOpenModel={setOpenSelectType} indexItem={indexItem} />}
+			{openSelectType && <ModelInputType setOpenModel={setOpenSelectType} inputItem={inputItem} />}
 		</DivWrapper>
 	);
 };

@@ -1,6 +1,8 @@
 import { CustomRequest, FormCore, InputCore, ReactCustom } from "@/type";
 import { SetStateAction } from "react";
 import { inputSettingText } from "../_constant/input.constant";
+import Http from "./http";
+import { ResponseApi } from "../_schema/api/response.shema";
 
 export const validateEmail = (email: string) => {
 	const regex = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
@@ -62,6 +64,69 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 };
 
 // Handle Form
+
+export const setTitleForm = async (title: string, form: FormCore.Form) => {
+	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/set-title-form", {
+		title,
+		form,
+	});
+
+	return addInputAPI;
+};
+
+export const addInputToSectionTitle = async (title: string, form: FormCore.Form) => {
+	const newForm = { ...form };
+	console.log({ title });
+	newForm.form_title = title;
+	newForm.form_inputs.push({ type: "TEXT", setting: inputSettingText });
+	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-input-to-title", {
+		form,
+	});
+
+	return addInputAPI;
+};
+
+export const setLabelInput = async (label: string, inputItem: InputCore.InputForm, form: FormCore.Form) => {
+	const newInput = { ...inputItem };
+	newInput.input_heading = label;
+	newInput.input_heading_type = "LABEL";
+	newInput._id = inputItem._id;
+	console.log({ newInput, inputItem });
+	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-input-item", {
+		newInput,
+		form,
+	});
+
+	return addInputAPI;
+};
+
+export const setTitleInput = async (label: string, inputItem: InputCore.InputForm, form: FormCore.Form) => {
+	const newInput = { ...inputItem };
+	newInput.input_heading = label;
+	newInput.input_heading_type = "TITLE";
+	newInput._id = inputItem._id;
+	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-input-item", {
+		newInput,
+		form,
+	});
+
+	return addInputAPI;
+};
+
+export const addInputItem = async (inputItem: InputCore.InputForm, form: FormCore.Form) => {
+	const newForm = { ...form };
+	const indexInputCurrentEvent = form.form_inputs.findIndex((ip) => ip._id === inputItem._id);
+
+	const inputPush: InputCore.InputText.InputTypeText = { type: "TEXT", setting: inputSettingText };
+	newForm.form_inputs.splice(indexInputCurrentEvent + 1, 0, inputPush);
+
+	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-form", {
+		form: newForm,
+	});
+
+	return addInputAPI;
+};
+
 export const addInputFirstItem = (cb: React.Dispatch<SetStateAction<FormCore.Form>>) => {
 	return cb((prev) => ({
 		...prev,
@@ -81,14 +146,12 @@ export const removeInputFirstItem: FormCore.Func.RemoveInputItemFirst = (cb: Rea
 	});
 };
 
-export const removeInputWithIndex: FormCore.Func.RemoveInputItemWithIndex = (cb: ReactCustom.Form, index: number) => {
-	return cb((prev) => {
-		const newArray = [...prev.form_inputs];
-		newArray.splice(index, 1);
-
-		return {
-			...prev,
-			form_inputs: newArray,
-		};
+export const removeInputWithId = async (form: FormCore.Form, inpur_id: string) => {
+	const newForm = { ...form };
+	newForm.form_inputs = form.form_inputs.filter((ele) => ele._id !== inpur_id);
+	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/delete-input-item", {
+		form: newForm,
 	});
+
+	return addInputAPI;
 };

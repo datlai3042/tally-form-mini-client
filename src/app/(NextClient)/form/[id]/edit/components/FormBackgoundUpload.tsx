@@ -29,12 +29,9 @@ const FormBackgoundUpload = () => {
 	const deleteCoverMutaion = useMutation({
 		mutationKey: ["delete-cover"],
 		mutationFn: (id: string) => FormService.deleteCover(id),
-		onSuccess: () => {
-			setFormInitial((prev) => {
-				const newObject = { ...prev };
-				delete newObject["form_background"];
-				return newObject;
-			});
+		onSuccess: (res) => {
+			const { form } = res.metadata;
+			setFormInitial(form);
 		},
 	});
 

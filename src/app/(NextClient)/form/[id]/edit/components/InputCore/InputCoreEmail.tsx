@@ -10,7 +10,6 @@ import { InputCore as TInputCore } from "@/type";
 import { inputSettingText } from "@/app/_constant/input.constant";
 
 type TProps = {
-	indexItem: number;
 	inputItem: TInputCore.InputEmail.InputTypeEmail;
 };
 
@@ -19,7 +18,7 @@ const InputCoreEmail = (props: TProps) => {
 		formInitial: { form_inputs },
 		setFormInitial,
 	} = useContext(FormEditContext);
-	const { indexItem, inputItem } = props;
+	const { inputItem } = props;
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const [focus, setFocus] = useState<boolean>(false);
@@ -93,11 +92,11 @@ const InputCoreEmail = (props: TProps) => {
 
 	return (
 		<InputCore
+			inputItem={inputItem}
 			InputComponent={InputEmail}
 			labelValue={label}
 			titleValue={title}
 			inputHeading={input_heading}
-			indexItem={indexItem}
 			type="EMAIL"
 		/>
 	);

@@ -4,7 +4,7 @@ import ModelInputType from "../ModelInputType";
 import InputLabel from "./InputLabel";
 import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import InputTitle from "./InputTitle";
-import { removeInputFirstItem, removeInputWithIndex } from "@/app/_lib/utils";
+import { addInputItem, removeInputFirstItem, removeInputWithId } from "@/app/_lib/utils";
 import { FormCore, InputCore as TInputCore } from "@/type";
 import SectionLabelTitle from "../SectionLabelTitle";
 import SectionOption from "../SectionOption";
@@ -15,47 +15,55 @@ import InputSettingWrapper from "../InputSettings/InputSettingWrapper";
 type TProps = {
 	type: FormCore.InputType;
 	InputComponent: React.ReactNode;
-	indexItem: number;
+	inputItem: TInputCore.InputForm;
 	labelValue: boolean;
 	titleValue: boolean;
 	inputHeading: string;
 };
 
 const InputCore = (props: TProps) => {
-	const { indexItem, InputComponent, labelValue, titleValue, inputHeading, type } = props;
+	const { inputItem, InputComponent, labelValue, titleValue, inputHeading, type } = props;
 
 	const [label, setLabel] = useState<boolean>(labelValue);
 	const [title, setTitle] = useState<boolean>(titleValue);
 	const [focus, setFocus] = useState<boolean>(false);
 
-	const { setFormInitial } = useContext(FormEditContext);
+	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
 
-	const removeFormItem = () => {
-		if (typeof indexItem === "number") {
-			if (indexItem === 0) {
-				removeInputFirstItem(setFormInitial);
-				return;
-			}
+	const removeFormItem = async () => {
+		const newFormUpdate = await removeInputWithId(formInitial, inputItem._id!);
+		const { form } = newFormUpdate.metadata;
+		setFormInitial(form);
+	};
 
-			removeInputWithIndex(setFormInitial, indexItem);
+	const onPressEnter = async (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === "Enter") {
+			if (modeScreen === "FULL") {
+				return null;
+			}
+			const newFormUpdate = await addInputItem(inputItem, formInitial);
+			const { form } = newFormUpdate.metadata;
+			setFormInitial(form);
 		}
 	};
 
 	return (
 		<DivWrapper className="flex flex-col gap-[.5rem]  ">
-			{label && <InputLabel labelValue={inputHeading} indexItem={indexItem} />}
-			{title && <InputTitle titleValue={inputHeading} indexItem={indexItem} />}
+			{label && <InputLabel inputItem={inputItem} />}
+			{title && <InputTitle inputItem={inputItem} />}
 			<DivWrapper
 				className="group relative min-h-[8rem] h-max ml-[-8rem] min-w-full  xl:w-[60rem]  pl-[8rem] flex items-center "
 				onFocus={() => setFocus(true)}
 				onBlur={() => setFocus(false)}
 			>
 				{modeScreen === "NORMAL" && (
-					<SectionOption funcRemoveInput={removeFormItem} indexItem={indexItem} type={type} focus={focus} />
+					<SectionOption funcRemoveInput={removeFormItem} inputItem={inputItem} type={type} focus={focus} />
 				)}
 
-				<DivWrapper className="w-[90%] sm:w-full h-max flex flex-col gap-[2rem]">{InputComponent}</DivWrapper>
+				<DivWrapper className="w-[90%] sm:w-full h-max flex flex-col gap-[2rem]" onKeyDown={onPressEnter}>
+					{InputComponent}
+				</DivWrapper>
 
 				{!label && !title && modeScreen === "NORMAL" && (
 					<SectionLabelTitle setLabel={setLabel} setTitle={setTitle} focus={focus} />
