@@ -43,6 +43,12 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 		});
 	}, [value, setFormInitial]);
 
+	useEffect(() => {
+		setValue(formInitial.form_title);
+	}, [formInitial.form_title]);
+
+	console.log({ value });
+
 	const styleEffect = {
 		onCheckTitle: () => {
 			return formInitial.form_title ? "opacity-100 text-slate-700" : "opacity-50 text-textHeader";
