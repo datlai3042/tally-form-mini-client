@@ -69,13 +69,12 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 	const response = await fetch(fullUrl, optionsRequest);
 
-	const payload: Response = await response.json();
-
 	//RESPONSE: ERROR
 	if (!response.ok) {
 		//ERROR: ACCESS_TOKEN
 		if (typeof window !== "undefined") {
 			const result = await httpCaseErrorNextClient<Response>(
+				response,
 				+response.status,
 				method,
 				url,
@@ -87,6 +86,9 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 			return await httpCaseErrorNextServer(+response.status, options as CustomRequest);
 		}
 	}
+
+	const payload: Response = await response.json();
+
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
 		const expireTokenJSON = (payload as TokenNextSync).expireToken;
 		setValueLocalStorage("expireToken", expireTokenJSON);

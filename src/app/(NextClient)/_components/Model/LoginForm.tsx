@@ -19,6 +19,8 @@ import Button from "../ui/button/Button";
 import Link from "next/link";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
 import AuthService from "@/app/_services/auth.service";
+import { useToast } from "@/components/ui/use-toast";
+import { ConstructorError } from "@/app/_lib/httpError";
 
 type TProps = {
 	onClose?: (state: boolean) => void;
@@ -28,6 +30,7 @@ const LoginForm = (props: TProps) => {
 	const { onClose } = props;
 	const dispatch = useDispatch();
 	const router = useRouter();
+	const { toast } = useToast();
 
 	const loginForm = useForm<LoginType>({
 		defaultValues: {

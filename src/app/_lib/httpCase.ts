@@ -1,13 +1,23 @@
 import { redirect } from "next/navigation";
 import AuthService from "../_services/auth.service";
-import { AUTHORIZATION_ERROR_STATUS, HttpError, PERMISSION_ERROR_STATUS } from "./httpError";
+import {
+	AUTHORIZATION_ERROR_STATUS,
+	BADREQUEST_ERROR_STATUS,
+	ErrorResponse,
+	HttpError,
+	NOTFOUND_ERROR_STATUS,
+	NotFoundError,
+	PERMISSION_ERROR_STATUS,
+} from "./httpError";
 import { CustomRequest, Method } from "@/type";
 import { removeValueLocalStorage } from "./utils";
 import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
+import { toast } from "@/components/ui/use-toast";
 
 type RetryAPI = RequestInit;
 
-export const httpCaseErrorNextClient = async <Response>(
+export const httpCaseErrorNextClient = async <TResponse>(
+	response: Response,
 	statusCode: number,
 	method: Method,
 	url: string,
@@ -16,12 +26,30 @@ export const httpCaseErrorNextClient = async <Response>(
 ) => {
 	const abort = new AbortController();
 	const signal = abort.signal;
+	const msg = JSON.parse(await response.text()) as unknown as ErrorResponse;
+
 	switch (statusCode) {
 		case AUTHORIZATION_ERROR_STATUS:
-			return await nextClient401<Response>(method, fullUrl, options, signal);
+			return await nextClient401<TResponse>(method, fullUrl, options, signal);
 
 		case PERMISSION_ERROR_STATUS:
 			return await nextClient403(url);
+
+		case NOTFOUND_ERROR_STATUS:
+			toast({
+				title: msg.message + "  -  " + msg.code,
+				description: msg.metadata,
+				variant: "destructive",
+			});
+			throw new NotFoundError({ payload: { message: msg.message, detail: msg.metadata } });
+
+		case BADREQUEST_ERROR_STATUS:
+			toast({
+				title: msg.message + "  -  " + msg.code,
+				description: msg.metadata,
+				variant: "destructive",
+			});
+			throw new NotFoundError({ payload: { message: msg.message, detail: msg.metadata } });
 
 		default:
 			throw new HttpError({ status: 500 });

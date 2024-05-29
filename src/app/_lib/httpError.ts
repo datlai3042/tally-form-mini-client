@@ -3,6 +3,12 @@
       403 -> refresh token hết hạn
  */
 
+export type ErrorResponse = {
+	code: number;
+	message: string;
+	metadata: string;
+};
+
 type ErrorPayload = {
 	message?: string;
 	detail: string;
@@ -16,6 +22,8 @@ type ConstructorError = {
 
 export const AUTHORIZATION_ERROR_STATUS = 401;
 export const PERMISSION_ERROR_STATUS = 403;
+export const NOTFOUND_ERROR_STATUS = 404;
+export const BADREQUEST_ERROR_STATUS = 400;
 
 class HttpError extends Error {
 	protected status: number;
@@ -51,5 +59,25 @@ class PermissionError extends HttpError {
 	}
 }
 
+class NotFoundError extends HttpError {
+	status = NOTFOUND_ERROR_STATUS;
+	payload: ErrorPayload;
+
+	constructor({ status = NOTFOUND_ERROR_STATUS, payload = { message: "NOTFOUND", detail: "" } }: ConstructorError) {
+		super({ status, payload });
+		this.payload = payload;
+	}
+}
+
+class BadRequestError extends HttpError {
+	status = NOTFOUND_ERROR_STATUS;
+	payload: ErrorPayload;
+
+	constructor({ status = NOTFOUND_ERROR_STATUS, payload }: ConstructorError) {
+		super({ status, payload });
+		this.payload = payload;
+	}
+}
+
 export type { ErrorPayload, ConstructorError };
-export { HttpError, AuthorizationError, PermissionError };
+export { HttpError, AuthorizationError, PermissionError, NotFoundError, BadRequestError };
