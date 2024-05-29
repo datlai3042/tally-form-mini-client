@@ -22,18 +22,18 @@ type TProps = {
 
 export default function RootLayout(props: TProps) {
 	return (
-		<html lang="en" suppressHydrationWarning={true}>
+		<html lang="vi" suppressHydrationWarning={true}>
 			<body className={inter.className}>
 				<ReduxProvider>
 					<ReactQueryProvider>
 						<SidebarContextProvider>
 							<AppProvider>
 								{props.children}
-								<DivNative className="fixed bottom z-[100000]">
-									<Toaster />
-								</DivNative>
 								<CheckPathName />
 							</AppProvider>
+							<DivNative className="fixed bottom z-[100000]">
+								<Toaster />
+							</DivNative>
 						</SidebarContextProvider>
 					</ReactQueryProvider>
 				</ReduxProvider>
