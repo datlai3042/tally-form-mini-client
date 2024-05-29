@@ -55,6 +55,13 @@ const InputCoreEmail = (props: TProps) => {
 		console.log({ inputValue });
 	}, [inputValue]);
 
+	useEffect(() => {
+		if (inputRef.current) {
+			inputRef.current.value = "";
+			setError(false);
+		}
+	}, [modeScreen]);
+
 	const InputEmail = (
 		<DivNative className="flex flex-col gap-[.3rem]">
 			<DivNative
@@ -63,7 +70,7 @@ const InputCoreEmail = (props: TProps) => {
 				} relative min-h-[5rem] h-max flex items-center gap-[.5rem] `}
 			>
 				<input
-					className="w-full h-full p-[1rem] rounded-lg   border-[.1rem] border-slate-300  outline-none focus:outline-blue-200 focus:border-transparent"
+					className="w-full h-full p-[1rem] rounded-lg   border-[.1rem] border-gray-400  outline-none focus:outline-blue-200 focus:border-transparent"
 					ref={inputRef}
 					onKeyDown={onPressEnter}
 					onChange={(e) => setInputValue(e.target.value)}

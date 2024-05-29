@@ -61,7 +61,7 @@ const InputTitle = (props: TProps) => {
 	};
 
 	return (
-		<DivNative className=" min-h-[4rem] h-max w-[90%] flex gap-[.5rem] ">
+		<DivNative className=" min-h-[1rem] h-max w-[90%] flex gap-[.5rem] ">
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					className="title-input group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2rem] font-medium sm:text-[2.4rem] bg-[#ffffff]"

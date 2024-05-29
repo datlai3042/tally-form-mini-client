@@ -60,7 +60,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} title-core group min-h-[8rem] w-max max-w-full xl:max-w-[80rem]  break-words whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold text-justify `}
+					className={`${styleEffect.onCheckTitle()} py-[1rem] w-full title-core group min-h-[10rem]  max-w-full xl:max-w-[80rem]  break-words whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold text-justify hover:cursor-pointer`}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}
@@ -69,6 +69,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 					suppressContentEditableWarning={true}
 					data-text={`${formInitial.form_title || "Form Title"}`}
 					tabIndex={0}
+					spellCheck={false}
 				>
 					{formInitial.form_title || ""}
 				</DivNativeRef>
@@ -77,7 +78,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 			{modeScreen === "FULL" && (
 				<ParagraphNative
 					textContent={value?.toUpperCase()}
-					className="max-w-[70rem] text-[2rem] sm:text-[5rem] [word-spacing:.4rem] leading-relaxed	  font-black   break-words whitespace-pre-wrap text-justify"
+					className="max-w-[70rem] text-[2rem] sm:text-[4rem]  leading-relaxed	  font-black   break-words whitespace-pre-wrap text-justify"
 				/>
 			)}
 		</React.Fragment>

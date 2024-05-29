@@ -74,7 +74,7 @@ const FormCore = () => {
 	return (
 		<DivNative
 			className={`${
-				modeScreen === "FULL" ? "pb-[8rem]" : "pb-[50rem] sm:pb-[30rem]`"
+				modeScreen === "FULL" ? "pb-[8rem] pt-[1rem] " : "pb-[50rem] sm:pb-[30rem]`"
 			} w-full h-max flex flex-col gap-[3rem] `}
 		>
 			{modeScreen === "FULL" && (
@@ -95,7 +95,7 @@ const FormCore = () => {
 					<DivNative
 						className={`${!(formInitial.form_avatar || formInitial.form_background) ? "mt-[4rem]" : ""}`}
 					>
-						<DivNative className={`${formInitial.form_avatar ? "mt-[4rem]" : "mt-0"} group h-[6rem]`}>
+						<DivNative className={`${formInitial.form_avatar ? "mt-[10rem]" : "mt-0"} group h-[6rem]`}>
 							<DivNative className="w-full xl:min-w-[100rem] xl:w-max h-full px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%]">
 								<DivNative className="hidden group-hover:flex w-full h-[4rem]   gap-[2rem]">
 									{!formInitial.form_background && <ButtonAddBackgroundForm />}
@@ -113,11 +113,11 @@ const FormCore = () => {
 				} w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
 			>
 				<InputCoreTitle setFirstEnter={setFirstEnter} />
-				<DivNative className="mt-[4rem] h-max w-full flex flex-col gap-[3rem] ">{RenderArrayInput}</DivNative>
+				<DivNative className="mt-[4rem] h-max w-full flex flex-col gap-[5rem] ">{RenderArrayInput}</DivNative>
 				{true && (
 					<ButtonNative
-						textContent="Submit"
-						className="w-[25%] h-[3.6rem] bg-slate-900 text-white rounded-md "
+						textContent="Gửi"
+						className="w-[25%] h-[5rem] bg-slate-900 text-white rounded-md "
 						onClick={onGetDataDemo}
 					/>
 				)}

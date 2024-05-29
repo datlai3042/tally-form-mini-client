@@ -8,7 +8,7 @@ const FormImage = () => {
 	const { formInitial } = useContext(FormEditContext);
 
 	return (
-		<DivNative className="group relative w-full min-h-[45rem]">
+		<DivNative className="group relative w-full min-h-[15rem] h-[30rem]">
 			{formInitial.form_background && <FormBackground />}
 
 			{formInitial.form_avatar && <FormAvatar />}
