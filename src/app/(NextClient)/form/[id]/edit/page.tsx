@@ -56,9 +56,15 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 					openSidebar
 				)} ${styleEffect.onCheckModeScreen()} absolute  h-full  transition-all    `}
 			>
-				<DivNative className=" min-h-screen  h-max  flex flex-col text-[1.4rem] bg-[#ffffff]  border-l-[.1rem]  border-slate-200 max-w-full overflow-hidden">
-					<HeaderEditForm />
-					<FormCore />
+				<DivNative
+					className={`${
+						modeScreen === "FULL" ? "bg-pink-50 pb-[4rem]" : "bg-[#ffffff]"
+					} min-h-screen  h-max  flex flex-col text-[1.4rem]   border-l-[.1rem]  border-slate-200 max-w-full overflow-hidden`}
+				>
+					<DivNative className={`${modeScreen === "FULL" ? "w-[65%] mx-auto bg-[#ffffff]" : "w-full"}`}>
+						<HeaderEditForm />
+						<FormCore />
+					</DivNative>
 				</DivNative>
 			</DivNative>
 		</DivNative>
