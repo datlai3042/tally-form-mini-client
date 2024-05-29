@@ -38,7 +38,7 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 		},
 		onCheckModeScreen: () => {
 			if (modeScreen === "FULL")
-				return " !min-h-screen !w-screen  !h-max fixed !overflow-hidden !top-0 !left-0 !duration-1000 !transition-[scale] animate-modeScreen z-[50]";
+				return " !min-h-screen !w-screen  !h-max fixed !overflow-hidden !top-0 !left-0 !duration-[1000] !transition-[scale] animate-modeScreen z-[50]";
 			return "";
 		},
 	};
