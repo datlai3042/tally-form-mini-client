@@ -13,6 +13,7 @@ export const FormEditContext = createContext<TFormEditContext>({
 		form_avatar_state: false,
 		form_background_state: false,
 		form_title: "",
+
 		form_button_label: "",
 		form_inputs: [],
 		form_setting_default: { form_avatar_default_url: "", form_background_default_url: "" },

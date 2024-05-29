@@ -152,7 +152,8 @@ namespace FormCore {
 		form_title: FormCore.FormTitle;
 		form_background_state: boolean;
 		form_avatar_state: boolean;
-
+		createdAt?: Date;
+		updatedAt?: Date;
 		form_background?: FormCore.FormBackground;
 		form_setting_default: FormCore.FormSettingDefault;
 		form_state: FormCore.FormState;
