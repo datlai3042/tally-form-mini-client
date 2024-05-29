@@ -63,6 +63,13 @@ const FormBackground = () => {
 							textContent="Thay đổi ảnh bìa"
 							className="w-[15rem] h-[4rem] px-[1rem] border-[.1rem] border-slate-150 bg-[#ffffff] rounded-lg"
 						/>
+						<DivNative className=" flex sm:hidden mt-[2rem]  items-center justify-center " title="Review">
+							<ButtonNative
+								textContent={`Review ${modeScreen}`}
+								className="w-[15rem] p-[.8rem] rounded-md bg-blue-500 text-white"
+								onClick={onSetScreen}
+							/>
+						</DivNative>
 					</DivNative>
 				</React.Fragment>
 			)}

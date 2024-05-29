@@ -55,7 +55,7 @@ const InputCore = (props: TProps) => {
 					<SectionOption funcRemoveInput={removeFormItem} indexItem={indexItem} type={type} focus={focus} />
 				)}
 
-				<DivWrapper className="w-full h-max flex flex-col gap-[2rem]">{InputComponent}</DivWrapper>
+				<DivWrapper className="w-[90%] sm:w-full h-max flex flex-col gap-[2rem]">{InputComponent}</DivWrapper>
 
 				{!label && !title && modeScreen === "NORMAL" && (
 					<SectionLabelTitle setLabel={setLabel} setTitle={setTitle} focus={focus} />

@@ -40,7 +40,9 @@ const InputCoreText = (props: TProps) => {
 
 	const InputText = (
 		<DivNative
-			className=" min-h-[5rem] h-max w-[70%] flex items-center gap-[.5rem] "
+			className={`${
+				modeScreen === "FULL" ? "w-full sm:w-[75%]" : "w-[75%]"
+			} min-h-[5rem] h-max flex items-center gap-[.5rem] `}
 			onClick={() => divContentRef.current?.focus()}
 		>
 			<DivNative

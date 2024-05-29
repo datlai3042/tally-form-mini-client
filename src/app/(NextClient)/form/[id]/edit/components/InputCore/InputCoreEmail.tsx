@@ -57,7 +57,11 @@ const InputCoreEmail = (props: TProps) => {
 
 	const InputEmail = (
 		<DivNative className="flex flex-col gap-[.3rem]">
-			<DivNative className="relative h-full w-[70%]   flex items-center justify-between gap-[.5rem]   ">
+			<DivNative
+				className={`${
+					modeScreen === "FULL" ? "w-full sm:w-[75%]" : "w-[75%]"
+				} relative min-h-[5rem] h-max flex items-center gap-[.5rem] `}
+			>
 				<input
 					className="w-full h-full p-[1rem] rounded-lg   border-[.1rem] border-slate-300  outline-none focus:outline-blue-200 focus:border-transparent"
 					ref={inputRef}

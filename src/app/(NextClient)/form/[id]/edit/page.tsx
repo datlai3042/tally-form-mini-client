@@ -61,7 +61,9 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 						modeScreen === "FULL" ? "bg-pink-50 pb-[4rem]" : "bg-[#ffffff]"
 					} min-h-screen  h-max  flex flex-col text-[1.4rem]   border-l-[.1rem]  border-slate-200 max-w-full overflow-hidden`}
 				>
-					<DivNative className={`${modeScreen === "FULL" ? "w-[65%] mx-auto bg-[#ffffff]" : "w-full"}`}>
+					<DivNative
+						className={`${modeScreen === "FULL" ? "w-[80%] sm:w-[65%] mx-auto bg-[#ffffff]" : "w-full"}`}
+					>
 						<HeaderEditForm />
 						<FormCore />
 					</DivNative>

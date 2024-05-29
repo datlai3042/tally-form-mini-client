@@ -72,7 +72,11 @@ const FormCore = () => {
 	};
 
 	return (
-		<DivNative className="w-full h-max flex flex-col gap-[3rem] pb-[30rem]">
+		<DivNative
+			className={`${
+				modeScreen === "FULL" ? "pb-[8rem]" : "pb-[50rem] sm:pb-[30rem]`"
+			} w-full h-max flex flex-col gap-[3rem] `}
+		>
 			{modeScreen === "FULL" && (
 				<DivNative
 					className="absolute right-[4rem] top-[3rem] flex items-center justify-center z-[51]"
@@ -104,9 +108,9 @@ const FormCore = () => {
 			)}
 
 			<DivNative
-				className={`${
-					modeScreen === "NORMAL" ? "mt-0" : "mt-[12rem]"
-				} w-full xl:min-w-[100rem] xl:w-max h-max px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem] `}
+				className={`${modeScreen === "NORMAL" ? "  px-[1rem]  pl-[25%]" : " px-[5rem]"} ${
+					formInitial.form_avatar && modeScreen === "FULL" ? "mt-[12rem]" : "mt-0"
+				} w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
 			>
 				<InputCoreTitle setFirstEnter={setFirstEnter} />
 				<DivNative className="mt-[4rem] h-max w-full flex flex-col gap-[3rem] ">{RenderArrayInput}</DivNative>

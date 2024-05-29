@@ -61,10 +61,10 @@ const InputTitle = (props: TProps) => {
 	};
 
 	return (
-		<DivNative className=" min-h-[4rem] h-max w-[70%] flex gap-[.5rem] ">
+		<DivNative className=" min-h-[4rem] h-max w-[90%] flex gap-[.5rem] ">
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
-					className="title-input group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2.8rem] bg-[#ffffff]"
+					className="title-input group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2rem] font-medium sm:text-[2.4rem] bg-[#ffffff]"
 					autoFocus={true}
 					ref={titleRef}
 					onKeyDown={onPressEnter}
@@ -83,7 +83,7 @@ const InputTitle = (props: TProps) => {
 			{modeScreen === "FULL" && (
 				<ParagraphNative
 					textContent={value}
-					className="w-max max-w-[80rem] text-[2.8rem]  font-medium   break-all whitespace-pre-wrap"
+					className="w-max max-w-[80rem] text-[2rem] sm:text-[2.1rem]  font-medium   break-all whitespace-pre-wrap"
 				/>
 			)}
 			{/* {!focus && !value && (

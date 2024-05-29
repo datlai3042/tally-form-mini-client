@@ -52,7 +52,7 @@ const InputSettingWrapper = (props: TProps) => {
 	}, [globalClick]);
 
 	return (
-		<DivNative className="absolute top-[70%] right-[-4rem]  z-[300] flex justify-center items-center">
+		<DivNative className="absolute top-[70%] right-[-24rem] sm:right-[-4rem]  z-[300] flex justify-center items-center">
 			<DivNativeRef
 				className="w-[30rem]  xl:w-[27rem] xl:min-h-[38rem]  h-max p-[2rem] bg-[#ffffff] shadow-xl border-[1px] border-slate-200 flex flex-col  rounded-lg "
 				ref={modelRef}

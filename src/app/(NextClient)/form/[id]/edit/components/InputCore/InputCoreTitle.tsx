@@ -60,7 +60,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} title-core group min-h-[8rem] w-max max-w-full xl:max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold  `}
+					className={`${styleEffect.onCheckTitle()} title-core group min-h-[8rem] w-max max-w-full xl:max-w-[80rem]  break-words whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold text-justify `}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}
@@ -77,7 +77,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 			{modeScreen === "FULL" && (
 				<ParagraphNative
 					textContent={value?.toUpperCase()}
-					className="w-max max-w-[80rem] text-[6rem]  font-black   break-all whitespace-pre-wrap"
+					className="max-w-[70rem] text-[2rem] sm:text-[5rem] [word-spacing:.4rem] leading-relaxed	  font-black   break-words whitespace-pre-wrap text-justify"
 				/>
 			)}
 		</React.Fragment>
