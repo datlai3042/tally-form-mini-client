@@ -14,6 +14,7 @@ const config = {
 		},
 		extend: {
 			colors: {
+				formCoreBgColor: "rgb(253 242 248)",
 				textHeader: "rgb(119, 118, 114)",
 				textMain: "rgb(55, 53, 47)",
 				pinkCustom: "rgb(248, 28, 229)",

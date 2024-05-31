@@ -6,27 +6,31 @@ import { FormEditContext } from "../../provider/FormEditProvider";
 import { useMutation } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
 import { FormCore } from "@/type";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 
 export interface ButtonAddBackgroundFormProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	textContent?: string;
 }
 
 const ButtonAddBackgroundForm = (props: ButtonAddBackgroundFormProps) => {
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 
 	const { textContent = "Thêm ảnh bìa", ...buttonProps } = props;
 
 	const addBackgroundMutation = useMutation({
 		mutationKey: ["add-background"],
-		mutationFn: (form: FormCore.Form) => FormService.addBackground(formInitial),
+		mutationFn: (form: FormCore.Form) => FormService.addBackground(formCore),
 		onSuccess: (res) => {
 			const { form } = res.metadata;
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
 		},
 	});
 
 	const onAddBackgroud = () => {
-		addBackgroundMutation.mutate(formInitial);
+		addBackgroundMutation.mutate(formCore);
 	};
 
 	return (

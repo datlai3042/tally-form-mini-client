@@ -64,6 +64,34 @@
 		--input: 217.2 32.6% 17.5%;
 		--ring: 212.7 26.8% 83.9%;
 	}
+
+	.custom-color-title .react-colorful {
+		height: 10rem;
+	}
+	.custom-color-title .react-colorful__hue-pointer {
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+	}
+
+	.custom-color-title .react-colorful__saturation-pointer {
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+	}
+
+	.scroll-text-size::-webkit-scrollbar {
+		width: 0.6rem;
+	}
+
+	/* Handle */
+	.scroll-text-size::-webkit-scrollbar-thumb {
+		background: rgb(30 41 59);
+		border-radius: 0.2rem;
+		/* border-radius: 10px; */
+	}
+
+	/* Handle on hover */
 }
 
 @layer base {

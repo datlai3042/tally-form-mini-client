@@ -11,6 +11,9 @@ import SectionOption from "../SectionOption";
 import DivWrapper from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
 import InputSettingWrapper from "../InputSettings/InputSettingWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 
 type TProps = {
 	type: FormCore.InputType;
@@ -23,18 +26,19 @@ type TProps = {
 
 const InputCore = (props: TProps) => {
 	const { inputItem, InputComponent, labelValue, titleValue, inputHeading, type } = props;
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 
 	const [label, setLabel] = useState<boolean>(labelValue);
 	const [title, setTitle] = useState<boolean>(titleValue);
 	const [focus, setFocus] = useState<boolean>(false);
 
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
 
 	const removeFormItem = async () => {
-		const newFormUpdate = await removeInputWithId(formInitial, inputItem._id!);
+		const newFormUpdate = await removeInputWithId(formCore, inputItem._id!);
 		const { form } = newFormUpdate.metadata;
-		setFormInitial(form);
+		dispatch(onFetchForm({ form }));
 	};
 
 	const onPressEnter = async (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -42,9 +46,9 @@ const InputCore = (props: TProps) => {
 			if (modeScreen === "FULL") {
 				return null;
 			}
-			const newFormUpdate = await addInputItem(inputItem, formInitial);
+			const newFormUpdate = await addInputItem(inputItem, formCore);
 			const { form } = newFormUpdate.metadata;
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
 		}
 	};
 

@@ -14,10 +14,12 @@ import { useMutation } from "@tanstack/react-query";
 import { FormCore } from "@/type";
 import FormService from "@/app/_services/form.service";
 import ButtonSave from "@/app/(NextClient)/_components/ui/button/ButtonSave";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
 
 const HeaderEditForm = () => {
 	const { openSidebar, setOpenSidebar } = useContext(SidebarContext);
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
 
@@ -28,17 +30,19 @@ const HeaderEditForm = () => {
 
 	const styleEffect = {
 		onCheckLengthTitle: () => {
-			return formInitial.form_title ? "w-max max-w-[9rem] xl:max-w-[20rem]" : "w-max";
+			return formCore?.form_title ? "w-max max-w-[9rem] xl:max-w-[20rem]" : "w-max";
 		},
 	};
 
 	if (modeScreen === "FULL") return null;
 
 	return (
-		<DivNative className="w-full h-[5rem] p-[.8rem_1.8rem]  flex items-center justify-between gap-[1rem] text-[1.3rem]">
+		<DivNative className="relative z-[101] w-full h-[5rem] p-[.8rem_1.8rem]  flex items-center justify-between gap-[1rem] text-[1.3rem]">
 			<DivNative className="h-[3.6rem] flex items-center   text-textHeader ">
 				{!openSidebar && <ButtonIcon Icon={<ChevronsRight />} onClick={() => setOpenSidebar(true)} />}
-				<Flower className="w-[2.8rem] h-full p-[.3rem] rounded-lg hover:bg-slate-300 hover:text-slate-800" />
+				<Link href={"/dashboard"}>
+					<Flower className="w-[2.8rem] h-full p-[.3rem] rounded-lg hover:bg-slate-300 hover:text-slate-800" />
+				</Link>
 				<DivNative className="h-full flex  items-center  ">
 					<ButtonIcon Icon={<ChevronRight size={16} />} />
 					<ParagraphNative
@@ -50,7 +54,7 @@ const HeaderEditForm = () => {
 					<ButtonIcon Icon={<ChevronRight size={16} />} />
 					<ParagraphNative
 						className={`${styleEffect.onCheckLengthTitle()} truncate text-[1.5rem] font-bold p-[.6rem] rounded-lg hover:bg-slate-300 hover:text-slate-800 `}
-						textContent={formInitial.form_title || "Untitled"}
+						textContent={formCore?.form_title || "Untitled"}
 					/>
 				</DivNative>
 			</DivNative>

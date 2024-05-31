@@ -14,7 +14,7 @@ type TProps = {
 const renderChildren = (inputItem: InputCore.InputForm) => {
 	switch (inputItem.type) {
 		case "EMAIL":
-			return <InputSettingEmail />;
+			return <InputSettingText inputItem={inputItem} />;
 		case "TEXT":
 			return <InputSettingText inputItem={inputItem} />;
 		default:

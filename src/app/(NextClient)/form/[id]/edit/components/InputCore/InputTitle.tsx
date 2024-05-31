@@ -4,9 +4,12 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
+import { RootState } from "@/app/_lib/redux/store";
 import { setTitleInput } from "@/app/_lib/utils";
-import { InputCore } from "@/type";
+import { FormCore, InputCore } from "@/type";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type TProps = {
 	inputItem: InputCore.InputForm;
@@ -14,8 +17,10 @@ type TProps = {
 
 const InputTitle = (props: TProps) => {
 	const { inputItem } = props;
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
+
 	const titleRef = useRef<HTMLDivElement | null>(null);
 	const [value, setValue] = useState<string>(inputItem.input_heading || "Title");
 
@@ -26,12 +31,13 @@ const InputTitle = (props: TProps) => {
 	}, []);
 
 	const onSetTitle = async (e: React.ChangeEvent<HTMLDivElement>) => {
-		if (titleRef.current) {
+		if (titleRef.current && titleRef.current.textContent !== inputItem.input_heading) {
 			titleRef!.current!.textContent = e.target.textContent;
 			const titleCurrent = titleRef.current.textContent || "";
-			const newFormUpdate = await setTitleInput(titleCurrent, inputItem, formInitial);
+			const newFormUpdate = await setTitleInput(titleCurrent, inputItem, formCore);
 			const { form } = newFormUpdate.metadata;
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
+
 			setValue(titleCurrent);
 		}
 	};

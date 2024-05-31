@@ -75,12 +75,12 @@ export const setTitleForm = async (title: string, form: FormCore.Form) => {
 };
 
 export const addInputToSectionTitle = async (title: string, form: FormCore.Form) => {
-	const newForm = { ...form };
-	console.log({ title });
+	const newForm = structuredClone(form);
+	console.log({ form });
 	newForm.form_title = title;
 	newForm.form_inputs.push({ type: "TEXT", setting: inputSettingText });
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-input-to-title", {
-		form,
+		form: newForm,
 	});
 
 	return addInputAPI;
@@ -154,4 +154,24 @@ export const removeInputWithId = async (form: FormCore.Form, inpur_id: string) =
 	});
 
 	return addInputAPI;
+};
+
+export const renderStyleTitleCore = (formCore: FormCore.Form) => {
+	return {
+		fontSize: `${
+			formCore.form_title_size
+				? formCore.form_title_size / 10 + "rem"
+				: formCore.form_setting_default.form_title_size_default / 10 + "rem"
+		}`,
+		color: `${
+			formCore.form_title_color
+				? formCore.form_title_color
+				: formCore.form_setting_default.form_title_color_default
+		}`,
+		fontStyle: `${
+			formCore.form_title_style
+				? formCore.form_title_style
+				: formCore.form_setting_default.form_title_style_default
+		}`,
+	};
 };

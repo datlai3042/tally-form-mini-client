@@ -6,18 +6,19 @@ import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEdi
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
-import { InputCore as TInputCore } from "@/type";
+import { FormCore, InputCore as TInputCore } from "@/type";
 import { inputSettingText } from "@/app/_constant/input.constant";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
 
 type TProps = {
 	inputItem: TInputCore.InputEmail.InputTypeEmail;
 };
 
 const InputCoreEmail = (props: TProps) => {
-	const {
-		formInitial: { form_inputs },
-		setFormInitial,
-	} = useContext(FormEditContext);
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
+
 	const { inputItem } = props;
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -35,10 +36,6 @@ const InputCoreEmail = (props: TProps) => {
 				const checkvalidate = validateEmail(inputValue);
 				return checkvalidate ? setError(false) : setError(true);
 			}
-			setFormInitial((prev) => ({
-				...prev,
-				form_inputs: prev.form_inputs.concat({ type: "TEXT", setting: inputSettingText }),
-			}));
 		}
 	};
 
@@ -47,8 +44,6 @@ const InputCoreEmail = (props: TProps) => {
 		const checkvalidate = validateEmail(inputValue);
 		return checkvalidate ? setError(false) : setError(true);
 	};
-
-	// const onChange
 
 	useEffect(() => {
 		console.log({ inputValue });

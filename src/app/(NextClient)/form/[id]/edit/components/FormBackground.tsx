@@ -5,13 +5,21 @@ import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNat
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import ButtonRemoveBackgroudForm from "@/app/(NextClient)/_components/ui/button/ButtonRemoveBackgroudForm";
 import ButtonSave from "@/app/(NextClient)/_components/ui/button/ButtonSave";
+import { RootState } from "@/app/_lib/redux/store";
+import { FormCore } from "@/type";
 import React, { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useMove } from "@mantine/hooks";
+import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 
 const FormBackground = () => {
-	const { formInitial } = useContext(FormEditContext);
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
-
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 	const [openModel, setOpenModel] = useState<boolean>(false);
+
+	const [value, setValue] = useState({ x: 0.2, y: 0.6 });
+	const { ref, active } = useMove(setValue);
 
 	const onControllModel = () => {
 		setOpenModel((prev) => !prev);
@@ -22,21 +30,24 @@ const FormBackground = () => {
 		return setModeScreen("FULL");
 	};
 
+	console.log({ valueX: value.x * 100, valueY: value.y * 100 });
+
 	return (
 		<React.Fragment>
-			<DivNative
+			<DivNativeRef
+				ref={ref}
 				style={{
 					backgroundImage: `url("${
-						formInitial.form_background?.form_background_iamge_url ||
-						formInitial.form_setting_default.form_background_default_url
+						formCore.form_background?.form_background_iamge_url ||
+						formCore.form_setting_default.form_background_default_url
 					}")`,
 					backgroundRepeat: "no-repeat",
 					backgroundSize: "cover",
 					backgroundAttachment: "fixed",
-					backgroundPosition: "center center ",
+					backgroundPosition: ` ${value.y * 100}px ${value.x * 100}px`,
 				}}
 				className="absolute inset-0 z-[2] "
-			></DivNative>
+			></DivNativeRef>
 			{modeScreen === "NORMAL" && (
 				<React.Fragment>
 					<DivNative className="flex xl:hidden absolute right-[1rem] top-[1rem]  gap-[1rem]">

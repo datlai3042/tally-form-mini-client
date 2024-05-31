@@ -135,6 +135,9 @@ namespace FormCore {
 	export type FormSettingDefault = {
 		form_background_default_url: string;
 		form_avatar_default_url: string;
+		form_title_color_default?: string;
+		form_title_size_default: number;
+		form_title_style_default: string;
 	};
 
 	export type FormState = "isDraff" | "isPrivate" | "isPublic";
@@ -146,10 +149,14 @@ namespace FormCore {
 
 	export type FormTitle = string;
 	export type FormLabel = string;
+	type FormTextStyle = "normal" | "italic" | "bold";
 
 	export type Form = {
 		_id: string;
 		form_title: FormCore.FormTitle;
+		form_title_color?: string;
+		form_title_size?: number;
+		form_title_style?: FormCore.FormTextStyle;
 		form_background_state: boolean;
 		form_avatar_state: boolean;
 		createdAt?: Date;

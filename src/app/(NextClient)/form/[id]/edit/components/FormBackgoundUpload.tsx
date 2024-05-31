@@ -2,17 +2,22 @@ import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEdi
 import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import Button from "@/app/(NextClient)/_components/ui/button/Button";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
+import { RootState } from "@/app/_lib/redux/store";
 import FormService from "@/app/_services/form.service";
 import { FormCore } from "@/type";
 import { useMutation } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type Mode = "UPLOAD" | "COLOR";
 
 const FormBackgoundUpload = () => {
 	const [mode, setMode] = useState<Mode>("UPLOAD");
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
+
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 
 	const fileUploadMutation = useMutation({
 		mutationKey: ["upload-bg"],
@@ -22,16 +27,16 @@ const FormBackgoundUpload = () => {
 	useEffect(() => {
 		if (fileUploadMutation.isSuccess) {
 			const { form } = fileUploadMutation.data.metadata;
-			setFormInitial((prev) => ({ ...prev, form_background: form }));
+			dispatch(onFetchForm({ form }));
 		}
-	}, [fileUploadMutation.isSuccess, fileUploadMutation.data, setFormInitial]);
+	}, [fileUploadMutation.isSuccess, fileUploadMutation.data, dispatch]);
 
 	const deleteCoverMutaion = useMutation({
 		mutationKey: ["delete-cover"],
 		mutationFn: (id: string) => FormService.deleteCover(id),
 		onSuccess: (res) => {
 			const { form } = res.metadata;
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
 		},
 	});
 
@@ -44,7 +49,7 @@ const FormBackgoundUpload = () => {
 	};
 
 	const actionDelete = () => {
-		deleteCoverMutaion.mutate(formInitial._id);
+		deleteCoverMutaion.mutate(formCore._id);
 	};
 
 	const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,8 +57,8 @@ const FormBackgoundUpload = () => {
 			const file = e.target.files[0];
 			const formData: FormCore.uploadFile = new FormData();
 			formData.append("file", file);
-			formData.append("form_id", formInitial._id);
-			console.log({ formData, file, _id: formInitial._id });
+			formData.append("form_id", formCore._id);
+			console.log({ formData, file, _id: formCore._id });
 			fileUploadMutation.mutate(formData);
 		}
 	};

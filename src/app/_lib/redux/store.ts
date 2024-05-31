@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/authentication.slice";
+import formEditSlice from "./features/formEdit.slice";
 const store = configureStore({
-	reducer: { authReducer },
+	reducer: { authReducer, form: formEditSlice },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -14,8 +14,6 @@ type TProps = {
 const InputSettingPlaceholder = (props: TProps) => {
 	const { inputItem, setInputItemString } = props;
 
-	const { formInitial } = useContext(FormEditContext);
-
 	const [placeholder, setPlaceholder] = useState<string>(inputItem.setting.placeholder || "");
 
 	const placeholderRef = useRef<HTMLDivElement | null>(null);

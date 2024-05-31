@@ -25,7 +25,7 @@ const InputSettingRequire = (props: TProps) => {
 
 	const handleRequireInput = () => {
 		setInputItemString((prev) => {
-			const newSetting = { ...prev };
+			const newSetting = structuredClone(prev);
 			newSetting.setting.require = !prev.setting.require;
 			return newSetting;
 		});

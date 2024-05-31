@@ -13,7 +13,6 @@ type TProps = {
 };
 
 const InputCoreText = (props: TProps) => {
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
 
 	const { inputItem } = props;
@@ -32,8 +31,7 @@ const InputCoreText = (props: TProps) => {
 			if (modeScreen === "FULL") {
 				return null;
 			}
-			// addInputFirstItem(setFormInitial);
-			// setArrayInput((prev) => prev.concat({ type: "TEXT", placeholder: "" }));
+
 			e.preventDefault();
 		}
 	};

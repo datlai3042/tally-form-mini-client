@@ -11,6 +11,9 @@ import { useMutation } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
 import { toast } from "@/components/ui/use-toast";
 import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 
 /*
       require
@@ -26,13 +29,13 @@ type TProps = {
 
 const InputSettingText = (props: TProps) => {
 	const { inputItem } = props;
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
-
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
+	const dispatch = useDispatch();
 	const [inputItemString, setInputItemString] = useState<InputCore.InputCommonText>(
 		inputItem as InputCore.InputCommonText
 	);
 
-	console.log({ inputItemString });
+	console.log({ inputItemString, inputItem });
 	const updateTypeInputMutation = useMutation({
 		mutationKey: ["setting text", inputItem._id],
 		mutationFn: ({
@@ -46,11 +49,13 @@ const InputSettingText = (props: TProps) => {
 		}) => FormService.updateSettingInput(form, input_id, input_id_setting),
 		onSuccess: (res) => {
 			const { form } = res.metadata;
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
 		},
 	});
 
-	const handleSaveSetting = () => {
+	const handleSaveSetting = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.stopPropagation();
+		console.log({ inputItemString });
 		if (inputItemString.setting.minLength > inputItemString.setting.maxLength) {
 			toast({
 				title: "Lỗi cài đặt Setting",
@@ -59,8 +64,9 @@ const InputSettingText = (props: TProps) => {
 			});
 			return;
 		}
-		const newForm = { ...formInitial };
-		newForm.form_inputs = formInitial.form_inputs.filter((ip) => {
+		console.log("OK");
+		const newForm = structuredClone(formCore);
+		newForm.form_inputs = newForm.form_inputs.filter((ip) => {
 			if (ip._id !== inputItem._id) return ip;
 			(ip.setting as unknown as InputCore.InputCommonText) = inputItemString;
 			return ip;
@@ -80,7 +86,7 @@ const InputSettingText = (props: TProps) => {
 			<InputSettingMinLength inputItem={inputItemString} setInputItemString={setInputItemString} />
 			<InputSettingMaxLength inputItem={inputItemString} setInputItemString={setInputItemString} />
 			<InputSettingError inputItem={inputItemString} setInputItemString={setInputItemString} />
-			<ButtonNative textContent="Lưu" onClick={handleSaveSetting} />
+			<ButtonNative textContent="Lưu" onClick={(e) => handleSaveSetting(e)} />
 		</DivNative>
 	);
 };

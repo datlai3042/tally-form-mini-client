@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import InputCoreText from "./InputCore/InputCoreText";
 import InputCoreEmail from "./InputCore/InputCoreEmail";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import { InputCore, FormCore as TFormCore } from "@/type";
 import InputCoreTitle from "./InputCore/InputCoreTitle";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
@@ -15,9 +14,14 @@ import ButtonAddAvatarForm from "@/app/(NextClient)/_components/ui/button/Button
 import ButtonAddBackgroundForm from "@/app/(NextClient)/_components/ui/button/ButtonAddBackgroudForm";
 import ButtonRemoveAvatarForm from "@/app/(NextClient)/_components/ui/button/ButtonRemoveAvatarForm";
 import ButtonRemoveBackgroudForm from "@/app/(NextClient)/_components/ui/button/ButtonRemoveBackgroudForm";
-import FormAvatar from "./FormAvatar";
-import FormBackground from "./FormBackground";
+import { HexColorPicker } from "react-colorful";
+
 import FormImage from "./FormImage";
+import ButtonDesgin from "@/app/(NextClient)/_components/ui/button/ButtonDesgin";
+import FormPageGuess from "@/app/(NextClient)/_components/Layout/FormPageGuess";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
+import FormDesignProvider from "@/app/(NextClient)/_components/provider/FormDesignProvider";
 
 export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNode => {
 	return Inputs.map((ele, index) => {
@@ -53,84 +57,89 @@ export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNo
 };
 
 const FormCore = () => {
-	const { formInitial } = useContext(FormEditContext);
-	const [firstEnter, setFirstEnter] = useState<boolean>(formInitial.form_title ? true : false);
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as TFormCore.Form;
 
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
 
 	const RenderArrayInput: React.ReactNode = useMemo(
-		() => generateInputForms(formInitial.form_inputs),
-		[formInitial.form_inputs]
+		() => generateInputForms(formCore.form_inputs),
+		[formCore?.form_inputs]
 	);
-
-	console.log({ firstEnter, title: formInitial.form_title });
 
 	const onGetDataDemo = () => {
 		console.log(true);
-		console.log({ form: formInitial });
+		console.log({ form: formCore });
 	};
 
 	return (
-		<DivNative
-			className={`${
-				modeScreen === "FULL" ? "pb-[8rem] pt-[1rem] " : "pb-[50rem] sm:pb-[30rem]`"
-			} w-full h-max flex flex-col gap-[3rem] `}
-		>
-			{modeScreen === "FULL" && (
-				<DivNative
-					className="absolute right-[4rem] top-[3rem] flex items-center justify-center z-[51]"
-					title="Publish"
-				>
-					<ButtonNative
-						textContent="Back to Editor"
-						className="p-[.8rem] rounded-md bg-[#ffffff] text-slate-900 border-[1px] border-slate-200"
-						onClick={() => setModeScreen("NORMAL")}
-					/>
-				</DivNative>
-			)}
-			{(formInitial.form_avatar ||
-				formInitial.form_background ||
-				formInitial.form_background_state ||
-				formInitial.form_avatar_state) && <FormImage />}
-			{modeScreen === "FULL" ? null : (
-				<React.Fragment>
-					<DivNative
-						className={`${!(formInitial.form_avatar || formInitial.form_background) ? "mt-[4rem]" : ""}`}
-					>
-						<DivNative className={`${formInitial.form_avatar ? "pt-[10rem]" : "pt-0"} group h-[6rem]`}>
-							<DivNative className="w-full xl:min-w-[100rem] xl:w-max h-full px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%]">
-								<DivNative className="hidden group-hover:flex w-full h-[4rem]   gap-[2rem]">
-									{!formInitial.form_background_state && !formInitial.form_background && (
-										<ButtonAddBackgroundForm />
-									)}
-									{!formInitial.form_avatar_state && !formInitial.form_avatar && (
-										<ButtonAddAvatarForm />
-									)}
+		<>
+			{modeScreen === "NORMAL" && (
+				<DivNative className={`pt-[2rem] pb-[50rem] sm:pb-[30rem] w-full h-max flex flex-col gap-[3rem] `}>
+					{(formCore.form_avatar ||
+						formCore.form_background ||
+						formCore.form_background_state ||
+						formCore.form_avatar_state) && <FormImage />}
+					<React.Fragment>
+						<DivNative
+							className={`${
+								!(
+									formCore.form_avatar ||
+									formCore.form_background ||
+									formCore.form_background_state ||
+									formCore.form_avatar_state
+								)
+									? "0"
+									: "pt-[10rem]"
+							}`}
+						>
+							<DivNative className={`group min-h-[6rem]`}>
+								<DivNative className="w-full xl:min-w-[100rem] xl:w-max h-full px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%] flex flex-col sm:flex-row sm:items-center  gap-[2rem]">
+									<FormDesignProvider />
+									<DivNative className="hidden group-hover:flex w-max h-[4rem]   gap-[2rem]">
+										{!formCore.form_background_state && !formCore.form_background && (
+											<ButtonAddBackgroundForm />
+										)}
+										{!formCore.form_avatar_state && !formCore.form_avatar && (
+											<ButtonAddAvatarForm />
+										)}
+									</DivNative>
 								</DivNative>
 							</DivNative>
 						</DivNative>
+					</React.Fragment>
+
+					<DivNative
+						className={`px-[5rem]  w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
+					>
+						<InputCoreTitle />
+						<DivNative className="mt-[4rem] h-max w-full flex flex-col gap-[5rem] ">
+							{RenderArrayInput}
+						</DivNative>
+						<ButtonNative
+							textContent="Gửi"
+							className="w-[25%] h-[5rem] bg-slate-900 text-white rounded-md "
+							onClick={onGetDataDemo}
+						/>
 					</DivNative>
-				</React.Fragment>
+				</DivNative>
 			)}
 
-			<DivNative
-				className={`${modeScreen === "NORMAL" ? "  px-[1rem]  pl-[25%]" : " px-[5rem]"} ${
-					(formInitial.form_avatar || formInitial.form_avatar_state) && modeScreen === "FULL"
-						? "mt-[12rem]"
-						: "mt-0"
-				} w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
-			>
-				<InputCoreTitle setFirstEnter={setFirstEnter} />
-				<DivNative className="mt-[4rem] h-max w-full flex flex-col gap-[5rem] ">{RenderArrayInput}</DivNative>
-				{true && (
-					<ButtonNative
-						textContent="Gửi"
-						className="w-[25%] h-[5rem] bg-slate-900 text-white rounded-md "
-						onClick={onGetDataDemo}
-					/>
-				)}
-			</DivNative>
-		</DivNative>
+			{modeScreen === "FULL" && (
+				<DivNative className="relative">
+					<DivNative
+						className="absolute right-[0rem] top-[3rem] flex items-center justify-center z-[51]"
+						title="Publish"
+					>
+						<ButtonNative
+							textContent="Back to Editor"
+							className="p-[.8rem] rounded-md bg-[#ffffff] text-slate-900 border-[1px] border-slate-200"
+							onClick={() => setModeScreen("NORMAL")}
+						/>
+					</DivNative>
+					<FormPageGuess FormCore={formCore} />
+				</DivNative>
+			)}
+		</>
 	);
 };
 

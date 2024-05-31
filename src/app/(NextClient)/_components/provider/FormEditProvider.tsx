@@ -16,7 +16,13 @@ export const FormEditContext = createContext<TFormEditContext>({
 
 		form_button_label: "",
 		form_inputs: [],
-		form_setting_default: { form_avatar_default_url: "", form_background_default_url: "" },
+		form_setting_default: {
+			form_avatar_default_url: "",
+			form_background_default_url: "",
+			form_title_size_default: 14,
+			form_title_style_default: "normal",
+			form_title_color_default: "#00000",
+		},
 		form_state: "isDraff",
 	},
 
@@ -39,6 +45,9 @@ const FormEditContextProvider = (props: TProps) => {
 		form_setting_default: {
 			form_avatar_default_url: "",
 			form_background_default_url: "",
+			form_title_size_default: 14,
+			form_title_style_default: "normal",
+			form_title_color_default: "#00000",
 		},
 		form_state: "isDraff",
 	});

@@ -11,7 +11,7 @@ const DashBoardRight = () => {
 	const { openSidebar, setOpenSidebar } = useContext(SidebarContext);
 
 	return (
-		<div className="w-full h-full   p-[.8rem_1.8rem] flex flex-col gap-[5rem] text-[1.4rem]">
+		<div className=" w-full h-full   p-[.8rem_1.8rem] flex flex-col gap-[5rem] text-[1.4rem]">
 			<DashBoardRightHeader />
 			<div className="w-[90%] xl:w-[69%] h-max min-h-[30rem] mx-auto flex flex-col gap-[4rem]">
 				<div className="min-h-[40px] flex items-center justify-between pb-[1rem] border-b-[.1rem] border-slate-200 ">

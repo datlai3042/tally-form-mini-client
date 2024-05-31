@@ -4,9 +4,12 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
+import { RootState } from "@/app/_lib/redux/store";
 import { setLabelInput } from "@/app/_lib/utils";
-import { InputCore } from "@/type";
+import { FormCore, InputCore } from "@/type";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type TProps = {
 	inputItem: InputCore.InputForm;
@@ -14,8 +17,10 @@ type TProps = {
 
 const InputLabel = (props: TProps) => {
 	const { inputItem } = props;
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
-	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
+	const { modeScreen } = useContext(FormModeScreenContext);
+
+	const dispatch = useDispatch();
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 
 	const [focus, setFocus] = useState<boolean>(false);
 	const labelRef = useRef<HTMLDivElement | null>(null);
@@ -34,13 +39,13 @@ const InputLabel = (props: TProps) => {
 	};
 
 	const onSetLabel = async (e: React.ChangeEvent<HTMLDivElement>) => {
-		if (labelRef.current) {
-			labelRef!.current!.textContent = e.target.textContent;
+		if (labelRef.current && labelRef.current.textContent !== inputItem.input_heading) {
 			const labelCurrent = labelRef.current.textContent || "";
 			console.log({ inputItem });
-			const newFormUpdate = await setLabelInput(labelCurrent, inputItem, formInitial);
+			const newFormUpdate = await setLabelInput(labelCurrent, inputItem, formCore);
 			const { form } = newFormUpdate.metadata;
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
+
 			setFocus(false);
 		}
 	};

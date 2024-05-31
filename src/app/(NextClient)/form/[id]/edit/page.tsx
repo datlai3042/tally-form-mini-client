@@ -9,11 +9,15 @@ import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/F
 import DashBoardLeft from "@/app/(NextClient)/dashboard/_components/layout/DashBoardLeft";
 import { useQuery } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
+import { useDispatch } from "react-redux";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
+import FormDesignCustom from "./components/FormDesignCustom";
 
 const EditFormPage = ({ params }: { params: { id: string } }) => {
 	const { openSidebar } = useContext(SidebarContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
-	const { setFormInitial } = useContext(FormEditContext);
+
+	const dispatch = useDispatch();
 
 	const getFormQuery = useQuery({
 		queryKey: ["get-form", params.id],
@@ -23,10 +27,9 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 	useEffect(() => {
 		if (getFormQuery.isSuccess) {
 			const { form } = getFormQuery.data.metadata;
-			console.log(form);
-			setFormInitial(form);
+			dispatch(onFetchForm({ form }));
 		}
-	}, [getFormQuery.isSuccess, params.id, getFormQuery.data, setFormInitial]);
+	}, [getFormQuery.isSuccess, params.id, getFormQuery.data, dispatch]);
 
 	console.log({ layout: modeScreen });
 
@@ -58,8 +61,8 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 			>
 				<DivNative
 					className={`${
-						modeScreen === "FULL" ? "bg-pink-50 pb-[4rem]" : "bg-[#ffffff]"
-					} min-h-screen  h-max  flex flex-col text-[1.4rem]   border-l-[.1rem]  border-slate-200 max-w-full `}
+						modeScreen === "FULL" ? "bg-formCoreBgColor pb-[4rem]" : "bg-[#ffffff]"
+					} min-h-screen  h-max  flex flex-col  text-[1.4rem]   border-l-[.1rem]  border-slate-200 max-w-full `}
 				>
 					<DivNative
 						className={`${
@@ -68,6 +71,7 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 					>
 						<HeaderEditForm />
 						<FormCore />
+						{/* <FormDesignCustom /> */}
 					</DivNative>
 				</DivNative>
 			</DivNative>

@@ -8,7 +8,7 @@ const DashBoardRightHeader = () => {
 	const { openSidebar, setOpenSidebar } = useContext(SidebarContext);
 
 	return (
-		<div className="w-full h-[3rem] flex items-center justify-between gap-[1rem] text-[1.3rem]">
+		<div className=" w-full h-[3rem] flex items-center justify-between gap-[1rem] text-[1.3rem]">
 			<div className="flex items-center gap-[1rem] ">
 				{!openSidebar && <ButtonIcon Icon={<ChevronsRight />} onClick={() => setOpenSidebar(true)} />}
 				<Flower className="w-[1.8rem]" />
