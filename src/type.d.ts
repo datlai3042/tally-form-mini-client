@@ -49,21 +49,18 @@ namespace InputCore {
 	};
 
 	type InputSettingTextCommon = {
-		require: boolean;
-		placeholder?: string;
 		minLength: number;
 		maxLength: number;
-		input_error?: string;
-	};
+	} & InputCore.InputSettingCommon;
 
 	type InputCommonText = { setting: InputSettingTextCommon; _id?: string };
 
 	namespace InputEmail {
-		export interface InputTypeEmail extends InputCore.InputCommon, InputCore.InputCommonText {
-			type: "EMAIL";
-			setting?: InputCore.InputEmail.InputSettingEmail;
-			input_value?: string;
-		}
+		export type InputTypeEmail = InputCore.InputCommon &
+			InputCore.InputCommonText & {
+				type: "EMAIL";
+				setting: InputCore.InputSettingTextCommon;
+			};
 
 		export type InputSettingEmail = InputCore.InputSettingTextCommon;
 	}
@@ -91,7 +88,7 @@ namespace InputCore {
 		export type InputTypeText = InputCore.InputCommon &
 			InputCore.InputCommonText & {
 				type: InputText;
-				// setting?: InputCore.InputText.InputSettingText;
+				setting: InputCore.InputSettingCommon;
 			};
 	}
 
@@ -111,8 +108,15 @@ namespace InputCore {
 			setting: { a: number };
 		};
 	}
-
-	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText | InputImage.InputTypeImage;
+	export type InputSettingCommon = {
+		require: boolean;
+		placeholder?: string;
+		input_error?: string;
+		input_color: string;
+		input_size: number;
+		input_style: FormCore.FormTextStyle;
+	};
+	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText;
 	// | InputOption.InputTypeOption
 	// | InputDate.InputTypeDate
 	// | InputImage.InputTypeImage;
@@ -124,20 +128,35 @@ namespace FormCore {
 		export type RemoveInputItemWithIndex = (cb: ReactCustom.Form, index: number) => void;
 	}
 
+	type FormAvatarPosition = "left" | "center" | "right";
+	type FormAvatarMode = "circle" | "square";
+
 	export interface uploadFile extends FormData {
 		append(name: "file" | "form_id", value: string | Blob, fileName?: string): void;
 	}
 
 	export type InputType = "EMAIL" | "NUMBER" | "TEXT" | "DATE" | "UNTYPE";
 
-	export type FormBackground = { form_background_iamge_url: string };
+	export type FormBackground = {
+		form_background_iamge_url?: string;
+		form_background_position?: { x?: number; y?: number };
+	};
 
 	export type FormSettingDefault = {
+		input_color: string;
+		input_size: number;
+		input_style: FormTextStyle;
 		form_background_default_url: string;
 		form_avatar_default_url: string;
+		form_avatar_default_postion: FormAvatarPosition;
+		form_avatar_default_mode: FormAvatarMode;
 		form_title_color_default?: string;
 		form_title_size_default: number;
-		form_title_style_default: string;
+		form_title_style_default: FormTextStyle;
+		form_background_position_default: {
+			x: number;
+			y: number;
+		};
 	};
 
 	export type FormState = "isDraff" | "isPrivate" | "isPublic";
@@ -145,11 +164,13 @@ namespace FormCore {
 	export type FormAvatarMode = "DEFAULT" | "CUSTOM";
 	export type FormAvatar = {
 		form_avatar_url: string;
+		mode: FormAvatarMode;
+		position: FormAvatarPosition;
 	};
 
 	export type FormTitle = string;
 	export type FormLabel = string;
-	type FormTextStyle = "normal" | "italic" | "bold";
+	type FormTextStyle = "normal" | "italic";
 
 	export type Form = {
 		_id: string;

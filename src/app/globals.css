@@ -91,6 +91,17 @@
 		/* border-radius: 10px; */
 	}
 
+	.scroll-desgin-custom::-webkit-scrollbar {
+		width: 0.6rem;
+	}
+
+	/* Handle */
+	.scroll-desgin-custom::-webkit-scrollbar-thumb {
+		background: rgb(30 41 59);
+		border-radius: 0.2rem;
+		/* border-radius: 10px; */
+	}
+
 	/* Handle on hover */
 }
 

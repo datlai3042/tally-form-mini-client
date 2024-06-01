@@ -2,7 +2,6 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import React, { useContext } from "react";
 import FormBackground from "./FormBackground";
 import FormAvatar from "./FormAvatar";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
 import { FormCore } from "@/type";
@@ -12,7 +11,7 @@ const FormImage = () => {
 
 	const styleEffect = {
 		onCheckBackground: (check: boolean) => {
-			if (check) return " h-[30rem]";
+			if (check) return "";
 			return "h-[20rem]";
 		},
 	};
@@ -21,7 +20,7 @@ const FormImage = () => {
 		<DivNative
 			className={`${styleEffect.onCheckBackground(
 				!!formCore.form_background_state || !!formCore.form_background?.form_background_iamge_url
-			)} group relative w-full min-h-[15rem]`}
+			)} group relative w-full aspect-[3/1] `}
 		>
 			{(formCore.form_background || formCore.form_background_state) && <FormBackground />}
 

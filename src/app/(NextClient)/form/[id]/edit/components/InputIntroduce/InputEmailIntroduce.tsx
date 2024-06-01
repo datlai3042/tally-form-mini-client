@@ -3,11 +3,14 @@ import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNat
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
 import ButtonIcon from "@/app/(NextClient)/_components/ui/button/ButtonIcon";
+import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
+import { RootState } from "@/app/_lib/redux/store";
 import FormService from "@/app/_services/form.service";
 import { FormCore, InputCore, ReactCustom } from "@/type";
 import { useMutation } from "@tanstack/react-query";
 import { ArrowBigRight, AtSign } from "lucide-react";
 import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type TProps = {
 	inputItem: InputCore.InputForm;
@@ -17,22 +20,22 @@ type TProps = {
 const InputEmailIntroduce = (props: TProps) => {
 	const { inputItem, setOpenModel } = props;
 
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
+	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
+	const dispatch = useDispatch();
 
 	const updateTypeInputMutation = useMutation({
 		mutationKey: ["choose type input"],
 		mutationFn: (form: FormCore.Form) => FormService.updateForm(form),
 		onSuccess: (res) => {
 			const { form } = res.metadata;
-			setFormInitial(form);
-			setOpenModel(false);
+			dispatch(onFetchForm({ form }));
 		},
 	});
 
 	const handleChooseInputType = () => {
-		const newForm = { ...formInitial };
+		const newForm = structuredClone(formCore);
 
-		newForm.form_inputs = formInitial.form_inputs.filter((ip) => {
+		newForm.form_inputs = newForm.form_inputs.filter((ip) => {
 			if (ip._id !== inputItem._id) return ip;
 			ip.type = "EMAIL";
 			return ip;

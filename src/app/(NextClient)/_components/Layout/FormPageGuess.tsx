@@ -33,12 +33,22 @@ const FormPageGuess = (props: TProps) => {
 	};
 
 	const renderInputAnswer = useMemo(() => generateInputAnswer(FormCore.form_inputs), [FormCore]);
+	const formBackgroundImageUrl =
+		FormCore.form_background?.form_background_iamge_url ||
+		FormCore.form_setting_default.form_background_default_url;
+	const formBackgroundPosition =
+		FormCore.form_background?.form_background_position ||
+		FormCore.form_setting_default.form_background_position_default;
 
 	return (
 		<div className="w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
-			<DivNative className="w-[70rem] flex flex-col gap-[4rem] ">
-				<DivNative className="relative w-full h-[20rem] ">
+			<DivNative className="w-[66.8rem] flex flex-col gap-[4rem] ">
+				<DivNative className="relative w-full min-h-[20rem] aspect-[3.01/1]">
 					<Image
+						style={{
+							objectFit: "cover",
+							objectPosition: ` ${formBackgroundPosition?.y || 0}px ${formBackgroundPosition?.x || 0}px`,
+						}}
 						src={
 							FormCore.form_background?.form_background_iamge_url ||
 							FormCore.form_setting_default.form_background_default_url
@@ -47,7 +57,7 @@ const FormPageGuess = (props: TProps) => {
 						height={160}
 						quality={100}
 						alt="form background"
-						className="w-full h-full object-cover object-center rounded-lg"
+						className="w-[66.8rem] aspect-[3/1]   rounded-lg"
 					/>
 
 					{FormCore.form_avatar_state && (
@@ -71,7 +81,7 @@ const FormPageGuess = (props: TProps) => {
 						FormCore.form_avatar_state
 					)} w-full flex flex-col gap-[3rem] rounded-lg`}
 				>
-					<header className="w-full min-h-[16rem] h-max p-[2rem_3rem] flex flex-col  justify-between border-[.4rem] border-indigo-50	 border-t-[1.6rem] border-t-blue-400 bg-[#ffffff] rounded-lg">
+					<header className="w-full min-h-[16rem] h-max p-[2rem_3rem] flex flex-col  justify-between border-[.4rem] border-indigo-50 break-words	 border-t-[1.6rem] border-t-blue-400 bg-[#ffffff] rounded-lg">
 						<h1 style={renderStyleTitleCore(FormCore)} className="text-[4rem]">
 							{FormCore.form_title}
 						</h1>

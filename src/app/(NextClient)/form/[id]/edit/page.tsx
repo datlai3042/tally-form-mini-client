@@ -11,11 +11,13 @@ import { useQuery } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
 import { useDispatch } from "react-redux";
 import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
-import FormDesignCustom from "./components/FormDesignCustom";
+import FormDesignCustom from "./components/FormDesign/FormDesignCustom";
+import { FormDesignContext } from "@/app/(NextClient)/_components/provider/FormDesignProvider";
 
 const EditFormPage = ({ params }: { params: { id: string } }) => {
 	const { openSidebar } = useContext(SidebarContext);
 	const { modeScreen } = useContext(FormModeScreenContext);
+	const { openFormDesign } = useContext(FormDesignContext);
 
 	const dispatch = useDispatch();
 
@@ -66,12 +68,14 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 				>
 					<DivNative
 						className={`${
-							modeScreen === "FULL" ? "w-[80%] sm:w-[65%] mx-auto bg-[#ffffff] mt-[2rem]" : "w-full"
+							modeScreen === "FULL" ? "w-[80%] sm:w-[65%] mx-auto  mt-[2rem]" : "w-full"
 						} rounded-lg `}
 					>
 						<HeaderEditForm />
+						{/* <DivNative className="flex h-max "> */}
 						<FormCore />
-						{/* <FormDesignCustom /> */}
+						{openFormDesign && modeScreen === "NORMAL" ? <FormDesignCustom /> : null}
+						{/* </DivNative> */}
 					</DivNative>
 				</DivNative>
 			</DivNative>

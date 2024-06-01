@@ -29,7 +29,7 @@ const InputSettingPlaceholder = (props: TProps) => {
 			placeholderRef!.current!.textContent = e.target.textContent;
 			const placeholderCurrent = placeholderRef.current.textContent;
 			setInputItemString((prev) => {
-				const newSetting = { ...prev };
+				const newSetting = structuredClone(prev);
 				newSetting.setting.placeholder = placeholderCurrent || inputSettingText.placeholder;
 				return newSetting;
 			});

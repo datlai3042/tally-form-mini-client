@@ -2,9 +2,8 @@ import React, { SetStateAction, forwardRef, useContext, useRef, useState } from 
 import { GripVertical, Plus, Trash2 } from "lucide-react";
 import ModelInputType from "../ModelInputType";
 import InputLabel from "./InputLabel";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import InputTitle from "./InputTitle";
-import { addInputItem, removeInputFirstItem, removeInputWithId } from "@/app/_lib/utils";
+import { addInputItem, removeInputWithId } from "@/app/_lib/utils";
 import { FormCore, InputCore as TInputCore } from "@/type";
 import SectionLabelTitle from "../SectionLabelTitle";
 import SectionOption from "../SectionOption";
@@ -57,7 +56,7 @@ const InputCore = (props: TProps) => {
 			{label && <InputLabel inputItem={inputItem} />}
 			{title && <InputTitle inputItem={inputItem} />}
 			<DivWrapper
-				className="group relative min-h-[8rem] h-max ml-[-8rem] min-w-full  xl:w-[60rem]  pl-[8rem] flex items-center "
+				className="group relative min-h-[8rem] h-max    xl:w-max pt-[2.4rem] flex items-center "
 				onFocus={() => setFocus(true)}
 				onBlur={() => setFocus(false)}
 			>
@@ -65,10 +64,9 @@ const InputCore = (props: TProps) => {
 					<SectionOption funcRemoveInput={removeFormItem} inputItem={inputItem} type={type} focus={focus} />
 				)}
 
-				<DivWrapper className="w-[90%] sm:w-full h-max flex flex-col gap-[2rem]" onKeyDown={onPressEnter}>
+				<DivWrapper className="relative  w-[60rem]  h-max flex flex-col gap-[2rem]" onKeyDown={onPressEnter}>
 					{InputComponent}
 				</DivWrapper>
-
 				{!label && !title && modeScreen === "NORMAL" && (
 					<SectionLabelTitle setLabel={setLabel} setTitle={setTitle} focus={focus} />
 				)}

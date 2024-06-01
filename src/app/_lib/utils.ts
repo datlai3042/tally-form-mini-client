@@ -78,7 +78,13 @@ export const addInputToSectionTitle = async (title: string, form: FormCore.Form)
 	const newForm = structuredClone(form);
 	console.log({ form });
 	newForm.form_title = title;
-	newForm.form_inputs.push({ type: "TEXT", setting: inputSettingText });
+	const settingMerge = {
+		input_color: newForm.form_setting_default.input_color || inputSettingText.input_color,
+		input_size: newForm.form_setting_default.input_size || inputSettingText.input_size,
+		input_style: newForm.form_setting_default.input_style || inputSettingText.input_style,
+	};
+
+	newForm.form_inputs.push({ type: "TEXT", setting: { ...inputSettingText, ...settingMerge } });
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-input-to-title", {
 		form: newForm,
 	});
@@ -114,10 +120,17 @@ export const setTitleInput = async (label: string, inputItem: InputCore.InputFor
 };
 
 export const addInputItem = async (inputItem: InputCore.InputForm, form: FormCore.Form) => {
-	const newForm = { ...form };
+	const newForm = structuredClone(form);
 	const indexInputCurrentEvent = form.form_inputs.findIndex((ip) => ip._id === inputItem._id);
 
-	const inputPush: InputCore.InputText.InputTypeText = { type: "TEXT", setting: inputSettingText };
+	const settingMerge = {
+		...inputItem.setting,
+		input_color: newForm.form_setting_default.input_color || inputSettingText.input_color,
+		input_size: newForm.form_setting_default.input_size || inputSettingText.input_size,
+		input_style: newForm.form_setting_default.input_style || inputSettingText.input_style,
+	};
+
+	const inputPush: InputCore.InputText.InputTypeText = { type: "TEXT", setting: settingMerge };
 	newForm.form_inputs.splice(indexInputCurrentEvent + 1, 0, inputPush);
 
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-form", {
@@ -125,25 +138,6 @@ export const addInputItem = async (inputItem: InputCore.InputForm, form: FormCor
 	});
 
 	return addInputAPI;
-};
-
-export const addInputFirstItem = (cb: React.Dispatch<SetStateAction<FormCore.Form>>) => {
-	return cb((prev) => ({
-		...prev,
-		form_inputs: prev.form_inputs.concat({ type: "TEXT", setting: inputSettingText }),
-	}));
-};
-
-export const removeInputFirstItem: FormCore.Func.RemoveInputItemFirst = (cb: ReactCustom.Form) => {
-	return cb((prev) => {
-		const newArray = [...prev.form_inputs];
-		newArray.shift();
-
-		return {
-			...prev,
-			form_inputs: newArray,
-		};
-	});
 };
 
 export const removeInputWithId = async (form: FormCore.Form, inpur_id: string) => {

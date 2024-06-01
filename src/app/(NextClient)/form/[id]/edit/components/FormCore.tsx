@@ -17,7 +17,7 @@ import ButtonRemoveBackgroudForm from "@/app/(NextClient)/_components/ui/button/
 import { HexColorPicker } from "react-colorful";
 
 import FormImage from "./FormImage";
-import ButtonDesgin from "@/app/(NextClient)/_components/ui/button/ButtonDesgin";
+import ButtonDesgin from "@/app/(NextClient)/form/[id]/edit/components/FormDesign/DesignCommon/ButtonDesgin";
 import FormPageGuess from "@/app/(NextClient)/_components/Layout/FormPageGuess";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
@@ -74,7 +74,9 @@ const FormCore = () => {
 	return (
 		<>
 			{modeScreen === "NORMAL" && (
-				<DivNative className={`pt-[2rem] pb-[50rem] sm:pb-[30rem] w-full h-max flex flex-col gap-[3rem] `}>
+				<DivNative
+					className={`pt-[2rem] pb-[50rem] sm:pb-[30rem] w-full h-max  xl:ml-0 flex flex-col gap-[3rem]`}
+				>
 					{(formCore.form_avatar ||
 						formCore.form_background ||
 						formCore.form_background_state ||
@@ -93,8 +95,9 @@ const FormCore = () => {
 							}`}
 						>
 							<DivNative className={`group min-h-[6rem]`}>
-								<DivNative className="w-full xl:min-w-[100rem] xl:w-max h-full px-[1rem] pl-[25%] xl:pl-0 xl:ml-[20%] flex flex-col sm:flex-row sm:items-center  gap-[2rem]">
-									<FormDesignProvider />
+								<DivNative className="w-full xl:min-w-[100rem] xl:w-max h-full px-[1rem] sm:pl-[8%] xl:pl-0 xl:ml-[20%] flex flex-col sm:flex-row sm:items-center  gap-[2rem]">
+									<ButtonDesgin />
+
 									<DivNative className="hidden group-hover:flex w-max h-[4rem]   gap-[2rem]">
 										{!formCore.form_background_state && !formCore.form_background && (
 											<ButtonAddBackgroundForm />
@@ -109,7 +112,7 @@ const FormCore = () => {
 					</React.Fragment>
 
 					<DivNative
-						className={`px-[5rem]  w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
+						className={`px-[1rem] sm:px-[5rem]  w-full xl:min-w-[100rem] xl:w-max h-max xl:pl-0 xl:ml-[20%] flex flex-col gap-[2.4rem] pb-[4rem]  `}
 					>
 						<InputCoreTitle />
 						<DivNative className="mt-[4rem] h-max w-full flex flex-col gap-[5rem] ">
@@ -117,7 +120,7 @@ const FormCore = () => {
 						</DivNative>
 						<ButtonNative
 							textContent="Gửi"
-							className="w-[25%] h-[5rem] bg-slate-900 text-white rounded-md "
+							className="ml-[20%] xl:ml-0 w-[25%] h-[5rem] bg-slate-900 text-white rounded-md "
 							onClick={onGetDataDemo}
 						/>
 					</DivNative>

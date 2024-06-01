@@ -20,10 +20,13 @@ const SectionLabelTitle = (props: TProps) => {
 	};
 
 	return (
-		<DivWrapper className="absolute right-0  h-full flex items-center text-[1.4rem]" style={{ direction: "rtl" }}>
+		<DivWrapper
+			className="absolute top-[0rem]  right-0  h-max flex items-center text-[1.4rem]"
+			style={{ direction: "rtl" }}
+		>
 			<DivWrapper
 				className={`
-				${styleEffect.onCheckFocus(focus)} h-full  flex-col xl:flex-row justify-around items-center xl:gap-[2rem] `}
+				${styleEffect.onCheckFocus(focus)} h-full   justify-around items-center gap-[2rem] `}
 			>
 				<ButtonNative
 					className="text-textGray opacity-60 hover:opacity-100 hover:text-textHeader"

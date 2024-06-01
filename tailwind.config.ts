@@ -77,6 +77,11 @@ const config = {
 					"80%": { backgroundPosition: "100%" },
 					"100%": { backgroundPosition: "100% -50%" },
 				},
+
+				showModelNotSave: {
+					"0%": { top: "-100%" },
+					"100%": { top: "3rem" },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -86,7 +91,7 @@ const config = {
 				topUp: "topUp 3s forwards",
 				topDown: "topDown 3s forwards",
 				changeColorSea: "changeColorSea 4s forwards",
-
+				showModelNotSave: "showModelNotSave 2s ",
 				sizeLigth: "sizeLight 1.8s forwards",
 
 				changeColor: "changeColor 4s forwards",

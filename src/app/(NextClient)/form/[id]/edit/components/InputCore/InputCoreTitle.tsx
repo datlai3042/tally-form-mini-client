@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { addInputFirstItem, addInputToSectionTitle, setTitleForm } from "@/app/_lib/utils";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
+import { addInputToSectionTitle, setTitleForm } from "@/app/_lib/utils";
 import { FormCore, ReactCustom } from "@/type";
-import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
@@ -74,7 +72,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 						}`,
 					}}
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} py-[1rem] w-full title-core group min-h-[10rem]  max-w-full xl:max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold text-justify hover:cursor-pointer`}
+					className={`${styleEffect.onCheckTitle()} py-[1rem] w-full xl:w-[70%]  title-core group min-h-[10rem]  max-w-full xl:max-w-[80rem]  break-all whitespace-pre-wrap flex items-center  h-max border-none outline-none resize-none  text-[4rem]  font-extrabold text-justify hover:cursor-pointer`}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}

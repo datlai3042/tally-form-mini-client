@@ -53,6 +53,8 @@ const InputSettingText = (props: TProps) => {
 		},
 	});
 
+	console.log({ form: formCore });
+
 	const handleSaveSetting = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.stopPropagation();
 		console.log({ inputItemString });

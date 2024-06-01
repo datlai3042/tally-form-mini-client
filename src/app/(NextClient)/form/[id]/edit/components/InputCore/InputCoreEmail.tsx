@@ -58,11 +58,7 @@ const InputCoreEmail = (props: TProps) => {
 
 	const InputEmail = (
 		<DivNative className="flex flex-col gap-[.3rem]">
-			<DivNative
-				className={`${
-					modeScreen === "FULL" ? "w-full sm:w-[75%]" : "w-[75%]"
-				} relative min-h-[5rem] h-max flex items-center gap-[.5rem] `}
-			>
+			<DivNative className={`${"w-full "} relative min-h-[5rem] h-max flex items-center gap-[.5rem] `}>
 				<input
 					className="w-full h-full p-[1rem] rounded-lg   border-[.1rem] border-gray-400  outline-none focus:outline-blue-200 focus:border-transparent"
 					ref={inputRef}
@@ -70,7 +66,7 @@ const InputCoreEmail = (props: TProps) => {
 					onChange={(e) => setInputValue(e.target.value)}
 					onFocus={() => setFocus(true)}
 					onBlur={onBlur}
-					placeholder="Let type your Email"
+					placeholder={inputItem.setting.placeholder}
 				/>
 				<AtSign className="absolute z-[2] right-[1rem] text-textMain opacity-50" size={18} />
 			</DivNative>

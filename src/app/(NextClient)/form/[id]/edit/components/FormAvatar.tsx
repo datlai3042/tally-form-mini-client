@@ -1,5 +1,4 @@
 import ModelFormImage from "@/app/(NextClient)/_components/Model/ModelFormImage";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import { RootState } from "@/app/_lib/redux/store";
 import { FormCore } from "@/type";
 import Image from "next/image";
@@ -25,7 +24,7 @@ const FormAvatar = () => {
 				quality={100}
 				onClick={onControllModel}
 				alt="avatar"
-				className="absolute left-[calc(25%-6.4rem)] bottom-0 z-[3] object-center translate-y-[50%] w-[20rem] h-[20rem] rounded-full"
+				className="absolute left-[calc(25%-6.4rem)] bottom-0 z-[3] object-center translate-y-[50%] w-[14rem] h-[14rem] xl:w-[20rem] xl:h-[20rem] rounded-full"
 			/>
 			{openModel && <ModelFormImage setOpenModel={setOpenModel} MODE="AVATAR" />}
 		</React.Fragment>

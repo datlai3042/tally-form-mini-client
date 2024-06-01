@@ -6,4 +6,7 @@ export const inputSettingText: InputCore.InputText.InputSettingText = {
 	require: false,
 	input_error: "Nội dung không hợp lệ",
 	placeholder: "Nhập nội dung của bạn",
+	input_color: "#000000",
+	input_size: 16,
+	input_style: "normal",
 };

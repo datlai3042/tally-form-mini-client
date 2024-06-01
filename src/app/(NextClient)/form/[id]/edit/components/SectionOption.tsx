@@ -26,7 +26,7 @@ const SectionOption = (props: TProps) => {
 	};
 
 	return (
-		<DivWrapper className=" absolute left-0  h-full text-[1.4rem] ">
+		<DivWrapper className=" absolute top-[0rem]  xl:left-0  h-[2rem] text-[1.4rem] ">
 			<DivWrapper className={`${styleEffect.onCheckFocus(focus)} h-full  items-center gap-[.3rem] `}>
 				<Trash2 size={18} onClick={funcRemoveInput} className="hover:cursor-pointer" />
 				<Plus size={18} onClick={() => setOpenSelectType(true)} className="hover:cursor-pointer" />

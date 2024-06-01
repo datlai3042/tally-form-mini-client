@@ -1,5 +1,4 @@
 import ModelFormImage from "@/app/(NextClient)/_components/Model/ModelFormImage";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
 import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
@@ -9,7 +8,7 @@ import { RootState } from "@/app/_lib/redux/store";
 import { FormCore } from "@/type";
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useMove } from "@mantine/hooks";
+import { useMouse, useMove } from "@mantine/hooks";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 
 const FormBackground = () => {
@@ -17,9 +16,6 @@ const FormBackground = () => {
 	const dispatch = useDispatch();
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 	const [openModel, setOpenModel] = useState<boolean>(false);
-
-	const [value, setValue] = useState({ x: 0.2, y: 0.6 });
-	const { ref, active } = useMove(setValue);
 
 	const onControllModel = () => {
 		setOpenModel((prev) => !prev);
@@ -30,21 +26,21 @@ const FormBackground = () => {
 		return setModeScreen("FULL");
 	};
 
-	console.log({ valueX: value.x * 100, valueY: value.y * 100 });
+	const formBackgroundImageUrl =
+		formCore.form_background?.form_background_iamge_url ||
+		formCore.form_setting_default.form_background_default_url;
+	const formBackgroundPosition =
+		formCore.form_background?.form_background_position ||
+		formCore.form_setting_default.form_background_position_default;
 
 	return (
 		<React.Fragment>
 			<DivNativeRef
-				ref={ref}
 				style={{
-					backgroundImage: `url("${
-						formCore.form_background?.form_background_iamge_url ||
-						formCore.form_setting_default.form_background_default_url
-					}")`,
+					backgroundImage: `url("${formBackgroundImageUrl}")`,
 					backgroundRepeat: "no-repeat",
 					backgroundSize: "cover",
-					backgroundAttachment: "fixed",
-					backgroundPosition: ` ${value.y * 100}px ${value.x * 100}px`,
+					backgroundPosition: ` ${formBackgroundPosition?.y || 0}px ${formBackgroundPosition?.x || 0}px`,
 				}}
 				className="absolute inset-0 z-[2] "
 			></DivNativeRef>

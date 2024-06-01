@@ -1,5 +1,4 @@
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
-import { addInputFirstItem } from "@/app/_lib/utils";
 import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
@@ -48,7 +47,7 @@ const InputCoreText = (props: TProps) => {
 	const InputText = (
 		<DivNative
 			className={`${
-				modeScreen === "FULL" ? "w-full sm:w-[75%]" : "w-[75%]"
+				modeScreen === "FULL" ? "w-full sm:w-[75%]" : "w-full"
 			} min-h-[5rem] h-max flex items-center gap-[.5rem] `}
 			onClick={() => divContentRef.current?.focus()}
 		>

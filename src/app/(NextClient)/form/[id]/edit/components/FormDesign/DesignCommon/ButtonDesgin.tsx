@@ -2,14 +2,14 @@
 
 import { Hexagon, PanelTop } from "lucide-react";
 import React, { useContext, useState } from "react";
-import { FormEditContext } from "../../provider/FormEditProvider";
+import { FormEditContext } from "../../../../../../_components/provider/FormEditProvider";
 import { useMutation } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
 import { FormCore } from "@/type";
-import FormDesignCustom from "@/app/(NextClient)/form/[id]/edit/components/FormDesignCustom";
+import FormDesignCustom from "@/app/(NextClient)/form/[id]/edit/components/FormDesign/FormDesignCustom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
-import { FormDesignContext } from "../../provider/FormDesignProvider";
+import { FormDesignContext } from "../../../../../../_components/provider/FormDesignProvider";
 
 export interface ButtonDesginProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	textContent?: string;
@@ -20,19 +20,6 @@ const ButtonDesgin = (props: ButtonDesginProps) => {
 
 	const { setOpenFormDesign } = useContext(FormDesignContext);
 	const { textContent = "Tùy biến Form", ...buttonProps } = props;
-
-	// const addBackgroundMutation = useMutation({
-	// 	mutationKey: ["add-background"],
-	// 	mutationFn: (form: FormCore.Form) => FormService.addBackground(formInitial),
-	// 	onSuccess: (res) => {
-	// 		const { form } = res.metadata;
-	// 		setFormInitial(form);
-	// 	},
-	// });
-
-	// const onAddBackgroud = () => {
-	// 	addBackgroundMutation.mutate(formInitial);
-	// };
 
 	const onOpenDesignModel = () => {
 		setOpenFormDesign(true);
