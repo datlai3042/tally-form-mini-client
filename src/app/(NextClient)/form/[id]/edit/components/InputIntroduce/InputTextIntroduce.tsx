@@ -1,4 +1,3 @@
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
@@ -21,8 +20,6 @@ type TProps = {
 
 const InputTextIntroduce = (props: TProps) => {
 	const { inputItem, setOpenModel } = props;
-
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
 
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 	const dispatch = useDispatch();

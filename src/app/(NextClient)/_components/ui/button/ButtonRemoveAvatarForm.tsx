@@ -2,24 +2,15 @@
 
 import { Hexagon } from "lucide-react";
 import React, { useContext } from "react";
-import { FormEditContext } from "../../provider/FormEditProvider";
 
 export interface ButtonRemoveAvatarFormProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	textContent?: string;
 }
 
 const ButtonRemoveAvatarForm = (props: ButtonRemoveAvatarFormProps) => {
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
-
 	const { textContent = "Remove Logo", ...buttonProps } = props;
 
-	const onRemoveAvatar = () => {
-		setFormInitial((prev) => {
-			const newForm = { ...prev };
-			delete newForm["form_avatar"];
-			return newForm;
-		});
-	};
+	const onRemoveAvatar = () => {};
 
 	return (
 		<button

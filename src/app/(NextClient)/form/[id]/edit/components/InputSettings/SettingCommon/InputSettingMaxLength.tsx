@@ -1,4 +1,3 @@
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
@@ -12,7 +11,6 @@ type TProps = {
 
 const InputSettingMaxLength = (props: TProps) => {
 	const { inputItem, setInputItemString } = props;
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
 	const [maxLength, setMaxLength] = useState<number>(inputItem.setting.maxLength || 100);
 
 	const maxLengthRef = useRef<HTMLInputElement | null>(null);

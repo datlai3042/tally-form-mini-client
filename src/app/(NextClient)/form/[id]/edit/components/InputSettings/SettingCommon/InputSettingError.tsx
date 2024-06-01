@@ -1,4 +1,3 @@
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import SpanNative from "@/app/(NextClient)/_components/ui/NativeHtml/SpanNative";
@@ -13,8 +12,6 @@ type TProps = {
 
 const InputSettingError = (props: TProps) => {
 	const { inputItem, setInputItemString } = props;
-
-	const { formInitial } = useContext(FormEditContext);
 
 	const [error, setError] = useState<string>(inputItem.setting.input_error || "Nhập placehoder của bạn");
 

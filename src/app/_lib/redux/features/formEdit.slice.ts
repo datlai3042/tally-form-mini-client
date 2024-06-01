@@ -7,7 +7,7 @@ type InitialState = {
 	formCoreBackUp: FormCore.Form;
 };
 
-const formInitital = {
+const formInitital: FormCore.Form = {
 	_id: "",
 	form_title: "",
 	form_button_label: "",
@@ -20,6 +20,12 @@ const formInitital = {
 		form_title_size_default: 14,
 		form_title_style_default: "normal",
 		form_title_color_default: "#00000",
+		form_avatar_default_mode: "circle",
+		form_avatar_default_postion: "left",
+		form_background_position_default: { x: 0, y: 0 },
+		input_color: "",
+		input_size: 14,
+		input_style: "normal",
 	},
 	form_state: "isDraff" as FormCore.FormState,
 };

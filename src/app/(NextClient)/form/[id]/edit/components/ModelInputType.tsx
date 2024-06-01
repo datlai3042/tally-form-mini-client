@@ -1,5 +1,4 @@
 import Portal from "@/app/(NextClient)/_components/Portal";
-import { FormEditContext } from "@/app/(NextClient)/_components/provider/FormEditProvider";
 import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
 import ButtonNativeIcon from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNativeIcon";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
@@ -47,11 +46,6 @@ const ModelInputType = (props: TProps) => {
 	const { inputItem, setOpenModel } = props;
 
 	const [inputIntroduce, setInputIntroduce] = useState<ButtonInputType["type"]>("Guide");
-
-	const {
-		formInitial: { form_inputs },
-		setFormInitial,
-	} = useContext(FormEditContext);
 
 	const renderInputIntroduce = useMemo(
 		() => chooseInputIntroduce(inputIntroduce, inputItem, setOpenModel),

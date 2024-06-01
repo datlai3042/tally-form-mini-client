@@ -2,24 +2,15 @@
 
 import { Hexagon } from "lucide-react";
 import React, { useContext } from "react";
-import { FormEditContext } from "../../provider/FormEditProvider";
 
 export interface ButtonRemoveBackgroudFormProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	textContent?: string;
 }
 
 const ButtonRemoveBackgroudForm = (props: ButtonRemoveBackgroudFormProps) => {
-	const { formInitial, setFormInitial } = useContext(FormEditContext);
-
 	const { textContent = "Change cover", ...buttonProps } = props;
 
-	const onRemoveBackgroudForm = () => {
-		setFormInitial((prev) => {
-			const newForm = { ...prev };
-			delete newForm["form_background"];
-			return newForm;
-		});
-	};
+	const onRemoveBackgroudForm = () => {};
 
 	return (
 		<button
