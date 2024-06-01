@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormDesignContext } from "../../../../../../_components/provider/FormDesignProvider";
 import { TypeEdit } from "./ButtonColor";
 import { inputSettingText } from "@/app/_constant/input.constant";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, ChevronUp } from "lucide-react";
 import { useDebouncedCallback } from "@mantine/hooks";
 
 type TProps = {
@@ -130,7 +130,7 @@ const ButtonEditTextSize = (props: TProps) => {
 				className="w-[3rem] h-[3rem] flex items-center justify-center rounded-full  bg-[#464646]"
 				onClick={() => debounced(titleCoreSize, "Increase")}
 			>
-				<ArrowUp size={18} color="#ccc" />
+				<ChevronUp size={18} color="#ccc" />
 			</button>
 
 			<div className="w-[6rem] flex items-center justify-center">
@@ -151,7 +151,7 @@ const ButtonEditTextSize = (props: TProps) => {
 				className="w-[3rem] h-[3rem] flex items-center justify-center rounded-full  bg-[#464646]"
 				onClick={() => debounced(titleCoreSize, "Decrease")}
 			>
-				<ArrowDown size={18} color="#ccc" />
+				<ChevronDown size={18} color="#ccc" />
 			</button>
 			{openModelSize && (
 				<ul

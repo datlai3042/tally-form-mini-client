@@ -33,6 +33,8 @@ const FormBackground = () => {
 		formCore.form_background?.form_background_position ||
 		formCore.form_setting_default.form_background_position_default;
 
+	const positionAvatar = formCore.form_avatar?.position;
+
 	return (
 		<React.Fragment>
 			<DivNativeRef
@@ -46,7 +48,7 @@ const FormBackground = () => {
 			></DivNativeRef>
 			{modeScreen === "NORMAL" && (
 				<React.Fragment>
-					<DivNative className="flex xl:hidden absolute right-[1rem] top-[1rem]  gap-[1rem]">
+					<DivNative className={` flex xl:hidden absolute right-[1rem] top-[1rem]  gap-[1rem]`}>
 						<DivNative className=" flex items-center justify-center " title="Review">
 							<ButtonNative
 								textContent={`Review ${modeScreen}`}
@@ -64,7 +66,11 @@ const FormBackground = () => {
 							/>
 						</DivNative>
 					</DivNative>
-					<DivNative className="hidden group-hover:block absolute right-[2rem] xl:right-[6rem] bottom-[2rem] z-[3]">
+					<DivNative
+						className={`${
+							positionAvatar === "left" ? "right-[2rem] xl:right-[6rem]" : "left-[2rem] xl:left-[6rem]"
+						} hidden group-hover:block absolute  bottom-[2rem] z-[3]`}
+					>
 						<ButtonNative
 							onClick={() => setOpenModel(true)}
 							textContent="Thay đổi ảnh bìa"

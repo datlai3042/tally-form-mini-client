@@ -11,13 +11,13 @@ type TProps = {
 	FormCore: FormCore.Form;
 };
 
-const generateInputAnswer = (Inputs: InputCore.InputForm[]): React.ReactNode => {
+const generateInputAnswer = (Inputs: InputCore.InputForm[], formCore: FormCore.Form): React.ReactNode => {
 	return Inputs.map((ip) => {
 		switch (ip.type) {
 			case "EMAIL":
 				return <InputEmailAnswer inputItem={ip} />;
 			case "TEXT":
-				return <InputTextAnswer inputItem={ip} />;
+				return <InputTextAnswer inputItem={ip} formCore={formCore} />;
 		}
 	});
 };
@@ -25,20 +25,33 @@ const generateInputAnswer = (Inputs: InputCore.InputForm[]): React.ReactNode => 
 const FormPageGuess = (props: TProps) => {
 	const { FormCore } = props;
 
-	const styleEffect = {
-		formMarginTop: (check: boolean) => {
-			if (check) return "mt-[6rem]";
-			return "mt-0";
-		},
-	};
-
-	const renderInputAnswer = useMemo(() => generateInputAnswer(FormCore.form_inputs), [FormCore]);
+	const renderInputAnswer = useMemo(() => generateInputAnswer(FormCore.form_inputs, FormCore), [FormCore]);
 	const formBackgroundImageUrl =
 		FormCore.form_background?.form_background_iamge_url ||
 		FormCore.form_setting_default.form_background_default_url;
 	const formBackgroundPosition =
 		FormCore.form_background?.form_background_position ||
 		FormCore.form_setting_default.form_background_position_default;
+
+	const modeAvatar = FormCore.form_avatar?.mode || FormCore.form_setting_default.form_avatar_default_mode;
+	const positionAvatar = FormCore.form_avatar?.position || FormCore.form_setting_default.form_avatar_default_postion;
+
+	const styleEffect = {
+		formMarginTop: (check: boolean) => {
+			if (check) return "mt-[6rem]";
+			return "mt-0";
+		},
+		onCheckModeAvatar: (mode: FormCore.FormAvatarMode) => {
+			if (mode === "circle") return "rounded-full";
+			return "";
+		},
+
+		onCheckPositionAvatar: (position: FormCore.FormAvatarPosition) => {
+			if (position === "left") return "left-[calc(25%-6.4rem)] ";
+			if (position === "center") return "left-[50%] translate-x-[-50%]";
+			return "right-[calc(25%-6.4rem)]";
+		},
+	};
 
 	return (
 		<div className="w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
@@ -61,19 +74,24 @@ const FormPageGuess = (props: TProps) => {
 					/>
 
 					{FormCore.form_avatar_state && (
-						<DivNative className="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]  border-[.3rem] border-blue-800 rounded-full">
-							<Image
-								src={
-									FormCore.form_avatar?.form_avatar_url ||
-									FormCore.form_setting_default.form_avatar_default_url
-								}
-								width={800}
-								height={160}
-								quality={100}
-								alt="form background"
-								className="w-[16rem] h-[16rem] object-cover object-center rounded-full"
-							/>
-						</DivNative>
+						// <DivNative className="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]  border-[.3rem] border-blue-800 rounded-full">
+						<Image
+							src={
+								FormCore.form_avatar?.form_avatar_url ||
+								FormCore.form_setting_default.form_avatar_default_url
+							}
+							width={800}
+							height={160}
+							quality={100}
+							alt="form background"
+							className={`${styleEffect.onCheckModeAvatar(
+								modeAvatar
+							)} ${styleEffect.onCheckPositionAvatar(
+								positionAvatar
+							)} absolute bottom-0 z-[3] object-center translate-y-[50%] w-[16rem] h-[16rem]  `}
+							// className="w-[16rem] h-[16rem] object-cover object-center rounded-full"
+						/>
+						// </DivNative>
 					)}
 				</DivNative>
 				<DivNative

@@ -15,6 +15,22 @@ const FormAvatar = () => {
 		setOpenModel((prev) => !prev);
 	};
 
+	const modeAvatar = formCore.form_avatar?.mode || formCore.form_setting_default.form_avatar_default_mode;
+	const positionAvatar = formCore.form_avatar?.position || formCore.form_setting_default.form_avatar_default_postion;
+
+	const styleEffect = {
+		onCheckModeAvatar: (mode: FormCore.FormAvatarMode) => {
+			if (mode === "circle") return "rounded-full";
+			return "";
+		},
+
+		onCheckPositionAvatar: (position: FormCore.FormAvatarPosition) => {
+			if (position === "left") return "left-[calc(25%-6.4rem)] ";
+			if (position === "center") return "left-[50%] translate-x-[-50%]";
+			return "right-[calc(25%-6.4rem)]";
+		},
+	};
+
 	return (
 		<React.Fragment>
 			<Image
@@ -24,7 +40,9 @@ const FormAvatar = () => {
 				quality={100}
 				onClick={onControllModel}
 				alt="avatar"
-				className="absolute left-[calc(25%-6.4rem)] bottom-0 z-[3] object-center translate-y-[50%] w-[14rem] h-[14rem] xl:w-[20rem] xl:h-[20rem] rounded-full"
+				className={`${styleEffect.onCheckModeAvatar(modeAvatar)} ${styleEffect.onCheckPositionAvatar(
+					positionAvatar
+				)} absolute bottom-0 z-[3] object-center translate-y-[50%] w-[14rem] h-[14rem] xl:w-[20rem] xl:h-[20rem] `}
 			/>
 			{openModel && <ModelFormImage setOpenModel={setOpenModel} MODE="AVATAR" />}
 		</React.Fragment>

@@ -1,4 +1,4 @@
-import { InputCore } from "@/type";
+import { FormCore, InputCore } from "@/type";
 import React, { useRef, useState } from "react";
 import InputAnswerWrapper from "./InputAnswerWrapper";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
@@ -11,10 +11,11 @@ import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative
 
 type TProps = {
 	inputItem: InputCore.InputText.InputTypeText;
+	formCore: FormCore.Form;
 };
 
 const InputTextAnswer = (props: TProps) => {
-	const { inputItem } = props;
+	const { inputItem, formCore } = props;
 
 	const [error, setError] = useState<InputError>({ errorState: false, type: "REQUIRE" });
 	const [inputValue, setInputValue] = useState<string>("");
@@ -55,6 +56,14 @@ const InputTextAnswer = (props: TProps) => {
 				return "border-gray-300";
 			},
 		},
+
+		styleTitle: () => {
+			return {
+				fontSize: inputItem.setting.input_size || formCore.form_setting_default.input_size,
+				color: inputItem.setting.input_color || formCore.form_setting_default.input_color,
+				fontStyle: inputItem.setting.input_style || formCore.form_setting_default.input_style,
+			};
+		},
 	};
 
 	return (
@@ -64,7 +73,9 @@ const InputTextAnswer = (props: TProps) => {
 					error.errorState
 				)} w-full min-h-full h-max p-[2rem_3rem] duration-300 transition-all flex flex-col justify-center gap-[1.4rem] border-[.1rem]`}
 			>
-				<p className="text-[2rem] font-medium">{inputItem.input_heading || "Không có tiêu đề"}</p>
+				<p style={styleEffect.styleTitle()} className="text-[2rem] font-medium">
+					{inputItem.input_heading || "Không có tiêu đề"}
+				</p>
 				<DivNative className="flex flex-col gap-[.3rem]">
 					<DivNative className={` relative min-h-[5rem] h-max flex items-center gap-[.5rem] `}>
 						<DivNativeRef
