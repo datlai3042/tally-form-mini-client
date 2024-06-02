@@ -1,11 +1,12 @@
 import { FormCore, InputCore } from "@/type";
 import Image from "next/image";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import DivNative from "../ui/NativeHtml/DivNative";
 import InputEmailAnswer from "../../form/[id]/edit/components/InputAnswer/InputEmailAnswer";
 import ButtonNative from "../ui/NativeHtml/ButtonNative";
 import InputTextAnswer from "../../form/[id]/edit/components/InputAnswer/InputTextAnswer";
 import { renderStyleTitleCore } from "@/app/_lib/utils";
+import { FormAnswerContext } from "../provider/FormAnswerProvider";
 
 type TProps = {
 	FormCore: FormCore.Form;
@@ -15,15 +16,17 @@ const generateInputAnswer = (Inputs: InputCore.InputForm[], formCore: FormCore.F
 	return Inputs.map((ip) => {
 		switch (ip.type) {
 			case "EMAIL":
-				return <InputEmailAnswer inputItem={ip} />;
+				return <InputEmailAnswer inputItem={ip} formCore={formCore} key={ip._id} />;
 			case "TEXT":
-				return <InputTextAnswer inputItem={ip} formCore={formCore} />;
+				return <InputTextAnswer inputItem={ip} formCore={formCore} key={ip._id} />;
 		}
 	});
 };
 
 const FormPageGuess = (props: TProps) => {
 	const { FormCore } = props;
+
+	const { inputFormData, inputFormRequire, setInputFormErrors } = useContext(FormAnswerContext);
 
 	const renderInputAnswer = useMemo(() => generateInputAnswer(FormCore.form_inputs, FormCore), [FormCore]);
 	const formBackgroundImageUrl =
@@ -53,19 +56,31 @@ const FormPageGuess = (props: TProps) => {
 		},
 	};
 
+	const handleSubmit = () => {
+		const checkRequire = inputFormRequire.every((ip) => ip.checkRequire);
+		if (checkRequire) return console.log({ inputFormData });
+
+		const _idErros: string[] = [];
+		inputFormRequire.filter((ip) => {
+			if (!ip.checkRequire) {
+				_idErros.push(ip._id!);
+			}
+		});
+
+		setInputFormErrors(_idErros);
+	};
+
 	return (
 		<div className="w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
 			<DivNative className="w-[66.8rem] flex flex-col gap-[4rem] ">
 				<DivNative className="relative w-full min-h-[20rem] aspect-[3.01/1]">
 					<Image
 						style={{
+							marginLeft: (formBackgroundPosition.y as number) * -1,
 							objectFit: "cover",
 							objectPosition: ` ${formBackgroundPosition?.y || 0}px ${formBackgroundPosition?.x || 0}px`,
 						}}
-						src={
-							FormCore.form_background?.form_background_iamge_url ||
-							FormCore.form_setting_default.form_background_default_url
-						}
+						src={formBackgroundImageUrl}
 						width={800}
 						height={160}
 						quality={100}
@@ -76,6 +91,11 @@ const FormPageGuess = (props: TProps) => {
 					{FormCore.form_avatar_state && (
 						// <DivNative className="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]  border-[.3rem] border-blue-800 rounded-full">
 						<Image
+							style={{
+								border: `.4rem solid ${
+									FormCore.form_title_color || FormCore.form_setting_default.form_title_color_default
+								}`,
+							}}
 							src={
 								FormCore.form_avatar?.form_avatar_url ||
 								FormCore.form_setting_default.form_avatar_default_url
@@ -99,7 +119,7 @@ const FormPageGuess = (props: TProps) => {
 						FormCore.form_avatar_state
 					)} w-full flex flex-col gap-[3rem] rounded-lg`}
 				>
-					<header className="w-full min-h-[16rem] h-max p-[2rem_3rem] flex flex-col  justify-between border-[.4rem] border-indigo-50 break-words	 border-t-[1.6rem] border-t-blue-400 bg-[#ffffff] rounded-lg">
+					<header className="w-full min-h-[16rem] h-max p-[2rem_3rem] flex flex-col gap-[2rem] justify-between border-[.4rem] border-indigo-50 break-words	 border-t-[1.6rem] border-t-blue-400 bg-[#ffffff] rounded-lg">
 						<h1 style={renderStyleTitleCore(FormCore)} className="text-[4rem]">
 							{FormCore.form_title}
 						</h1>
@@ -110,7 +130,7 @@ const FormPageGuess = (props: TProps) => {
 				<ButtonNative
 					textContent="Gửi"
 					className="w-[25%] h-[5rem] ml-auto bg-slate-900 text-white rounded-md "
-					// onClick={onGetDataDemo}
+					onClick={handleSubmit}
 				/>
 			</DivNative>
 		</div>

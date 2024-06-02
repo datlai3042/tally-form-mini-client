@@ -34,6 +34,11 @@ const FormAvatar = () => {
 	return (
 		<React.Fragment>
 			<Image
+				style={{
+					border: `.4rem solid ${
+						formCore.form_title_color || formCore.form_setting_default.form_title_color_default
+					}`,
+				}}
 				width={150}
 				height={150}
 				src={formCore.form_avatar?.form_avatar_url || formCore.form_setting_default.form_avatar_default_url}

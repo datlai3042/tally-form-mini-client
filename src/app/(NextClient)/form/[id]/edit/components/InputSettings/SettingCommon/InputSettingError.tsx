@@ -28,7 +28,7 @@ const InputSettingError = (props: TProps) => {
 			errorRef!.current!.textContent = e.target.textContent;
 			const errorCurrent = errorRef.current.textContent;
 			setInputItemString((prev) => {
-				const newSetting = { ...prev };
+				const newSetting = structuredClone(prev);
 				newSetting.setting.input_error = errorCurrent || inputSettingText.input_error;
 				return newSetting;
 			});
@@ -39,10 +39,11 @@ const InputSettingError = (props: TProps) => {
 		<DivNative className="h-max flex flex-col  justify-between gap-[.8rem]">
 			<SpanNative textContent={`Error`} onClick={labelClick} className="hover:cursor-pointer" />
 			<DivNativeRef
+				spellCheck={false}
 				ref={errorRef}
 				contentEditable={true}
 				onBlur={handleErrorInput}
-				className="border-[1px] border-slate-400 p-[.7rem] rounded-lg  outline-2 outline-blue-400"
+				className="px-[1.5rem] border-[1px] border-slate-400 p-[.7rem] rounded-lg  outline-2 outline-blue-400"
 				data-text={`${error || inputSettingText.input_error}`}
 			></DivNativeRef>
 		</DivNative>

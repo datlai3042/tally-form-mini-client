@@ -1,5 +1,5 @@
 import { FormCore, InputCore } from "@/type";
-import React, { useRef, useState } from "react";
+import React, { SetStateAction, useContext, useMemo, useRef, useState } from "react";
 import InputAnswerWrapper from "./InputAnswerWrapper";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import { InputError } from "./InputEmailAnswer";
@@ -8,6 +8,7 @@ import { AtSign } from "lucide-react";
 import InputErrorRequire from "./InputError/InputErrorRequire";
 import InputErrorInvaild from "./InputError/InputErrorInvaild";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
+import { FormAnswerContext } from "@/app/(NextClient)/_components/provider/FormAnswerProvider";
 
 type TProps = {
 	inputItem: InputCore.InputText.InputTypeText;
@@ -17,30 +18,83 @@ type TProps = {
 const InputTextAnswer = (props: TProps) => {
 	const { inputItem, formCore } = props;
 
+	const { inputFormData, inputFormErrors, setInputFormErrors, setInputFormData, setInputFormRequire } =
+		useContext(FormAnswerContext);
+
 	const [error, setError] = useState<InputError>({ errorState: false, type: "REQUIRE" });
 	const [inputValue, setInputValue] = useState<string>("");
 	const [write, setWrite] = useState<boolean>(false);
 	const [value, setValue] = useState<string>("");
+
+	const checkRequire = useMemo(() => {
+		if (inputFormErrors.includes(inputItem._id!) && inputItem.setting.require) return true;
+		return false;
+	}, [inputItem, inputFormErrors]);
 
 	const divContentRef = useRef<HTMLDivElement | null>(null);
 
 	const onFocus = () => {
 		setWrite(true);
 		setError((prev) => ({ ...prev, errorState: false, type: null }));
+
+		if (inputFormErrors.includes(inputItem._id as string)) {
+			console.log("OK");
+			setInputFormErrors((prev) => {
+				let newArray = structuredClone(prev);
+				newArray = newArray.filter((ip) => {
+					if (ip !== inputItem._id) return ip;
+					return null;
+				});
+				console.log({ newArray, inputItem });
+				return newArray;
+			});
+		}
+		if (setInputFormRequire) {
+			setInputFormRequire((prev) => {
+				const newArray = structuredClone(prev);
+				const findIndex = newArray.findIndex((ip) => ip._id === inputItem._id);
+				if (findIndex !== -1) {
+					newArray[findIndex].checkRequire = false;
+				}
+				return newArray;
+			});
+		}
 	};
 
+	console.log({ value, inputItem, write, inputFormErrors });
+
 	const onBlur = (e: React.ChangeEvent<HTMLDivElement>) => {
-		if (divContentRef.current?.textContent) {
-			console.log(divContentRef.current?.textContent.length!, inputItem.setting.minLength);
-		}
-		if (write && divContentRef.current?.textContent) {
-			if (!divContentRef.current.textContent && inputItem.setting?.require) {
+		if (write) {
+			if (!value && inputItem.setting.require) {
 				return setError((prev) => ({ ...prev, errorState: true, type: "REQUIRE" }));
 			}
-			const checkValidate = divContentRef.current?.textContent.length < inputItem.setting.minLength;
-			return !checkValidate
-				? setError((prev) => ({ ...prev, errorState: false, type: null }))
-				: setError((prev) => ({ ...prev, errorState: true, type: "INVAILD" }));
+
+			if (divContentRef.current && divContentRef.current.textContent) {
+				const titleCurrent = divContentRef.current.textContent;
+				setValue(divContentRef.current.textContent as string);
+				const checkValidate = divContentRef.current?.textContent.length < inputItem.setting.minLength;
+				if (!checkValidate) {
+					setError((prev) => ({ ...prev, errorState: false, type: null }));
+					if (setInputFormRequire) {
+						setInputFormRequire((prev) => {
+							const newArray = structuredClone(prev);
+							const findIndex = newArray.findIndex((ip) => ip._id === inputItem._id);
+							if (findIndex !== -1) {
+								newArray[findIndex].checkRequire = true;
+							}
+							return newArray;
+						});
+					}
+					setInputFormData((prev) => {
+						const newArray = structuredClone(prev);
+						const findIndex = newArray.findIndex((ip) => ip._id === inputItem._id);
+						if (findIndex !== -1) {
+							newArray[findIndex].value = titleCurrent;
+						}
+						return newArray;
+					});
+				} else setError((prev) => ({ ...prev, errorState: true, type: "INVAILD" }));
+			}
 		}
 	};
 
@@ -48,7 +102,7 @@ const InputTextAnswer = (props: TProps) => {
 		onCheckError: {
 			borderWrapper: (error: boolean) => {
 				if (error) return "border-red-600";
-				return " border-zinc-200";
+				return " border-zinc-100";
 			},
 
 			borderInput: (error: boolean) => {
@@ -70,11 +124,12 @@ const InputTextAnswer = (props: TProps) => {
 		<InputAnswerWrapper>
 			<DivNative
 				className={`${styleEffect.onCheckError.borderWrapper(
-					error.errorState
-				)} w-full min-h-full h-max p-[2rem_3rem] duration-300 transition-all flex flex-col justify-center gap-[1.4rem] border-[.1rem]`}
+					error.errorState || checkRequire
+				)} w-full min-h-full h-max p-[2rem_3rem] duration-300 transition-all flex flex-col justify-center gap-[2rem] border-[.1rem]`}
 			>
-				<p style={styleEffect.styleTitle()} className="text-[2rem] font-medium">
+				<p style={styleEffect.styleTitle()} className="flex items-center gap-[.6rem] text-[2rem] font-medium">
 					{inputItem.input_heading || "Không có tiêu đề"}
+					{inputItem.setting.require && <span className="text-red-800">*</span>}
 				</p>
 				<DivNative className="flex flex-col gap-[.3rem]">
 					<DivNative className={` relative min-h-[5rem] h-max flex items-center gap-[.5rem] `}>
@@ -93,10 +148,11 @@ const InputTextAnswer = (props: TProps) => {
 						></DivNativeRef>
 					</DivNative>
 				</DivNative>
-				{write && error.type === "REQUIRE" && <InputErrorRequire />}
-				{write && error.type === "INVAILD" && (
-					<InputErrorInvaild messageErorr={inputItem.setting?.input_error || "Dữ liệu khôngsds hợp lệ"} />
-				)}
+				{write || (checkRequire && error.type === "REQUIRE" && <InputErrorRequire />)}
+				{write ||
+					(checkRequire && error.type === "INVAILD" && (
+						<InputErrorInvaild messageErorr={inputItem.setting?.input_error || "Dữ liệu khôngsds hợp lệ"} />
+					))}
 			</DivNative>
 		</InputAnswerWrapper>
 	);

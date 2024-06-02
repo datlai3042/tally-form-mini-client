@@ -189,6 +189,16 @@ namespace FormCore {
 		form_avatar?: FormCore.FormAvatar;
 		form_inputs: InputCore.InputForm[];
 	};
+
+	namespace FormAnswer {
+		type InputFormRequire = { _id?: string; title?: string; checkRequire: boolean };
+		type InputFormData = {
+			_id: string;
+			title: string;
+			mode: "Require" | "Optional";
+			value: string;
+		};
+	}
 }
 
 namespace ReactCustom {

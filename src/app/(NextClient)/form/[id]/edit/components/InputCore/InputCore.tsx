@@ -55,6 +55,7 @@ const InputCore = (props: TProps) => {
 		<DivWrapper className="flex flex-col gap-[.5rem]  ">
 			{label && <InputLabel inputItem={inputItem} />}
 			{title && <InputTitle inputItem={inputItem} />}
+
 			<DivWrapper
 				className="group relative min-h-[8rem] h-max    xl:w-max pt-[2.4rem] flex items-center "
 				onFocus={() => setFocus(true)}

@@ -54,7 +54,7 @@ const FormDesignCustom = () => {
 	};
 
 	return (
-		<div className="scroll-desgin-custom fixed  top-[7rem] right-[2rem] h-[65rem] overflow-y-scroll      z-[100] w-[34rem] xl:w-[28rem]  bg-[#222] shadow-lg">
+		<div className="scroll-desgin-custom sticky  top-[-.1rem] mt-[2rem] right-[0rem] h-screen overflow-y-scroll      z-[100] w-[34rem]  bg-[#222] shadow-lg">
 			<div className="relative min-h-full h-max pb-[8rem]  border-y-[.1rem] border-l-[.1rem] border-[#464646] ">
 				<div className="relative w-full min-h-full h-max  py-[2rem] flex flex-col  gap-[2rem]  ">
 					<p className="text-center text-[#ffffff]">Tùy biến Form</p>

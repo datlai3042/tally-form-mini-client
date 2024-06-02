@@ -60,17 +60,15 @@ const HeaderEditForm = () => {
 			<DivNative className="hidden xl:flex gap-[1rem]">
 				<DivNative className=" flex items-center justify-center " title="Review">
 					<ButtonNative
-						textContent={`Review ${modeScreen}`}
-						className="p-[.8rem] rounded-md bg-blue-500 text-white"
+						textContent={`Review `}
+						className="p-[.8rem] rounded-md text-slate-700 opacity-70 hover:opacity-80"
 						onClick={onSetScreen}
 					/>
 				</DivNative>
 
 				<DivNative className=" flex items-center justify-center " title="Publish">
-					<ButtonNative textContent="Publish" className="p-[.8rem] rounded-md bg-blue-500 text-white" />
+					<ButtonNative textContent="Publish" className="p-[.8rem] rounded-md bg-slate-400 text-white" />
 				</DivNative>
-
-				<ButtonSave />
 
 				<DivNative
 					className="p-[.2rem_.8rem] flex items-center gap-[.8rem] hover:bg-slate-200 rounded-md"

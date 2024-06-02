@@ -57,7 +57,7 @@ const InputLabel = (props: TProps) => {
 
 	console.log({ color });
 	return (
-		<DivNative className=" min-h-full h-max w-[70%] flex gap-[.5rem] ">
+		<DivNative className=" min-h-full h-max w-[70%] flex items-center gap-[1rem] ">
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					style={{ fontSize, fontStyle, color }}
@@ -76,6 +76,7 @@ const InputLabel = (props: TProps) => {
 					{inputItem.input_heading}
 				</DivNativeRef>
 			)}
+			{inputItem.setting.require && <span className=" text-red-800">*</span>}
 
 			{modeScreen === "FULL" && (
 				<ParagraphNative

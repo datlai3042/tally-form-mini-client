@@ -71,10 +71,10 @@ const EditFormPage = ({ params }: { params: { id: string } }) => {
 						} rounded-lg `}
 					>
 						<HeaderEditForm />
-						{/* <DivNative className="flex h-max "> */}
-						<FormCore />
-						{openFormDesign && modeScreen === "NORMAL" ? <FormDesignCustom /> : null}
-						{/* </DivNative> */}
+						<DivNative className=" w-full flex justify-center h-max  ">
+							<FormCore />
+							{openFormDesign && modeScreen === "NORMAL" ? <FormDesignCustom /> : null}
+						</DivNative>
 					</DivNative>
 				</DivNative>
 			</DivNative>

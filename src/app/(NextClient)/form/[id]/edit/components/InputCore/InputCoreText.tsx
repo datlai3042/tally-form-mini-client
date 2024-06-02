@@ -52,7 +52,7 @@ const InputCoreText = (props: TProps) => {
 		>
 			<DivNativeRef
 				ref={divContentRef}
-				className="group w-full min-h-[8rem] p-[1.6rem] break-words whitespace-pre-wrap h-max border-[.1rem] border-gray-300 rounded-lg outline-none resize-none "
+				className="relative group w-full min-h-[8rem] p-[1.6rem] break-words whitespace-pre-wrap h-max border-[.1rem] border-gray-300 rounded-lg outline-none resize-none "
 				onClick={() => divContentRef.current?.focus()}
 				spellCheck={false}
 				onKeyDown={onPressEnter}
@@ -61,15 +61,7 @@ const InputCoreText = (props: TProps) => {
 				data-text={`${inputItem.setting?.placeholder || "Typing your text"}`}
 				suppressContentEditableWarning={true}
 				tabIndex={0}
-			>
-				{error && (
-					<SpanNative
-						className="flex group-focus:hidden opacity-55"
-						tabIndex={-1}
-						textContent="Email khong dung dinh dang"
-					/>
-				)}
-			</DivNativeRef>
+			></DivNativeRef>
 		</DivNative>
 	);
 

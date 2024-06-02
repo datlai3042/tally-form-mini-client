@@ -55,11 +55,11 @@ const InputTitle = (props: TProps) => {
 	useEffect(() => {}, [formCore, inputItem]);
 
 	return (
-		<DivNative className=" min-h-[1rem] h-max w-[90%] flex gap-[.5rem] ">
+		<DivNative className=" min-h-[1rem] h-max w-[90%] flex items-center gap-[1rem] ">
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef
 					style={{ fontSize, fontStyle, color }}
-					className="title-input group max-w-full break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2rem] font-medium sm:text-[2.4rem] bg-[#ffffff]"
+					className="title-input group max-w-full gap-[.5rem] break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2rem] font-medium sm:text-[2.4rem] bg-[#ffffff]"
 					autoFocus={true}
 					ref={titleRef}
 					onKeyDown={onPressEnter}
@@ -74,6 +74,7 @@ const InputTitle = (props: TProps) => {
 					{inputItem.input_heading}
 				</DivNativeRef>
 			)}
+			{inputItem.setting.require && <span className=" text-red-800">*</span>}
 
 			{modeScreen === "FULL" && (
 				<ParagraphNative

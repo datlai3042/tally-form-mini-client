@@ -22,6 +22,7 @@ import FormPageGuess from "@/app/(NextClient)/_components/Layout/FormPageGuess";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
 import FormDesignProvider from "@/app/(NextClient)/_components/provider/FormDesignProvider";
+import FormAnswerProvider from "@/app/(NextClient)/_components/provider/FormAnswerProvider";
 
 export const generateInputForms = (Inputs: InputCore.InputForm[]): React.ReactNode => {
 	return Inputs.map((ele, index) => {
@@ -139,7 +140,9 @@ const FormCore = () => {
 							onClick={() => setModeScreen("NORMAL")}
 						/>
 					</DivNative>
-					<FormPageGuess FormCore={formCore} />
+					<FormAnswerProvider formCore={formCore}>
+						<FormPageGuess FormCore={formCore} />
+					</FormAnswerProvider>
 				</DivNative>
 			)}
 		</>
