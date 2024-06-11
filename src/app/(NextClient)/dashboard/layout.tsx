@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	}
 
 	const fullName = user?.user_first_name + " " + user?.user_last_name;
-	const imageAvatar = user?.user_avatar_current.secure_url || user?.user_avatar_system;
+	const imageAvatar = user?.user_avatar_current?.secure_url || user?.user_avatar_system;
 
 	return {
 		title: fullName || "Form Builder",
