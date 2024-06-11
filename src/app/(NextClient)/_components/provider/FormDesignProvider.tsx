@@ -1,7 +1,5 @@
 import React, { SetStateAction, createContext, useState } from "react";
-import ButtonDesgin from "../../form/[id]/edit/components/FormDesign/DesignCommon/ButtonDesgin";
-import FormDesignCustom from "../../form/[id]/edit/components/FormDesign/FormDesignCustom";
-import ModelNotSave from "../../form/[id]/edit/components/FormDesign/ModelNotSave";
+import ModelNotSave from "../../form/[id]/(owner)/edit/components/FormDesign/ModelNotSave";
 
 type TFormDesignContext = {
 	openFormDesign: boolean;
@@ -10,15 +8,20 @@ type TFormDesignContext = {
 	setIsDesginForm: React.Dispatch<SetStateAction<boolean>>;
 	openModelNotSave: boolean;
 	setOpenModelNotSave: React.Dispatch<SetStateAction<boolean>>;
+
+	openDesignTitle: boolean;
+	setOpenDesignTitle: React.Dispatch<SetStateAction<boolean>>;
 };
 
 export const FormDesignContext = createContext<TFormDesignContext>({
 	isDesignForm: false,
 	openFormDesign: false,
 	openModelNotSave: false,
+	openDesignTitle: false,
 	setIsDesginForm: () => {},
 	setOpenFormDesign: () => {},
 	setOpenModelNotSave: () => {},
+	setOpenDesignTitle: () => {},
 });
 
 type TProps = {
@@ -31,6 +34,7 @@ const FormDesignProvider = (props: TProps) => {
 	const [isDesignForm, setIsDesginForm] = useState<boolean>(false);
 	const [openFormDesign, setOpenFormDesign] = useState<boolean>(false);
 	const [openModelNotSave, setOpenModelNotSave] = useState<boolean>(false);
+	const [openDesignTitle, setOpenDesignTitle] = useState<boolean>(false);
 
 	return (
 		<FormDesignContext.Provider
@@ -41,9 +45,10 @@ const FormDesignProvider = (props: TProps) => {
 				setOpenFormDesign,
 				openModelNotSave,
 				setOpenModelNotSave,
+				openDesignTitle,
+				setOpenDesignTitle,
 			}}
 		>
-			{/* {openFormDesign && <FormDesignCustom />} */}
 			{openModelNotSave && <ModelNotSave />}
 			{children}
 		</FormDesignContext.Provider>

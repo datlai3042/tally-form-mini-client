@@ -4,7 +4,7 @@
 
 @layer base {
 	:root {
-		--background: 0 0% 100%;
+		--borderInputAnswerFocus: "#ccc", --background: 0 0% 100%;
 		--foreground: 222.2 84% 4.9%;
 
 		--card: 0 0% 100%;
@@ -63,6 +63,9 @@
 		--border: 217.2 32.6% 17.5%;
 		--input: 217.2 32.6% 17.5%;
 		--ring: 212.7 26.8% 83.9%;
+
+		--scorll-form-answer-detail: #000000;
+		--scorll-form-answer-detail-width: 0.1rem;
 	}
 
 	.custom-color-title .react-colorful {
@@ -102,6 +105,28 @@
 		/* border-radius: 10px; */
 	}
 
+	.scroll-error-input::-webkit-scrollbar {
+		width: 0.6rem;
+	}
+
+	/* Handle */
+	.scroll-error-input::-webkit-scrollbar-thumb {
+		background: red;
+		border-radius: 0.2rem;
+		/* border-radius: 10px; */
+	}
+
+	.scroll-form-answer-detail::-webkit-scrollbar {
+		width: 0.4rem;
+	}
+
+	/* Handle */
+	.scroll-form-answer-detail::-webkit-scrollbar-thumb {
+		background: var(--scorll-form-answer-detail);
+		border-radius: 0.2rem;
+		/* border-radius: 10px; */
+	}
+
 	/* Handle on hover */
 }
 
@@ -113,6 +138,13 @@
 	[contentEditable="true"]:empty:not(:focus):before {
 		content: attr(data-text);
 		font-size: 1.5rem;
+		opacity: 0.4;
+		font-weight: 600;
+	}
+
+	.heading-answer[contentEditable="true"]:empty:not(:focus):before {
+		content: attr(data-text);
+		font-size: 1.4rem;
 		opacity: 0.4;
 		font-weight: 600;
 	}
@@ -142,6 +174,10 @@
 }
 
 @layer utilities {
+	.inputAnswer:focus-within {
+		border-color: var(--borderInputAnswerFocus) !important;
+	}
+
 	.text-balance {
 		text-wrap: balance;
 	}

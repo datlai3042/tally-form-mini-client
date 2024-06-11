@@ -8,30 +8,25 @@ import Input from "../../_components/ui/input/Input";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
 import { UserType } from "@/app/_schema/user/user.type";
+import LoadingSpinner from "../../_components/ui/loading/LoadingSpinner";
 
-const userUpdateSchema = registerSchema.pick({ first_name: true, last_name: true });
+const userUpdateSchema = registerSchema.pick({ first_name: true, last_name: true, email: true });
 type UserUpdateInfo = z.infer<typeof userUpdateSchema>;
-
-type TProps = {
-	defaulValues: {
-		first_name: string;
-		last_name: string;
-	};
-};
 
 const SettingAccount = () => {
 	const user = useSelector((state: RootState) => state.authReducer.user) as UserType;
 
 	const formUpdate = useForm<UserUpdateInfo>({
-		defaultValues: async () => {
-			return new Promise((res, rej) => {
-				if (user) {
-					res({
-						first_name: user?.user_first_name || "",
-						last_name: user?.user_last_name || "",
-					});
-				}
-			});
+		defaultValues: {
+			// return await new Promise((res, rej) => {
+			// if (user) {
+			// res({
+			first_name: user?.user_first_name || "",
+			last_name: user?.user_last_name || "",
+			email: user?.user_email || "",
+			// });
+			// }
+			// });
 		},
 		resolver: zodResolver(userUpdateSchema),
 	});
@@ -64,8 +59,17 @@ const SettingAccount = () => {
 							watch={formUpdate.watch}
 							error={formUpdate.formState.errors}
 						/>
+
+						<Input<UserUpdateInfo>
+							FieldKey="email"
+							placeholder="Nhập email"
+							register={formUpdate.register}
+							type="text"
+							watch={formUpdate.watch}
+							error={formUpdate.formState.errors}
+						/>
 					</form>
-					<InputLayout placeholder="email" value="123" />
+					{/* <InputLayout placeholder="email" value="123" /> */}
 					<button
 						type="submit"
 						form="form_update"
@@ -74,16 +78,6 @@ const SettingAccount = () => {
 						Update
 					</button>
 				</>
-			)}
-
-			{!user && (
-				<div className="flex flex-col gap-[1.8rem]">
-					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
-					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
-					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
-					<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
-					<div className="animate-pulse bg-slate-200 w-[10%] p-[.2rem_.8rem] h-[2.7rem] d">Update</div>
-				</div>
 			)}
 		</div>
 	);

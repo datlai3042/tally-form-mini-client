@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const privateRouter = ["/dashboard", "/me"];
+const privateRouter = ["/dashboard", "/me", "/settings"];
 const authRouter = ["/login", "/register", "/"];
 
 // This function can be marked `async` if using `await` inside
@@ -23,12 +23,14 @@ export function middleware(request: NextRequest) {
 
 	const regexUrlFormEdit = /^\/form\/[a-zA-Z0-9]+\/edit$/;
 
+	console.log({ pathname });
+
 	if (regexUrlFormEdit.test(pathname) && !authentication) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
 	if (!authentication && privateRouter.includes(pathname)) {
-		return NextResponse.redirect(new URL("/", request.url));
+		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
 	if (authentication && authRouter.includes(pathname)) {
@@ -46,5 +48,5 @@ const matcher = [...privateRouter, authRouter, "/"];
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ["/dashboard", "/me", "/login", "/register", "/", "/form/:path*"],
+	matcher: ["/dashboard", "/settings", "/me", "/login", "/register", "/", "/form/:path*"],
 };

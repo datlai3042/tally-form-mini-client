@@ -43,26 +43,47 @@ type CustomRequest = Omit<RequestInit, "method"> & {
 type MessageResponse = { message: string };
 
 namespace InputCore {
-	export type InputCommon = {
-		input_heading?: string;
-		input_heading_type?: "LABEL" | "TITLE";
-	};
+	namespace Setting {
+		export type InputSettingCommon = {
+			require: boolean;
+			placeholder?: string;
+			input_error?: string;
+			input_color: string;
+			input_size: number;
+			input_style: FormCore.FormTextStyle;
+		};
 
-	type InputSettingTextCommon = {
-		minLength: number;
-		maxLength: number;
-	} & InputCore.InputSettingCommon;
+		type InputSettingTextCommon = {
+			minLength: number;
+			maxLength: number;
+		} & InputCore.Setting.InputSettingCommon;
+	}
 
-	type InputCommonText = { setting: InputSettingTextCommon; _id?: string };
+	namespace Commom {
+		type InputCommon = {
+			input_heading?: string;
+			input_heading_type?: "LABEL" | "TITLE";
+		};
+
+		type InputCommonText = { setting: InputCore.Setting.InputSettingTextCommon; _id?: string };
+
+		type ErrorText = "REQUIRE" | "MIN" | "MAX" | "INVAILD";
+
+		type CatchError = {
+			_id: string;
+			type: ErrorText;
+			title: string;
+			message: string;
+		};
+	}
 
 	namespace InputEmail {
-		export type InputTypeEmail = InputCore.InputCommon &
-			InputCore.InputCommonText & {
+		export type InputSettingEmail = InputCore.Setting.InputSettingTextCommon;
+		export type InputTypeEmail = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonText & {
 				type: "EMAIL";
-				setting: InputCore.InputSettingTextCommon;
+				setting: InputCore.Setting.InputSettingTextCommon;
 			};
-
-		export type InputSettingEmail = InputCore.InputSettingTextCommon;
 	}
 
 	namespace InputDate {
@@ -81,23 +102,21 @@ namespace InputCore {
 	}
 
 	namespace InputText {
-		export type InputSettingText = InputCore.InputSettingTextCommon;
-
-		export const inputSettingText: InputCore.InputText.InputSettingText = {};
 		export type InputText = "TEXT";
-		export type InputTypeText = InputCore.InputCommon &
-			InputCore.InputCommonText & {
+		export type InputSettingText = InputCore.Setting.InputSettingTextCommon;
+
+		export type InputTypeText = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonText & {
 				type: InputText;
-				setting: InputCore.InputSettingCommon;
 			};
 	}
 
 	namespace InputOption {
-		export type InputTypeOption = InputCore.InputCommon & { type: "Option"; option: string[] };
+		export type InputTypeOption = InputCore.Commom.InputCommon & { type: "Option"; option: string[] };
 	}
 
 	namespace InputImage {
-		export type InputTypeImage = InputCore.InputCommon & {
+		export type InputTypeImage = InputCore.Commom.InputCommon & {
 			type: "IMAGE";
 			_id?: string;
 			caption: string;
@@ -108,14 +127,7 @@ namespace InputCore {
 			setting: { a: number };
 		};
 	}
-	export type InputSettingCommon = {
-		require: boolean;
-		placeholder?: string;
-		input_error?: string;
-		input_color: string;
-		input_size: number;
-		input_style: FormCore.FormTextStyle;
-	};
+
 	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText;
 	// | InputOption.InputTypeOption
 	// | InputDate.InputTypeDate
@@ -126,6 +138,19 @@ namespace FormCore {
 	namespace Func {
 		export type RemoveInputItemFirst = (cb: ReactCustom.Form) => void;
 		export type RemoveInputItemWithIndex = (cb: ReactCustom.Form, index: number) => void;
+	}
+
+	namespace Title {
+		type TitleSub = "Text" | "Image";
+
+		type FormTitleSub = {
+			type: TitleSub;
+			value: string;
+			write: boolean;
+			_id: string;
+		};
+
+		type FormTitleImageMode = "Normal" | "Slider";
 	}
 
 	type FormAvatarPosition = "left" | "center" | "right";
@@ -150,7 +175,7 @@ namespace FormCore {
 		form_avatar_default_url: string;
 		form_avatar_default_postion: FormAvatarPosition;
 		form_avatar_default_mode: FormAvatarMode;
-		form_title_color_default?: string;
+		form_title_color_default: string;
 		form_title_size_default: number;
 		form_title_style_default: FormTextStyle;
 		form_background_position_default: {
@@ -168,16 +193,21 @@ namespace FormCore {
 		position: FormAvatarPosition;
 	};
 
-	export type FormTitle = string;
+	export type FormTitle = {
+		form_title_style?: FormTextStyle;
+		form_title_value: string;
+		form_title_color?: string;
+		form_title_size?: number;
+		form_title_sub: FormCore.Title.FormTitleSub[];
+		form_title_mode_image: FormCore.Title.FormTitleImageMode;
+	};
 	export type FormLabel = string;
 	type FormTextStyle = "normal" | "italic";
 
 	export type Form = {
 		_id: string;
+		form_owner: string;
 		form_title: FormCore.FormTitle;
-		form_title_color?: string;
-		form_title_size?: number;
-		form_title_style?: FormCore.FormTextStyle;
 		form_background_state: boolean;
 		form_avatar_state: boolean;
 		createdAt?: Date;
@@ -197,7 +227,30 @@ namespace FormCore {
 			title: string;
 			mode: "Require" | "Optional";
 			value: string;
+			type: InputCore.InputForm["type"];
+			setting?: InputCore.Setting.InputSettingTextCommon;
 		};
+
+		type Answer = Omit<InputFormData, "setting">;
+
+		type OneReport = {
+			form_id: string;
+			answers: Answer[];
+			createdAt: Date;
+			_id: string;
+		};
+
+		type FormAnswerCore = {
+			form_id: string;
+			owner_id: string;
+			reports: OneReport[];
+		};
+	}
+}
+
+namespace User {
+	export interface uploadFile extends FormData {
+		append(name: "file", value: string | Blob, fileName?: string): void;
 	}
 }
 

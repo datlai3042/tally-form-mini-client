@@ -4,6 +4,7 @@ import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
 import { getCookieValueHeader, removeValueLocalStorage, setValueLocalStorage } from "../_lib/utils";
 import { redirect } from "next/navigation";
 import { ConstructorError, ErrorPayload, PermissionError } from "../_lib/httpError";
+import { object } from "zod";
 
 type FuncAuth = () => ResponseApi<ResponseAuth>;
 
@@ -21,12 +22,16 @@ class AuthService {
 		const urlRequestNextServer = "v1/api/auth/next-logout";
 		const options = { baseUrl: "" };
 		const logoutResponse = await Http.post<ResponseApi<MessageResponse>>(urlRequestBackEnd, { force: true }, {});
-		const logoutNextServer = await Http.post<MessageResponse>(urlRequestNextServer, undefined, options);
+		const logoutResponseServer = await Http.post<ResponseApi<MessageResponse>>(
+			urlRequestNextServer,
+			object,
+			options
+		);
 
 		removeValueLocalStorage("expireToken");
 		removeValueLocalStorage("code_verify_token");
 		if (typeof window !== "undefined") {
-			return (window.location.href = "/");
+			return (window.location.href = "/login");
 		}
 		return null;
 	}

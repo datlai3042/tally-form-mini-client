@@ -56,18 +56,19 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 			? process.env.NEXT_PUBLIC_MODE === "DEV"
 				? "http://localhost:4000"
 				: process.env.BACK_END_URL
-			: options.baseUrl;
+			: `http://localhost:3000`;
 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
+
+	console.log({ fullUrl });
 
 	return { body, baseHeader, baseUrl, fullUrl };
 };
 
 // Handle Form
 
-export const setTitleForm = async (title: string, form: FormCore.Form) => {
+export const setTitleForm = async (form: FormCore.Form) => {
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/set-title-form", {
-		title,
 		form,
 	});
 
@@ -77,7 +78,7 @@ export const setTitleForm = async (title: string, form: FormCore.Form) => {
 export const addInputToSectionTitle = async (title: string, form: FormCore.Form) => {
 	const newForm = structuredClone(form);
 	console.log({ form });
-	newForm.form_title = title;
+	newForm.form_title.form_title_value = title;
 	const settingMerge = {
 		input_color: newForm.form_setting_default.input_color || inputSettingText.input_color,
 		input_size: newForm.form_setting_default.input_size || inputSettingText.input_size,
@@ -153,19 +154,42 @@ export const removeInputWithId = async (form: FormCore.Form, inpur_id: string) =
 export const renderStyleTitleCore = (formCore: FormCore.Form) => {
 	return {
 		fontSize: `${
-			formCore.form_title_size
-				? formCore.form_title_size / 10 + "rem"
+			formCore.form_title.form_title_size
+				? formCore.form_title.form_title_size / 10 + "rem"
 				: formCore.form_setting_default.form_title_size_default / 10 + "rem"
 		}`,
 		color: `${
-			formCore.form_title_color
-				? formCore.form_title_color
+			formCore.form_title.form_title_color
+				? formCore.form_title.form_title_color
 				: formCore.form_setting_default.form_title_color_default
 		}`,
 		fontStyle: `${
-			formCore.form_title_style
-				? formCore.form_title_style
+			formCore.form_title.form_title_style
+				? formCore.form_title.form_title_style
 				: formCore.form_setting_default.form_title_style_default
 		}`,
 	};
+};
+
+//xóa dấu tiếng việt
+export const stringToSlug = (str: string) => {
+	// remove accents
+	const from = "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+		to = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+	for (let i = 0, l = from.length; i < l; i++) {
+		str = str.replace(RegExp(from[i], "gi"), to[i]);
+	}
+
+	str = str
+		.toLowerCase()
+		.trim()
+		.replace(/[^a-z0-9\-]/g, "-")
+		.replace(/-+/g, "-");
+
+	return str;
+};
+
+export const checkValueHref = (value: string) => {
+	const regex = new RegExp("^(http|https)://", "i");
+	return value.match(regex);
 };

@@ -9,7 +9,15 @@ type InitialState = {
 
 const formInitital: FormCore.Form = {
 	_id: "",
-	form_title: "",
+	form_owner: "",
+	form_title: {
+		form_title_mode_image: "Normal",
+		form_title_value: "",
+		form_title_size: 40,
+		form_title_color: "#2568aa",
+		form_title_style: "normal",
+		form_title_sub: [],
+	},
 	form_button_label: "",
 	form_avatar_state: false,
 	form_background_state: false,

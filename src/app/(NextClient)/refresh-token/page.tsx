@@ -10,9 +10,9 @@ import LayoutRequestLoading from "../_components/Layout/LayoutRequestLoading";
 const RefreshTokenPage = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const code_verify_token_sv = searchParams.get("code_verify_token");
 
 	const pathName = searchParams.get("pathName");
-	const code_verify_token_sv = searchParams.get("code_verify_token");
 
 	const [error, setError] = useState(false);
 

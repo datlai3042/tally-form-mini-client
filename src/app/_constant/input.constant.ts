@@ -10,3 +10,10 @@ export const inputSettingText: InputCore.InputText.InputSettingText = {
 	input_size: 16,
 	input_style: "normal",
 };
+
+export const regexEmail = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
+
+export const REQUIRE_ERROR = "Đây là một câu trả lời bắt buộc";
+export const MIN_LENGTH_ERROR = (min: number) => `Độ dài tối thiếu: ${min}`;
+export const MAX_LENGTH_ERROR = (min: number) => `Độ dài tối đa: ${min}`;
+export const INVAILD_ERROR = (message: string) => message;

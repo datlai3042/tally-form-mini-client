@@ -1,4 +1,5 @@
-import { FormCore } from "@/type";
+"use client";
+import { FormCore, InputCore } from "@/type";
 import React, { SetStateAction, createContext, useState } from "react";
 
 type TFormAnswerContext = {
@@ -8,17 +9,22 @@ type TFormAnswerContext = {
 	inputFormRequire: FormCore.FormAnswer.InputFormRequire[];
 	setInputFormRequire: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormRequire[]>>;
 
-	inputFormErrors: string[];
-	setInputFormErrors: React.Dispatch<SetStateAction<string[]>>;
+	inputFormErrors: InputCore.Commom.CatchError[];
+	setInputFormErrors: React.Dispatch<SetStateAction<InputCore.Commom.CatchError[]>>;
+
+	openModelError: boolean;
+	setOpenModelError: React.Dispatch<SetStateAction<boolean>>;
 };
 
 export const FormAnswerContext = createContext<TFormAnswerContext>({
 	inputFormData: [],
 	inputFormRequire: [],
 	inputFormErrors: [],
+	openModelError: false,
 	setInputFormData: () => {},
 	setInputFormRequire: () => {},
 	setInputFormErrors: () => {},
+	setOpenModelError: () => {},
 });
 
 type TProps = {
@@ -28,6 +34,8 @@ type TProps = {
 
 const FormAnswerProvider = (props: TProps) => {
 	const { formCore, children } = props;
+
+	const [openModelError, setOpenModelError] = useState<boolean>(false);
 
 	const [inputFormRequire, setInputFormRequire] = useState(() => {
 		const arrayInputRequire = formCore.form_inputs.reduce(
@@ -46,17 +54,19 @@ const FormAnswerProvider = (props: TProps) => {
 	const [inputFormData, setInputFormData] = useState<FormCore.FormAnswer.InputFormData[]>(() => {
 		const data = formCore.form_inputs.map((ip) => {
 			return {
+				setting: ip.setting,
 				_id: ip._id!,
 				title: ip.input_heading || "Không có tiêu đề",
 				mode: ip.setting.require ? "Require" : ("Optional" as FormCore.FormAnswer.InputFormData["mode"]),
 				value: "",
+				type: ip.type,
 			};
 		});
 
 		return data;
 	});
 
-	const [inputFormErrors, setInputFormErrors] = useState<string[]>([]);
+	const [inputFormErrors, setInputFormErrors] = useState<InputCore.Commom.CatchError[]>([]);
 
 	return (
 		<FormAnswerContext.Provider
@@ -64,6 +74,8 @@ const FormAnswerProvider = (props: TProps) => {
 				inputFormData,
 				inputFormRequire,
 				inputFormErrors,
+				openModelError,
+				setOpenModelError,
 				setInputFormData,
 				setInputFormRequire,
 				setInputFormErrors,

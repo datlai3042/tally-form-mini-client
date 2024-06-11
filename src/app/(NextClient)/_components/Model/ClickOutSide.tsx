@@ -1,24 +1,22 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 
 type TProps = {
 	children: React.ReactElement;
+	setOpenModel: React.Dispatch<SetStateAction<boolean>>;
 };
 
 const ClickOutSide = (props: TProps) => {
-	const { children } = props;
-	const [outSide, setOutSide] = useState<boolean>(false);
+	const { children, setOpenModel } = props;
 
 	const divColorRef = useRef<HTMLDivElement | null>(null);
-
-	console.log({ outSide });
 
 	const globalClick = useCallback(
 		(e: MouseEvent) => {
 			if (divColorRef.current && !divColorRef.current.contains(e.target as Node)) {
-				setOutSide(true);
+				setOpenModel(false);
 			}
 		},
-		[setOutSide]
+		[setOpenModel]
 	);
 
 	console.log("123");
@@ -32,9 +30,8 @@ const ClickOutSide = (props: TProps) => {
 	}, [globalClick]);
 
 	return (
-		<div ref={divColorRef} className="w-max h-max bg-blue-700">
-			{" "}
-			{React.cloneElement(children, { outSide })}
+		<div ref={divColorRef} className="w-max min-h-max ">
+			{children}
 		</div>
 	);
 };

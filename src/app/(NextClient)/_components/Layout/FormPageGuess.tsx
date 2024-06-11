@@ -1,12 +1,17 @@
 import { FormCore, InputCore } from "@/type";
 import Image from "next/image";
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import DivNative from "../ui/NativeHtml/DivNative";
-import InputEmailAnswer from "../../form/[id]/edit/components/InputAnswer/InputEmailAnswer";
 import ButtonNative from "../ui/NativeHtml/ButtonNative";
-import InputTextAnswer from "../../form/[id]/edit/components/InputAnswer/InputTextAnswer";
 import { renderStyleTitleCore } from "@/app/_lib/utils";
-import { FormAnswerContext } from "../provider/FormAnswerProvider";
+import FormAnswerProvider, { FormAnswerContext } from "../provider/FormAnswerProvider";
+import FormTitleImage from "../../form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
+import SliderImage from "../Model/SliderImage";
+import InputTextAnswer from "../../form/[id]/_components/InputAnswer/_text/InputTextAnswer";
+import InputEmailAnswer from "../../form/[id]/_components/InputAnswer/_email/InputEmailAnswer";
+import { superEmailValidate } from "../../form/[id]/_components/InputAnswer/_validate/inputEmail.validate";
+import { superTextValidate } from "../../form/[id]/_components/InputAnswer/_validate/inputText.validate";
+import RenderInputAnswers from "../../form/[id]/_components/RenderInputAnswers";
 
 type TProps = {
 	FormCore: FormCore.Form;
@@ -25,8 +30,11 @@ const generateInputAnswer = (Inputs: InputCore.InputForm[], formCore: FormCore.F
 
 const FormPageGuess = (props: TProps) => {
 	const { FormCore } = props;
+	const { inputFormData, inputFormRequire, inputFormErrors, setInputFormErrors } = useContext(FormAnswerContext);
 
-	const { inputFormData, inputFormRequire, setInputFormErrors } = useContext(FormAnswerContext);
+	const [page, setPage] = useState<number>(1);
+
+	const colorMain = FormCore.form_title.form_title_color || FormCore.form_setting_default.form_title_color_default;
 
 	const renderInputAnswer = useMemo(() => generateInputAnswer(FormCore.form_inputs, FormCore), [FormCore]);
 	const formBackgroundImageUrl =
@@ -38,6 +46,17 @@ const FormPageGuess = (props: TProps) => {
 
 	const modeAvatar = FormCore.form_avatar?.mode || FormCore.form_setting_default.form_avatar_default_mode;
 	const positionAvatar = FormCore.form_avatar?.position || FormCore.form_setting_default.form_avatar_default_postion;
+
+	const numberInputAPage = 3;
+	const allInputAnswer = useMemo(
+		() => generateInputAnswer(FormCore.form_inputs, FormCore),
+		[FormCore]
+	) as React.ReactNode[];
+	const totalPage = Math.ceil(allInputAnswer.length / numberInputAPage);
+
+	const generateInputWithPage = { start: numberInputAPage * (page - 1), end: numberInputAPage * page };
+	console.log({ length: allInputAnswer.length });
+	console.log({ input: allInputAnswer.slice(numberInputAPage * (page - 1), numberInputAPage * page) });
 
 	const styleEffect = {
 		formMarginTop: (check: boolean) => {
@@ -57,43 +76,88 @@ const FormPageGuess = (props: TProps) => {
 	};
 
 	const handleSubmit = () => {
+		console.log({ data: inputFormData });
 		const checkRequire = inputFormRequire.every((ip) => ip.checkRequire);
-		if (checkRequire) return console.log({ inputFormData });
+		if (checkRequire && inputFormErrors.length === 0) {
+			return console.log("OK het roi");
+		}
 
-		const _idErros: string[] = [];
-		inputFormRequire.filter((ip) => {
-			if (!ip.checkRequire) {
-				_idErros.push(ip._id!);
+		let inputErrorArray: InputCore.Commom.CatchError[] = [];
+		inputFormData.map((ip) => {
+			const ipError = inputFormErrors.filter((ipr) => ipr._id === ip._id)[0];
+			if (ipError) {
+				inputErrorArray.push(ipError);
+			}
+
+			if (!ipError && ip.type === "TEXT") {
+				const { _next, message, type } = superTextValidate(ip.value, ip.setting!);
+				if (_next) return;
+				const inputErrorInfo: InputCore.Commom.CatchError = {
+					_id: ip._id,
+					title: ip.title,
+					type: type as InputCore.Commom.ErrorText,
+					message,
+				};
+
+				inputErrorArray.push(inputErrorInfo);
+			}
+			if (!ipError && ip.type === "EMAIL") {
+				const { _next, message, type } = superEmailValidate(ip.value, ip.setting!);
+				if (_next) return;
+				const inputErrorInfo: InputCore.Commom.CatchError = {
+					_id: ip._id,
+					title: ip.title,
+					type: type as InputCore.Commom.ErrorText,
+					message,
+				};
+
+				inputErrorArray.push(inputErrorInfo);
 			}
 		});
-
-		setInputFormErrors(_idErros);
+		setInputFormErrors(inputErrorArray);
+		return console.log({ inputFormErrors, inputErrorArray });
 	};
 
+	const checkMode: FormCore.Title.FormTitleImageMode = "Slider";
+
+	let flag = false;
+
 	return (
-		<div className="w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
-			<DivNative className="w-[66.8rem] flex flex-col gap-[4rem] ">
+		<div className="px-[2rem] xl:px-0 w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
+			<DivNative className="w-full sm:w-[66.8rem] flex flex-col gap-[4rem] ">
 				<DivNative className="relative w-full min-h-[20rem] aspect-[3.01/1]">
-					<Image
-						style={{
-							marginLeft: (formBackgroundPosition.y as number) * -1,
-							objectFit: "cover",
-							objectPosition: ` ${formBackgroundPosition?.y || 0}px ${formBackgroundPosition?.x || 0}px`,
-						}}
-						src={formBackgroundImageUrl}
-						width={800}
-						height={160}
-						quality={100}
-						alt="form background"
-						className="w-[66.8rem] aspect-[3/1]   rounded-lg"
-					/>
+					{FormCore.form_background?.form_background_iamge_url && (
+						<Image
+							style={{
+								marginLeft: (formBackgroundPosition.y as number) * -1,
+								objectFit: "cover",
+								objectPosition: ` ${formBackgroundPosition?.y || 0}px ${
+									formBackgroundPosition?.x || 0
+								}px`,
+							}}
+							src={formBackgroundImageUrl}
+							width={800}
+							height={160}
+							quality={100}
+							alt="form background"
+							className="w-[66.8rem] aspect-[3/1]   rounded-lg"
+						/>
+					)}
+
+					{!FormCore.form_background?.form_background_iamge_url && (
+						<div
+							style={{ backgroundColor: colorMain }}
+							className="w-[66.8rem] aspect-[3/1] rounded-lg opacity-90"
+						></div>
+					)}
 
 					{FormCore.form_avatar_state && (
 						// <DivNative className="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]  border-[.3rem] border-blue-800 rounded-full">
 						<Image
 							style={{
 								border: `.4rem solid ${
-									FormCore.form_title_color || FormCore.form_setting_default.form_title_color_default
+									FormCore.form_title.form_title_color ||
+									FormCore.form_setting_default.form_title_color_default
 								}`,
 							}}
 							src={
@@ -119,19 +183,12 @@ const FormPageGuess = (props: TProps) => {
 						FormCore.form_avatar_state
 					)} w-full flex flex-col gap-[3rem] rounded-lg`}
 				>
-					<header className="w-full min-h-[16rem] h-max p-[2rem_3rem] flex flex-col gap-[2rem] justify-between border-[.4rem] border-indigo-50 break-words	 border-t-[1.6rem] border-t-blue-400 bg-[#ffffff] rounded-lg">
-						<h1 style={renderStyleTitleCore(FormCore)} className="text-[4rem]">
-							{FormCore.form_title}
-						</h1>
-						<span className="text-red-600 text-[1.4rem]">* Biểu thị câu hỏi bắt buộc</span>
-					</header>
-					<DivNative className="flex flex-col gap-[3rem]">{renderInputAnswer}</DivNative>
+					<DivNative className="flex flex-col gap-[3rem]">
+						<FormAnswerProvider formCore={FormCore}>
+							<RenderInputAnswers formCore={FormCore} />
+						</FormAnswerProvider>
+					</DivNative>
 				</DivNative>
-				<ButtonNative
-					textContent="Gửi"
-					className="w-[25%] h-[5rem] ml-auto bg-slate-900 text-white rounded-md "
-					onClick={handleSubmit}
-				/>
 			</DivNative>
 		</div>
 	);

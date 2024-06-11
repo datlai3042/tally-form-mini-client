@@ -8,6 +8,7 @@ import DashBoardButtonModel from "./DashBoardButtonModel";
 import { UserType } from "@/app/_schema/user/user.type";
 import { RootState } from "@/app/_lib/redux/store";
 import { useSelector } from "react-redux";
+import Image from "next/image";
 
 const DashboardAccount = () => {
 	const { openSidebar, setOpenSidebar } = useContext(SidebarContext);
@@ -18,9 +19,20 @@ const DashboardAccount = () => {
 			{user && (
 				<>
 					<div className="max-w-[90%] flex gap-[1rem] items-center ">
-						<div className="min-w-[2rem] h-[2rem] bg-green-300 rounded-full flex items-center justify-center">
-							{user?.user_first_name.slice(0, 1)}
-						</div>
+						{user?.user_avatar_current?.secure_url && (
+							<Image
+								src={user.user_avatar_current.secure_url}
+								width={20}
+								height={20}
+								alt="avatar"
+								className="w-[2rem] h-[2rem] rounded-full"
+							/>
+						)}
+						{!user?.user_avatar_current?.secure_url && (
+							<div className="min-w-[2rem] h-[2rem] bg-green-300 rounded-full flex items-center justify-center">
+								{user?.user_first_name.slice(0, 1)}
+							</div>
+						)}
 
 						<span className="font-semibold w-[90%] break-words line-clamp-2 " title={"Nickname"}>
 							{user?.user_first_name + " " + user?.user_last_name}

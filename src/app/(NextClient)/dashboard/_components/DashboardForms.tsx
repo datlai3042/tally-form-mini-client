@@ -6,6 +6,8 @@ import DivNative from "../../_components/ui/NativeHtml/DivNative";
 import Link from "next/link";
 import moment from "moment";
 import "moment/locale/vi"; // without this line it didn't work
+import { Pencil } from "lucide-react";
+import DashboardFormAction from "./DashboardFormAction";
 
 moment.locale("vi");
 
@@ -24,22 +26,23 @@ const DashboardForms = () => {
 	}, [formsQuery.isSuccess, formsQuery.data]);
 	return (
 		<DivNative className="max-w-full  flex flex-col">
-			{formsQuery.isPending && <DivNative className="w-full h-[20rem] animate-pulse bg-gray-200"></DivNative>}
+			{formsQuery.isPending && <DivNative className="w-full h-[12rem] animate-pulse bg-gray-200"></DivNative>}
 			{formsQuery.isSuccess && (
-				<DivNative className="flex flex-col gap-[4rem]">
+				<DivNative className="flex flex-col gap-[2rem] pb-[10rem]">
 					{forms.map((form, index) => (
 						<Link
-							href={`/form/${form._id}/edit	`}
+							href={`/form/${form._id}/share`}
 							key={form._id}
-							className="min-h-[10rem] h-max max-w-full p-[1rem_3rem] flex flex-col justify-center gap-[2rem] bg-slate-100 rounded-md"
+							className="group h-[12rem] xl:h-[8rem] w-full max-w-full p-[1rem_2rem] flex flex-col xl:flex-row  justify-between gap-[1rem]  hover:bg-gray-200 rounded-md"
 						>
-							<p>
-								Tiêu đề Form:{" "}
-								<span className="text-[1.6rem] font-semibold">{form.form_title || "None"}</span>
-							</p>
-							<DivNative className="w-full flex flex-col sm:flex-row justify-between gap-[.5rem] sm:gap-0">
+							<div className="max-w-[70%] flex flex-col justify-center gap-[1rem]">
+								<span className="max-w-[90%] truncate text-[1.6rem] font-semibold">
+									{form.form_title.form_title_value || "None"}
+								</span>
 								<span>Chỉnh sửa {moment(new Date(form.updatedAt!)).fromNow()}</span>
-								<span>Tạo vào: {moment(form.createdAt).format("h:mm DD-MM-YYYY ")}</span>
+							</div>
+							<DivNative className="group-hover:flex hidden items-center">
+								<DashboardFormAction form_id={form._id} />
 							</DivNative>
 						</Link>
 					))}
