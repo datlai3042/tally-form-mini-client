@@ -22,13 +22,18 @@ export async function generateMetadata(): Promise<Metadata> {
 	const refresh_token = cookieStore.get("next_refresh_token")?.value;
 	const code_verify_token = cookieStore.get("next_code_verify_token")?.value;
 
-	const res = await fetch("http://localhost:4000/v1/api/account/me", {
-		credentials: "include",
-		headers: {
-			Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id};code_verify_token=${code_verify_token}`,
-			CodeVerifyToken: code_verify_token,
-		} as HeadersInit,
-	});
+	const res = await fetch(
+		`${
+			process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:4000" : process.env.BACK_END_URL
+		}/v1/api/account/me`,
+		{
+			credentials: "include",
+			headers: {
+				Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id};code_verify_token=${code_verify_token}`,
+				CodeVerifyToken: code_verify_token,
+			} as HeadersInit,
+		}
+	);
 	const data = (await res.json()) as ResponseApi<{ user: UserType }>;
 
 	const { user } = data.metadata;
