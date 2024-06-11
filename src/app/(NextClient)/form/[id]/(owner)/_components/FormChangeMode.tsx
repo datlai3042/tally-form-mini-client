@@ -69,7 +69,7 @@ const FormChangeMode = (props: TProps) => {
 						fontStyle,
 					}}
 				>
-					{formCore.form_title.form_title_value}
+					{formCore?.form_title?.form_title_value}
 				</h1>
 				<div className="flex items-center gap-[1rem]">
 					<div className="relative ">

@@ -37,7 +37,7 @@ const DashboardForms = () => {
 						>
 							<div className="max-w-[70%] flex flex-col justify-center gap-[1rem]">
 								<span className="max-w-[90%] truncate text-[1.6rem] font-semibold">
-									{form.form_title.form_title_value || "None"}
+									{form?.form_title?.form_title_value || "None"}
 								</span>
 								<span>Chỉnh sửa {moment(new Date(form.updatedAt!)).fromNow()}</span>
 							</div>
