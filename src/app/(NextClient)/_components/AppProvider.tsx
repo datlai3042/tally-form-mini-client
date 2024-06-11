@@ -16,18 +16,6 @@ const AppProvider = (props: TProps) => {
 	console.log(count.current);
 	count.current += 1;
 
-	useEffect(() => {
-		socket.on("connect", () => console.log("ok"));
-		socket.on("disconnect", () => console.log("ok"));
-		socket.on("foo", () => console.log("ok"));
-
-		return () => {
-			socket.off("connect", () => console.log("ok"));
-			socket.off("disconnect", () => console.log("ok"));
-			socket.off("foo", () => console.log("ok"));
-		};
-	}, []);
-
 	return <div className="">{children}</div>;
 };
 
