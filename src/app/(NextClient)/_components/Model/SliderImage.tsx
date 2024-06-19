@@ -4,9 +4,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import FormTitleImage from "../../form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
 import { FormCore } from "@/type";
 import ModelShowImage from "./ModelShowImage";
+import FormTitleImage from "../../(user)/form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
 
 type TProps = {
 	images: string[] | FormCore.Title.FormTitleSub[];
@@ -34,8 +34,6 @@ const SliderImage = (props: TProps) => {
 	};
 
 	const handleDecrease = () => {
-		console.log("OK", indexImage);
-
 		if (indexImage + 1 === 1) return;
 		setIndexImage((prev) => (prev -= 1));
 	};
@@ -50,7 +48,6 @@ const SliderImage = (props: TProps) => {
 	};
 
 	useEffect(() => {
-		console.log({ indexImage });
 		if (divRef.current && divContainerRef.current) {
 			const width = divContainerRef.current?.getBoundingClientRect().width * -1;
 			divRef.current.style.transform = `translateX(${width * indexImage}px)`;

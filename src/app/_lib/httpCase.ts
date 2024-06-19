@@ -30,7 +30,7 @@ export const httpCaseErrorNextClient = async <TResponse>(
 
 	switch (statusCode) {
 		case AUTHORIZATION_ERROR_STATUS:
-			return await nextClient401<TResponse>(method, fullUrl, options, signal);
+			return await nextClient401<TResponse>(fullUrl, options, signal);
 
 		case PERMISSION_ERROR_STATUS:
 			return await nextClient403(url);
@@ -57,12 +57,7 @@ export const httpCaseErrorNextClient = async <TResponse>(
 };
 
 let refreshTokenPromise: Promise<ResponseApi<ResponseAuth>> | null = null;
-export const nextClient401 = async <Response>(
-	method: Method,
-	fullUrl: string,
-	options: RetryAPI,
-	signal: AbortSignal
-) => {
+export const nextClient401 = async <Response>(fullUrl: string, options: RetryAPI, signal?: AbortSignal) => {
 	if (!refreshTokenPromise) {
 		refreshTokenPromise = AuthService.refreshTokenClient(signal).finally(() => (refreshTokenPromise = null));
 		//CASE: FAILED
@@ -106,6 +101,7 @@ export const nextClient403 = async (url: string) => {
 
 /// NEXT_SERVER_ROOM
 export const httpCaseErrorNextServer = async (statusCode: number, options: CustomRequest) => {
+	console.log({ statusCode });
 	switch (statusCode) {
 		case AUTHORIZATION_ERROR_STATUS:
 			return await nextServer401(options);
@@ -123,5 +119,6 @@ export const nextServer401 = async (options: CustomRequest) => {
 };
 
 export const nextServer403 = async (options: CustomRequest) => {
+	console.log("OK");
 	return await AuthService.logoutNextServer(options as CustomRequest);
 };

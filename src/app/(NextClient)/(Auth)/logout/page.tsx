@@ -10,36 +10,41 @@ const LogoutPage = () => {
 
 	const searchParams = useSearchParams();
 	const code_verify_token_sv = searchParams.get("code_verify_token");
-
+	const force = searchParams.get("force");
+	console.log({ force });
 	const router = useRouter();
 
 	useEffect(() => {
 		const abort = new AbortController();
 		const signal = abort.signal;
-
-		const codeLocal = localStorage.getItem("code_verify_token");
-		const code_verify_token_cl = codeLocal ? JSON.parse(codeLocal) : "";
+		const localCodeJSON = localStorage.getItem("code_verify_token");
 
 		const logoutFunction = async () => {
-			await AuthService.logoutNextClient();
-			await Http.post("/v1/api/auth/next-logout", object, { baseUrl: "" });
-			window.location.href = "/login";
+			await AuthService.logoutNextClient()
+			.catch(() => {
+				setError(true);
+				return;
+			});
 		};
 
-		console.log("OKKK", code_verify_token_cl, code_verify_token_sv);
-
-		if (!codeLocal) {
+		if (force === "true") {
 			logoutFunction();
 			return;
 		}
 
-		if (!code_verify_token_cl) {
-			setError(true);
+		if (!localCodeJSON) {
+			logoutFunction();
 			return;
 		}
+		const localCode = JSON.parse(localCodeJSON || "");
+		console.log({ localCode, force });
+		// if (!localCode || !localCode) {
+		// 	return;
+		// }
 
-		if (code_verify_token_cl === code_verify_token_sv) {
+		if (localCode === code_verify_token_sv) {
 			logoutFunction();
+			return;
 		} else {
 			console.log("set-state");
 			setError(true);
@@ -49,7 +54,7 @@ const LogoutPage = () => {
 		};
 	}, [code_verify_token_sv, router]);
 
-	return <div>LogoutPage</div>;
+	return <div>{error ? "Yêu cầu không hợp lệ" : "Đang xử lí"}</div>;
 };
 
 export default LogoutPage;

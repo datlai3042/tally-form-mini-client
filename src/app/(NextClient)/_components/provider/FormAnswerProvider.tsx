@@ -2,29 +2,45 @@
 import { FormCore, InputCore } from "@/type";
 import React, { SetStateAction, createContext, useState } from "react";
 
-type TFormAnswerContext = {
+export type FormAnswerControl = {
 	inputFormData: FormCore.FormAnswer.InputFormData[];
-	setInputFormData: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormData[]>>;
-
 	inputFormRequire: FormCore.FormAnswer.InputFormRequire[];
-	setInputFormRequire: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormRequire[]>>;
-
-	inputFormErrors: InputCore.Commom.CatchError[];
-	setInputFormErrors: React.Dispatch<SetStateAction<InputCore.Commom.CatchError[]>>;
-
+	inputFormErrors: FormCore.FormAnswer.InputFormError[];
 	openModelError: boolean;
-	setOpenModelError: React.Dispatch<SetStateAction<boolean>>;
+	submitState: "pending" | "success" | "fail" | "clear";
+};
+
+type TFormAnswerContext = {
+	// setInputFormData: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormData[]>>;
+
+	// setInputFormRequire: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormRequire[]>>;
+
+	// setInputFormErrors: React.Dispatch<SetStateAction<InputCore.Commom.CatchError[]>>;
+
+	// setOpenModelError: React.Dispatch<SetStateAction<boolean>>;
+
+	formAnswer: FormAnswerControl;
+	setFormAnswer: React.Dispatch<SetStateAction<FormAnswerControl>>;
 };
 
 export const FormAnswerContext = createContext<TFormAnswerContext>({
-	inputFormData: [],
-	inputFormRequire: [],
-	inputFormErrors: [],
-	openModelError: false,
-	setInputFormData: () => {},
-	setInputFormRequire: () => {},
-	setInputFormErrors: () => {},
-	setOpenModelError: () => {},
+	// inputFormData: [],
+	// inputFormRequire: [],
+	// inputFormErrors: [],
+	// openModelError: false,
+	// setInputFormData: () => {},
+	// setInputFormRequire: () => {},
+	// setInputFormErrors: () => {},
+	// setOpenModelError: () => {},
+	formAnswer: {
+		inputFormData: [],
+		inputFormErrors: [],
+		inputFormRequire: [],
+		openModelError: false,
+		submitState: "clear",
+	},
+
+	setFormAnswer: () => {},
 });
 
 type TProps = {
@@ -35,50 +51,52 @@ type TProps = {
 const FormAnswerProvider = (props: TProps) => {
 	const { formCore, children } = props;
 
-	const [openModelError, setOpenModelError] = useState<boolean>(false);
+	const [formAnswer, setFormAnswer] = useState<FormAnswerControl>(() => {
+		return {
+			inputFormData: formCore.form_inputs.map((ip) => {
+				if (ip.type === "OPTION_MULTIPLE") {
+					return {
+						setting: ip.core.setting,
+						_id: ip._id!,
+						title: ip.input_title || "Không có tiêu đề",
+						mode: ip.core.setting.require
+							? "Require"
+							: ("Optional" as FormCore.FormAnswer.InputFormData["mode"]),
+						value: [],
+						type: ip.type,
+					};
+				}
 
-	const [inputFormRequire, setInputFormRequire] = useState(() => {
-		const arrayInputRequire = formCore.form_inputs.reduce(
-			(newArray: FormCore.FormAnswer.InputFormRequire[], inputItem) => {
-				if (inputItem.setting.require)
-					newArray.push({ _id: inputItem._id, title: inputItem.input_heading, checkRequire: false });
-
-				return newArray;
-			},
-			[]
-		);
-
-		return arrayInputRequire;
+				return {
+					setting: ip.core.setting,
+					_id: ip._id!,
+					title: ip.input_title || "Không có tiêu đề",
+					mode: ip.core.setting.require
+						? "Require"
+						: ("Optional" as FormCore.FormAnswer.InputFormData["mode"]),
+					value: "",
+					type: ip.type,
+				};
+			}),
+			inputFormErrors: [],
+			inputFormRequire: formCore.form_inputs.reduce(
+				(newArray: FormCore.FormAnswer.InputFormRequire[], inputItem) => {
+					if (inputItem.core.setting.require)
+						newArray.push({ _id: inputItem._id, title: inputItem.input_title, checkRequire: false });
+					return newArray;
+				},
+				[]
+			),
+			openModelError: false,
+			submitState: "clear",
+		};
 	});
-
-	const [inputFormData, setInputFormData] = useState<FormCore.FormAnswer.InputFormData[]>(() => {
-		const data = formCore.form_inputs.map((ip) => {
-			return {
-				setting: ip.setting,
-				_id: ip._id!,
-				title: ip.input_heading || "Không có tiêu đề",
-				mode: ip.setting.require ? "Require" : ("Optional" as FormCore.FormAnswer.InputFormData["mode"]),
-				value: "",
-				type: ip.type,
-			};
-		});
-
-		return data;
-	});
-
-	const [inputFormErrors, setInputFormErrors] = useState<InputCore.Commom.CatchError[]>([]);
 
 	return (
 		<FormAnswerContext.Provider
 			value={{
-				inputFormData,
-				inputFormRequire,
-				inputFormErrors,
-				openModelError,
-				setOpenModelError,
-				setInputFormData,
-				setInputFormRequire,
-				setInputFormErrors,
+				formAnswer,
+				setFormAnswer,
 			}}
 		>
 			{children}

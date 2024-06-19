@@ -54,6 +54,10 @@ class FormService {
 		);
 	}
 
+	static async updateInputItemForm(inputItem: InputCore.InputForm, form: FormCore.Form) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-form", { inputItem, form });
+	}
+
 	static async updateForm(form: FormCore.Form) {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-form", { form });
 	}
@@ -74,10 +78,10 @@ class FormService {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/delete-cover", { form_id });
 	}
 
-	static async updateSettingInput(
+	static async updateSettingInput<SettingType extends InputCore.Setting.InputSettingCommon>(
 		form: FormCore.Form,
 		input_id: string,
-		input_id_setting: InputCore.Setting.InputSettingTextCommon
+		input_id_setting: SettingType
 	) {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-input-item-setting", {
 			form,

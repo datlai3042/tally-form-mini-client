@@ -54,7 +54,7 @@ let NOT_RETRY: null | Promise<any> = null;
 
 export const resquest = async <Response>(method: Method, url: string, options?: CustomRequest | undefined) => {
 	const { body, baseHeader, fullUrl } = generateInfoRequest(url, options as CustomRequest);
-	console.log("gọi api chính");
+	console.log("gọi api chính", options);
 
 	const optionsRequest: RequestInit = {
 		...options,
@@ -67,10 +67,13 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		credentials: "include",
 	};
 
+	console.log({ optionsRequest, fullUrl });
+
 	const response = await fetch(fullUrl, optionsRequest);
 
 	//RESPONSE: ERROR
 	if (!response.ok) {
+		console.log({ response: response.status });
 		//ERROR: ACCESS_TOKEN
 		if (typeof window !== "undefined") {
 			const result = await httpCaseErrorNextClient<Response>(
@@ -118,6 +121,7 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 class Http {
 	static get<Response>(url: string, options: Omit<CustomRequest, "body"> = {}) {
 		const method: Method = "GET";
+		console.log(options, url);
 		return resquest<Response>(method, url, options);
 	}
 
@@ -130,7 +134,6 @@ class Http {
 	 */
 	static post<Response>(url: string, body: any, options: Omit<CustomRequest, "body"> = {}) {
 		const method: Method = "POST";
-		console.log({ options });
 		return resquest<Response>(method, url, { ...options, body });
 	}
 

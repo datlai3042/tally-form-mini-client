@@ -1,5 +1,4 @@
-import { CustomRequest, FormCore, InputCore, ReactCustom } from "@/type";
-import { SetStateAction } from "react";
+import { CustomRequest, FormCore, InputCore } from "@/type";
 import { inputSettingText } from "../_constant/input.constant";
 import Http from "./http";
 import { ResponseApi } from "../_schema/api/response.shema";
@@ -60,7 +59,7 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
-	console.log({ fullUrl });
+	console.log({ endPoint: fullUrl });
 
 	return { body, baseHeader, baseUrl, fullUrl };
 };
@@ -77,7 +76,6 @@ export const setTitleForm = async (form: FormCore.Form) => {
 
 export const addInputToSectionTitle = async (title: string, form: FormCore.Form) => {
 	const newForm = structuredClone(form);
-	console.log({ form });
 	newForm.form_title.form_title_value = title;
 	const settingMerge = {
 		input_color: newForm.form_setting_default.input_color || inputSettingText.input_color,
@@ -85,7 +83,7 @@ export const addInputToSectionTitle = async (title: string, form: FormCore.Form)
 		input_style: newForm.form_setting_default.input_style || inputSettingText.input_style,
 	};
 
-	newForm.form_inputs.push({ type: "TEXT", setting: { ...inputSettingText, ...settingMerge } });
+	newForm.form_inputs.push({ type: "TEXT", core: { setting: { ...inputSettingText, ...settingMerge } } });
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-input-to-title", {
 		form: newForm,
 	});
@@ -93,11 +91,12 @@ export const addInputToSectionTitle = async (title: string, form: FormCore.Form)
 	return addInputAPI;
 };
 
-export const setLabelInput = async (label: string, inputItem: InputCore.InputForm, form: FormCore.Form) => {
+//delete
+export const setTitleInput = async (title: string, inputItem: InputCore.InputForm, form: FormCore.Form) => {
 	const newInput = { ...inputItem };
-	newInput.input_heading = label;
-	newInput.input_heading_type = "LABEL";
+	newInput.input_title = title;
 	newInput._id = inputItem._id;
+
 	console.log({ newInput, inputItem });
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-input-item", {
 		newInput,
@@ -107,31 +106,19 @@ export const setLabelInput = async (label: string, inputItem: InputCore.InputFor
 	return addInputAPI;
 };
 
-export const setTitleInput = async (label: string, inputItem: InputCore.InputForm, form: FormCore.Form) => {
-	const newInput = { ...inputItem };
-	newInput.input_heading = label;
-	newInput.input_heading_type = "TITLE";
-	newInput._id = inputItem._id;
-	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-input-item", {
-		newInput,
-		form,
-	});
-
-	return addInputAPI;
-};
-
+//delete
 export const addInputItem = async (inputItem: InputCore.InputForm, form: FormCore.Form) => {
 	const newForm = structuredClone(form);
 	const indexInputCurrentEvent = form.form_inputs.findIndex((ip) => ip._id === inputItem._id);
 
 	const settingMerge = {
-		...inputItem.setting,
+		...inputItem.core.setting,
 		input_color: newForm.form_setting_default.input_color || inputSettingText.input_color,
 		input_size: newForm.form_setting_default.input_size || inputSettingText.input_size,
 		input_style: newForm.form_setting_default.input_style || inputSettingText.input_style,
-	};
+	} as InputCore.Setting.InputSettingTextCommon;
 
-	const inputPush: InputCore.InputText.InputTypeText = { type: "TEXT", setting: settingMerge };
+	const inputPush: InputCore.InputText.InputTypeText = { type: "TEXT", core: { setting: settingMerge } };
 	newForm.form_inputs.splice(indexInputCurrentEvent + 1, 0, inputPush);
 
 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-form", {
@@ -192,4 +179,11 @@ export const stringToSlug = (str: string) => {
 export const checkValueHref = (value: string) => {
 	const regex = new RegExp("^(http|https)://", "i");
 	return value.match(regex);
+};
+
+export const filterTypeInput = <InputType extends InputCore.InputForm>(
+	_id: string,
+	inputItem: InputCore.InputForm
+): inputItem is InputType => {
+	return _id === inputItem._id;
 };

@@ -8,29 +8,29 @@ type TProps = {
 const ClickOutSide = (props: TProps) => {
 	const { children, setOpenModel } = props;
 
-	const divColorRef = useRef<HTMLDivElement | null>(null);
+	const divWrapper = useRef<HTMLDivElement | null>(null);
 
 	const globalClick = useCallback(
 		(e: MouseEvent) => {
-			if (divColorRef.current && !divColorRef.current.contains(e.target as Node)) {
+			if (divWrapper.current && !divWrapper.current.contains(e.target as Node)) {
 				setOpenModel(false);
 			}
 		},
 		[setOpenModel]
 	);
 
-	console.log("123");
-
 	useEffect(() => {
 		document.addEventListener("click", globalClick);
+		console.log("Check click outside");
 
 		return () => {
 			document.removeEventListener("click", globalClick);
+			divWrapper.current = null;
 		};
 	}, [globalClick]);
 
 	return (
-		<div ref={divColorRef} className="w-max min-h-max ">
+		<div ref={divWrapper} className="w-max min-h-max ">
 			{children}
 		</div>
 	);

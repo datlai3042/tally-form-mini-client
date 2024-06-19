@@ -30,7 +30,7 @@ const RefreshTokenPage = () => {
 		if (code_verify_token_cl === code_verify_token_sv) {
 			AuthService.refreshTokenServer(signal).then(() => {
 				router.refresh();
-				router.push(pathName || "/");
+				router.push("/");
 			});
 		} else {
 			console.log("set-state");

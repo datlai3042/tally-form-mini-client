@@ -58,11 +58,15 @@ const LoginForm = (props: TProps) => {
 		}
 	}, [loginMutation.isSuccess, onClose, loginMutation.data, dispatch, router]);
 
-	console.log({ errors: loginForm.formState.errors });
+	useEffect(() => {
+		if (Object.keys(loginForm.formState.errors).length > 0) {
+			console.log({ errors: loginForm.formState.errors });
+		}
+	}, [loginForm.formState.errors]);
 
 	return (
 		<div className="relative  h-[40rem] w-[32rem] sm:w-[37rem] xl:w-[40rem] xl:h-[40rem] mx-auto bg-[#ffffff] flex justify-center items-center flex-col  gap-[2rem] rounded-[1.2rem] p-[2.4rem_2rem]">
-			<p className="mb-[4rem] text-[3rem] font-semibold">Welcome back</p>
+			<p className="mb-[4rem] text-[3rem] font-semibold">Xin chào bạn</p>
 			<form
 				className="w-full h-full flex flex-col justify-center  gap-[1.8rem] rounded-[1.2rem]"
 				onSubmit={loginForm.handleSubmit(onSubmit)}

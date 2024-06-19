@@ -1,7 +1,5 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import DashBoardLeft from "../dashboard/_components/layout/DashBoardLeft";
-import { SidebarContext } from "../dashboard/SidebarContext";
 import Portal from "../_components/Portal";
 import Link from "next/link";
 import Image from "next/image";

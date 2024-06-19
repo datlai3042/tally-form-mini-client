@@ -1,8 +1,10 @@
 import Http from "@/app/_lib/http";
 import { ResponseApi } from "@/app/_schema/api/response.shema";
 import { UserType } from "@/app/_schema/user/user.type";
+import AuthService from "@/app/_services/auth.service";
 import UserService from "@/app/_services/user.service";
 import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import React from "react";
 
 //Không export tào lào trong component
@@ -15,6 +17,15 @@ const ProfileMe = async () => {
 	const access_token = cookieStore.get("next_access_token")?.value;
 	const refresh_token = cookieStore.get("next_refresh_token")?.value;
 	const code_verify_token = cookieStore.get("next_code_verify_token")?.value;
+
+	if (!client_id || !access_token || !refresh_token || !code_verify_token) {
+		await AuthService.logoutNextServer({
+			headers: {
+				Cookie: `code_verify_token=${code_verify_token};force=true`,
+			} as HeadersInit,
+		});
+		redirect("/login");
+	}
 
 	const headersList = headers();
 
@@ -31,7 +42,6 @@ const ProfileMe = async () => {
 		pathName: header_url,
 	});
 	me = res!.metadata.user;
-	// } catch (error) {}
 
 	return <div>Me: {JSON.stringify(res) || "none"}</div>;
 };

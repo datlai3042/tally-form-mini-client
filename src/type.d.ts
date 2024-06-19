@@ -46,35 +46,39 @@ namespace InputCore {
 	namespace Setting {
 		export type InputSettingCommon = {
 			require: boolean;
-			placeholder?: string;
 			input_error?: string;
 			input_color: string;
 			input_size: number;
 			input_style: FormCore.FormTextStyle;
+			_id: string;
 		};
 
 		type InputSettingTextCommon = {
+			placeholder?: string;
 			minLength: number;
 			maxLength: number;
 		} & InputCore.Setting.InputSettingCommon;
+
+		type InputSettingOptionCommon = InputCore.Setting.InputSettingCommon;
+		type InputSettingDate = InputCore.Setting.InputSettingCommon;
 	}
 
 	namespace Commom {
 		type InputCommon = {
-			input_heading?: string;
-			input_heading_type?: "LABEL" | "TITLE";
+			input_title?: string;
+			core: {
+				setting:
+					| InputCore.Setting.InputSettingTextCommon
+					| InputCore.Setting.InputSettingOptionCommon
+					| InputCore.Setting.InputSettingDate;
+			};
 		};
 
-		type InputCommonText = { setting: InputCore.Setting.InputSettingTextCommon; _id?: string };
+		type InputCommonText = { core: { setting: InputCore.Setting.InputSettingTextCommon }; _id?: string };
+		type InputCommonOption = { core: { setting: InputCore.Setting.InputSettingOptionCommon }; _id?: string };
+		type InputCommonDate = { core: { setting: InputCore.Setting.InputSettingDate }; _id?: string };
 
 		type ErrorText = "REQUIRE" | "MIN" | "MAX" | "INVAILD";
-
-		type CatchError = {
-			_id: string;
-			type: ErrorText;
-			title: string;
-			message: string;
-		};
 	}
 
 	namespace InputEmail {
@@ -82,23 +86,19 @@ namespace InputCore {
 		export type InputTypeEmail = InputCore.Commom.InputCommon &
 			InputCore.Commom.InputCommonText & {
 				type: "EMAIL";
-				setting: InputCore.Setting.InputSettingTextCommon;
+				core: {
+					setting: InputCore.Setting.InputSettingTextCommon;
+				};
 			};
 	}
 
 	namespace InputDate {
-		export type InputDateTimeAny = { type: "Date"; date_type: "Any"; date_time: number };
-		export type InputDateTimeBefore = { type: "Date"; date_type: "Before"; date_time: number };
-		export type InputDateTimeAfter = { type: "Date"; date_type: "After"; date_time: number };
-		export type InputDateTimeBetween = {
-			type: "Date";
-			date_type: "Between";
-			date_time_1: number;
-			date_time_2: number;
-		};
+		export type InputSettingDate = InputCore.Setting.InputSettingDate;
 
-		export type InputDateTime = InputDateTimeAny | InputDateTimeBefore | InputDateTimeAfter | InputDateTimeBetween;
-		export type InputTypeDate = InputDateTime;
+		export type InputTypeDate = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonDate & {
+				type: "DATE";
+			};
 	}
 
 	namespace InputText {
@@ -108,11 +108,28 @@ namespace InputCore {
 		export type InputTypeText = InputCore.Commom.InputCommon &
 			InputCore.Commom.InputCommonText & {
 				type: InputText;
+				core: {
+					setting: InputCore.Setting.InputSettingTextCommon;
+				};
 			};
 	}
 
 	namespace InputOption {
-		export type InputTypeOption = InputCore.Commom.InputCommon & { type: "Option"; option: string[] };
+		type InputSettingOption = InputCore.Setting.InputSettingOptionCommon;
+		type Options = { option_id: string; option_value: string };
+		type InputTypeOption = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonOption & {
+				type: "OPTION";
+				core: { options: Options[] };
+			};
+	}
+
+	namespace InputOptionMultiple {
+		type InputSettingOptionMultiple = InputCore.Setting.InputSettingOptionCommon;
+		type Options = { option_id: string; option_value: string };
+
+		type InputTypeOptionMultiple = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonOption & { type: "OPTION_MULTIPLE"; core: { options: Options[] } };
 	}
 
 	namespace InputImage {
@@ -128,9 +145,12 @@ namespace InputCore {
 		};
 	}
 
-	export type InputForm = InputEmail.InputTypeEmail | InputText.InputTypeText;
-	// | InputOption.InputTypeOption
-	// | InputDate.InputTypeDate
+	type InputForm =
+		| InputEmail.InputTypeEmail
+		| InputText.InputTypeText
+		| InputOption.InputTypeOption
+		| InputOptionMultiple.InputTypeOptionMultiple
+		| InputDate.InputTypeDate;
 	// | InputImage.InputTypeImage;
 }
 
@@ -226,9 +246,16 @@ namespace FormCore {
 			_id: string;
 			title: string;
 			mode: "Require" | "Optional";
-			value: string;
+			value: string | string[];
 			type: InputCore.InputForm["type"];
-			setting?: InputCore.Setting.InputSettingTextCommon;
+			setting?: InputCore.InputForm["core"]["setting"];
+		};
+
+		type InputFormError = {
+			_id: string;
+			type: ErrorText;
+			title: string;
+			message: string;
 		};
 
 		type Answer = Omit<InputFormData, "setting">;

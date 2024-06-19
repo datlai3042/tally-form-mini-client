@@ -117,7 +117,7 @@
 	}
 
 	.scroll-form-answer-detail::-webkit-scrollbar {
-		width: 0.4rem;
+		width: 0.6rem;
 	}
 
 	/* Handle */
@@ -149,6 +149,13 @@
 		font-weight: 600;
 	}
 
+	.input-setting[contentEditable="true"]:empty:not(:focus):before {
+		content: attr(data-text);
+		font-size: 1.3rem;
+		opacity: 0.4;
+		font-weight: 600;
+	}
+
 	.title-input[contentEditable="true"]:empty:not(:focus):before {
 		content: attr(data-text);
 		font-size: 1.9rem;
@@ -176,6 +183,12 @@
 @layer utilities {
 	.inputAnswer:focus-within {
 		border-color: var(--borderInputAnswerFocus) !important;
+	}
+
+	.reset-border-outline,
+	button {
+		border: none;
+		outline: none;
 	}
 
 	.text-balance {

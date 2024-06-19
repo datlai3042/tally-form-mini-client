@@ -5,10 +5,11 @@ import ReactQueryProvider from "./(NextClient)/_components/provider/ReactQueryPr
 import ReduxProvider from "./_lib/redux/ReduxProvider";
 import AppProvider from "./(NextClient)/_components/AppProvider";
 import CheckPathName from "./(NextClient)/_components/ui/CheckPathName";
-import SidebarContextProvider from "./(NextClient)/dashboard/SidebarContext";
 import { Toaster } from "@/components/ui/toaster";
 import DivNative from "./(NextClient)/_components/ui/NativeHtml/DivNative";
 import Head from "next/head";
+import SidebarContextProvider from "./(NextClient)/(user)/dashboard/SidebarContext";
+import CheckExprireToken from "./(NextClient)/_components/Layout/CheckExprireToken";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,10 +35,7 @@ export default function RootLayout(props: TProps) {
 				<ReduxProvider>
 					<ReactQueryProvider>
 						<SidebarContextProvider>
-							<AppProvider>
-								{props.children}
-								<CheckPathName />
-							</AppProvider>
+							<AppProvider>{props.children}</AppProvider>
 							<DivNative className="fixed bottom z-[100000]">
 								<Toaster />
 							</DivNative>

@@ -40,13 +40,5 @@ export async function POST(request: Request) {
 		expires: expiresRT,
 	});
 
-	cookies().set({
-		name: "next_flag",
-		value: expiresRT.toString(),
-		httpOnly: true,
-		path: "/",
-		expires: expiresRT,
-	});
-
 	return Response.json({ access_token, refresh_token, client_id, expireToken, expiresRT, code_verify_token });
 }

@@ -21,7 +21,13 @@ class AuthService {
 		const urlRequestBackEnd = "v1/api/auth/logout";
 		const urlRequestNextServer = "v1/api/auth/next-logout";
 		const options = { baseUrl: "" };
-		const logoutResponse = await Http.post<ResponseApi<MessageResponse>>(urlRequestBackEnd, { force: true }, {});
+		try {
+			const logoutResponse = await Http.post<ResponseApi<MessageResponse>>(
+				urlRequestBackEnd,
+				{ force: true },
+				{}
+			);
+		} catch {}
 		const logoutResponseServer = await Http.post<ResponseApi<MessageResponse>>(
 			urlRequestNextServer,
 			object,
@@ -40,8 +46,9 @@ class AuthService {
 		const cookies = (options?.headers as any)["Cookie"];
 
 		const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
+		const force = getCookieValueHeader("force", cookies);
 
-		return redirect(`/refresh-token?code_verify_token=${code_verify_token}`);
+		return redirect(`/logout?code_verify_token=${code_verify_token}&force=${force}`);
 	}
 
 	static async refreshTokenServer(signal?: AbortSignal) {
@@ -69,7 +76,7 @@ class AuthService {
 		return syncToken;
 	}
 
-	static async refreshTokenClient(signal: AbortSignal) {
+	static async refreshTokenClient(signal?: AbortSignal) {
 		console.log({ mode: process.env.NEXT_PUBLIC_MODE });
 		const option: RequestInit = {
 			credentials: "include",
@@ -77,9 +84,11 @@ class AuthService {
 
 		const urlRequest = process.env.NEXT_PUBLIC_MODE === "DEV" ? "http://localhost:4000" : process.env.BACK_END_URL;
 
-		const callRefreshToken = await fetch(`${urlRequest}/v1/api/auth/refresh-token`, option);
-		const refresh_api: ResponseApi<ResponseAuth> = await callRefreshToken.json();
-		return refresh_api;
+		const callRefreshToken: ResponseApi<ResponseAuth> = await Http.get<ResponseApi<ResponseAuth>>(
+			`/v1/api/auth/refresh-token`,
+			undefined
+		);
+		return callRefreshToken;
 	}
 
 	static async syncNextToken(tokenApi: ResponseApi<ResponseAuth>) {

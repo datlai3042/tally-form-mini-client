@@ -1,14 +1,29 @@
 import { InputCore } from "@/type";
 
-export const inputSettingText: InputCore.InputText.InputSettingText = {
-	maxLength: 100,
-	minLength: 8,
+const inputSettingCommon = {
 	require: false,
 	input_error: "Nội dung không hợp lệ",
-	placeholder: "Nhập nội dung của bạn",
 	input_color: "#000000",
 	input_size: 16,
 	input_style: "normal",
+} as InputCore.Setting.InputSettingCommon;
+
+export const inputSettingText: InputCore.InputText.InputSettingText = {
+	maxLength: 100,
+	placeholder: "Nhập nội dung của bạn",
+	minLength: 8,
+	...inputSettingCommon,
+};
+
+export const inputSettingOption: InputCore.InputOption.InputSettingOption = {
+	...inputSettingCommon,
+};
+
+export const inputSettingOptionMultiple: InputCore.InputOptionMultiple.InputSettingOptionMultiple = {
+	...inputSettingCommon,
+};
+export const inputSettingDate: InputCore.InputDate.InputSettingDate = {
+	...inputSettingCommon,
 };
 
 export const regexEmail = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;

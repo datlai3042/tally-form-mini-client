@@ -21,7 +21,7 @@ const FormModeScreenProvider = (props: TProps) => {
 	const { children } = props;
 	const [modeScreen, setModeScreen] = useState<ModeScreen>("NORMAL");
 
-	console.log({ modeScreen });
+	console.log({ "Chế độ": modeScreen === "FULL" ? "Review" : "Editor" });
 
 	return (
 		<FormModeScreenContext.Provider value={{ modeScreen, setModeScreen }}>

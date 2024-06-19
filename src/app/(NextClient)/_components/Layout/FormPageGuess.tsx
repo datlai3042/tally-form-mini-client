@@ -5,13 +5,14 @@ import DivNative from "../ui/NativeHtml/DivNative";
 import ButtonNative from "../ui/NativeHtml/ButtonNative";
 import { renderStyleTitleCore } from "@/app/_lib/utils";
 import FormAnswerProvider, { FormAnswerContext } from "../provider/FormAnswerProvider";
-import FormTitleImage from "../../form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
 import SliderImage from "../Model/SliderImage";
-import InputTextAnswer from "../../form/[id]/_components/InputAnswer/_text/InputTextAnswer";
-import InputEmailAnswer from "../../form/[id]/_components/InputAnswer/_email/InputEmailAnswer";
-import { superEmailValidate } from "../../form/[id]/_components/InputAnswer/_validate/inputEmail.validate";
-import { superTextValidate } from "../../form/[id]/_components/InputAnswer/_validate/inputText.validate";
-import RenderInputAnswers from "../../form/[id]/_components/RenderInputAnswers";
+import InputEmailAnswer from "../../(user)/form/[id]/_components/InputAnswer/_email/InputEmailAnswer";
+import InputTextAnswer from "../../(user)/form/[id]/_components/InputAnswer/_text/InputTextAnswer";
+import { superTextValidate } from "../../(user)/form/[id]/_components/InputAnswer/_validate/inputText.validate";
+import { superEmailValidate } from "../../(user)/form/[id]/_components/InputAnswer/_validate/inputEmail.validate";
+import { checkErrorFinal } from "../../(user)/form/[id]/_components/InputAnswer/_utils/formAnswer.uti";
+import RenderInputAnswers from "../../(user)/form/[id]/_components/RenderInputAnswers";
+import Portal from "../Portal";
 
 type TProps = {
 	FormCore: FormCore.Form;
@@ -30,7 +31,10 @@ const generateInputAnswer = (Inputs: InputCore.InputForm[], formCore: FormCore.F
 
 const FormPageGuess = (props: TProps) => {
 	const { FormCore } = props;
-	const { inputFormData, inputFormRequire, inputFormErrors, setInputFormErrors } = useContext(FormAnswerContext);
+	const {
+		formAnswer: { inputFormData, inputFormErrors, inputFormRequire },
+		setFormAnswer,
+	} = useContext(FormAnswerContext);
 
 	const [page, setPage] = useState<number>(1);
 
@@ -76,46 +80,29 @@ const FormPageGuess = (props: TProps) => {
 	};
 
 	const handleSubmit = () => {
-		console.log({ data: inputFormData });
 		const checkRequire = inputFormRequire.every((ip) => ip.checkRequire);
 		if (checkRequire && inputFormErrors.length === 0) {
-			return console.log("OK het roi");
+			const answers = inputFormData.map((ip) => {
+				if (ip.setting) delete ip.setting;
+				return ip;
+			});
+
+			const payload = {
+				form_id: FormCore._id,
+				form_owner: FormCore.form_owner,
+				answers,
+			};
+
+			setFormAnswer((prev) => ({ ...prev, submitState: "pending" }));
+
+			return console.log({ answers });
 		}
 
-		let inputErrorArray: InputCore.Commom.CatchError[] = [];
-		inputFormData.map((ip) => {
-			const ipError = inputFormErrors.filter((ipr) => ipr._id === ip._id)[0];
-			if (ipError) {
-				inputErrorArray.push(ipError);
-			}
-
-			if (!ipError && ip.type === "TEXT") {
-				const { _next, message, type } = superTextValidate(ip.value, ip.setting!);
-				if (_next) return;
-				const inputErrorInfo: InputCore.Commom.CatchError = {
-					_id: ip._id,
-					title: ip.title,
-					type: type as InputCore.Commom.ErrorText,
-					message,
-				};
-
-				inputErrorArray.push(inputErrorInfo);
-			}
-			if (!ipError && ip.type === "EMAIL") {
-				const { _next, message, type } = superEmailValidate(ip.value, ip.setting!);
-				if (_next) return;
-				const inputErrorInfo: InputCore.Commom.CatchError = {
-					_id: ip._id,
-					title: ip.title,
-					type: type as InputCore.Commom.ErrorText,
-					message,
-				};
-
-				inputErrorArray.push(inputErrorInfo);
-			}
-		});
-		setInputFormErrors(inputErrorArray);
-		return console.log({ inputFormErrors, inputErrorArray });
+		let inputErrorArray: FormCore.FormAnswer.InputFormError[] = [];
+		inputErrorArray = checkErrorFinal(inputErrorArray, inputFormErrors, inputFormData);
+		if (inputErrorArray.length > 0) {
+			setFormAnswer((prev) => ({ ...prev, inputFormErrors: inputErrorArray, openModelError: true }));
+		}
 	};
 
 	const checkMode: FormCore.Title.FormTitleImageMode = "Slider";
@@ -123,7 +110,7 @@ const FormPageGuess = (props: TProps) => {
 	let flag = false;
 
 	return (
-		<div className="px-[2rem] xl:px-0 w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
+		<div className="px-[2rem] xl:px-0 w-full max-w-full min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor  ">
 			<DivNative className="w-full sm:w-[66.8rem] flex flex-col gap-[4rem] ">
 				<DivNative className="relative w-full min-h-[20rem] aspect-[3.01/1]">
 					{FormCore.form_background?.form_background_iamge_url && (

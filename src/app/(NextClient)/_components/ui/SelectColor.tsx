@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { onEditForm, onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 import { RootState } from "@/app/_lib/redux/store";
 import { FormDesignContext } from "../provider/FormDesignProvider";
-import { TypeEdit } from "../../form/[id]/(owner)/edit/components/FormDesign/DesignCommon/ButtonColor";
+import { TypeEdit } from "../../(user)/form/[id]/(owner)/edit/components/FormDesign/DesignCommon/ButtonColor";
 
 type TProps = {
 	setOpenColorModel: ReactCustom.SetStateBoolean;
@@ -35,8 +35,6 @@ const SelectColor = (props: TProps) => {
 		[setOpenColorModel]
 	);
 
-	console.log({ isDesignForm });
-
 	const onChangeColor = (color: string) => {
 		if (!isDesignForm) {
 			setIsDesginForm(true);
@@ -49,7 +47,7 @@ const SelectColor = (props: TProps) => {
 		if (typeEdit === "Common") {
 			newFormEdit.form_setting_default.input_color = color;
 			newFormEdit.form_inputs = newFormEdit.form_inputs.map((ip) => {
-				ip.setting.input_color = color;
+				ip.core.setting.input_color = color;
 				return ip;
 			});
 		}
@@ -57,7 +55,10 @@ const SelectColor = (props: TProps) => {
 		if (typeEdit === "Input") {
 			newFormEdit.form_inputs = newFormEdit.form_inputs.map((ip) => {
 				if (ip._id === inputItem?._id) {
-					ip.setting = { ...(ip.setting as InputCore.Setting.InputSettingTextCommon), input_color: color };
+					ip.core.setting = {
+						...(ip.core.setting as InputCore.Setting.InputSettingTextCommon),
+						input_color: color,
+					};
 					return ip;
 				}
 				return ip;

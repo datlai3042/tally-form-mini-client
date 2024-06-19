@@ -1,6 +1,4 @@
 "use client";
-import { clientToken } from "@/app/_lib/http";
-import { socket } from "@/app/_lib/socket";
 
 import React, { useEffect, useRef, useState } from "react";
 
@@ -10,11 +8,12 @@ type TProps = {
 
 const AppProvider = (props: TProps) => {
 	const { children } = props;
-	const count = useRef(1);
-	console.log({ message: "re-render when token onChange" });
-
-	console.log(count.current);
-	count.current += 1;
+	useEffect(() => {
+		console.log(
+			"%cXin chào mình là Lại Huỳnh Phát Đạt, đây là dự án cá nhân mình tự viết rất mong được mọi người góp ý",
+			`color:#64aaa8;font-size:20px;`
+		);
+	}, []);
 
 	return <div className="">{children}</div>;
 };
