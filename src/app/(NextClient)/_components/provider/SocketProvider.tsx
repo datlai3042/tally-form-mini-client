@@ -5,7 +5,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io, Socket } from "socket.io-client";
 
-const URL = process.env.NEXT_PUBLIC_MODE === "pro" ? process.env.BACK_END_URL : "http://localhost:4000";
+const URL = process.env.NEXT_PUBLIC_MODE === "PRO" ? process.env.BACK_END_URL : "http://localhost:4000";
 const SocketContext = createContext<Socket | null>(null);
 
 const SocketProvider = ({ children }: { children: React.ReactNode }) => {
