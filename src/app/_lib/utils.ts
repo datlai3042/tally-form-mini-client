@@ -50,12 +50,16 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 					"Content-Type": "application/json",
 			  };
 
-	const baseUrl =
-		options?.baseUrl === undefined
-			? process.env.NEXT_PUBLIC_MODE === "DEV"
-				? "http://localhost:4000"
-				: process.env.BACK_END_URL
-			: `http://localhost:3000`;
+	let baseUrl;
+	if (options?.baseUrl === undefined) {
+		if (process.env.NEXT_PUBLIC_MODE === "DEV") {
+			baseUrl = "http://localhost:4000";
+		} else {
+			baseUrl = process.env.BACK_END_URL;
+		}
+	} else {
+		baseUrl = process.env.CLIENT_URL;
+	}
 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
