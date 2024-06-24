@@ -55,10 +55,10 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 		if (process.env.NEXT_PUBLIC_MODE === "DEV") {
 			baseUrl = "http://localhost:4000";
 		} else {
-			baseUrl = process.env.BACK_END_URL;
+			baseUrl = process.env.NEXT_PUBLIC_BACK_END_URL;
 		}
 	} else {
-		baseUrl = process.env.CLIENT_URL;
+		baseUrl = process.env.NEXT_PUBLIC_CLIENT_URL;
 	}
 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
