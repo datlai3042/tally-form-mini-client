@@ -10,113 +10,29 @@ import * as XLSX from "xlsx";
 
 import "moment/locale/vi"; // without this line it didn't work
 import { FormCore } from "@/type";
-import AnswerDetailModel from "../summary/_components/AnswerDetailModel";
 import { checkValueHref, stringToSlug } from "@/app/_lib/utils";
 import { addFormAnswer } from "@/app/_lib/redux/features/formAnswer.slice";
 import StatusCodeResponse from "@/app/(NextClient)/_components/_StatusCodeComponent/StatusCodeResponse";
 import NotFoundPage from "@/app/(NextClient)/_components/_StatusCodeComponent/NotFoundPage";
+import AnswerDetailModel from "../summary/_components/AnswerDetailModel";
 moment.locale("vi");
 
-const SubmitFormPage = ({ params }: { params: { id: string } }) => {
+const SubmitFormPage = () => {
+	const { dataExcel, dataFormShowExcel, form_id } = useSelector((state: RootState) => state.dataFormHandler);
+
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
-	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[params.id]);
+	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[form_id]);
 	const dispatch = useDispatch();
 
 	const [openDetailAnswer, setOpenDetailAnswer] = useState<boolean>(false);
 	const [formAnswerDetail, setFormAnswerDetail] = useState<FormCore.FormAnswer.OneReport | null>(null);
-
-	const dataExcel = useRef<{ [key: string]: string }[]>([]);
-
-	const [dataForm, setDataForm] = useState<{
-		[key: string]: { _id: string; title: string; value: string | string[]; time: Date; form_answer_id: string }[];
-	}>({});
-
-	const getFormAnswer = useQuery({
-		queryKey: ["get-form-answer", formCore._id],
-		queryFn: () => FormAnswerService.getFormAnswer(formCore._id),
-		enabled: !formAnswer,
-	});
-	const filterDataRender = (reports: FormCore.FormAnswer.FormAnswerCore["reports"]) => {
-		let filterForm: {
-			[key: string]: {
-				_id: string;
-				title: string;
-				value: string | string[];
-				time: Date;
-				form_answer_id: string;
-			}[];
-		} = {};
-		reports.map((rp) => {
-			let dataXlsx = {};
-			rp.answers.map((ans) => {
-				const convertArrayValueToString = typeof ans.value === "string" ? ans.value : ans.value.join(", ");
-				dataXlsx = {
-					...dataXlsx,
-					[ans.title]: convertArrayValueToString,
-					"Thời gian gửi": moment(new Date(rp.createdAt)).format("hh:mm Do MMMM YYYY"),
-				};
-				if (!filterForm[ans._id]) {
-					filterForm[ans._id] = [];
-					filterForm[ans._id].push({
-						_id: ans._id,
-						title: ans.title,
-						value: convertArrayValueToString,
-						time: rp.createdAt,
-						form_answer_id: rp._id,
-					});
-				} else {
-					filterForm[ans._id] = filterForm[ans._id].concat({
-						_id: ans._id,
-						title: ans.title,
-						value: convertArrayValueToString,
-						time: rp.createdAt,
-						form_answer_id: rp._id,
-					});
-				}
-			});
-
-			dataExcel.current = dataExcel.current.concat(dataXlsx);
-		});
-
-		console.log({ "Lọc dữ liệu": filterForm });
-
-		setDataForm(filterForm);
-	};
-
-	useEffect(() => {
-		if (!formAnswer && getFormAnswer.isSuccess && getFormAnswer.data.metadata.formAnswer) {
-			const { formAnswer } = getFormAnswer.data.metadata;
-			dispatch(addFormAnswer({ form_id: formAnswer.form_id, reports: formAnswer }));
-			let filterForm: {
-				[key: string]: {
-					_id: string;
-					title: string;
-					value: string | string[];
-					time: Date;
-					form_answer_id: string;
-				}[];
-			} = {};
-			const { reports } = getFormAnswer.data.metadata.formAnswer;
-			const arrayReserver = [...reports];
-
-			filterDataRender(arrayReserver.reverse());
-		}
-	}, [getFormAnswer.isSuccess, getFormAnswer.data]);
-
-	useEffect(() => {
-		if (formAnswer) {
-			const arrayReserver = [...formAnswer.formAnswer.reports];
-
-			filterDataRender(arrayReserver.reverse());
-		}
-	}, [formAnswer]);
 
 	const color = formCore.form_title.form_title_color
 		? formCore.form_title.form_title_color
 		: formCore.form_setting_default.form_title_color_default;
 
 	const handleDownloadExcel = () => {
-		const worksheet = XLSX.utils.json_to_sheet(dataExcel.current);
+		const worksheet = XLSX.utils.json_to_sheet(dataExcel);
 		const workbook = XLSX.utils.book_new();
 		XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 		const namefile = stringToSlug(formCore.form_title.form_title_value);
@@ -150,14 +66,14 @@ const SubmitFormPage = ({ params }: { params: { id: string } }) => {
 									>
 										Thời gian
 									</th>
-									{Object.keys(dataForm).map((fans, i) => {
+									{Object.keys(dataFormShowExcel).map((fans, i) => {
 										return (
 											<th
 												key={i}
 												className="w-[25rem]  p-[1.6rem] font-extrabold text-left border-[.2rem] "
 												style={{ borderColor: color }}
 											>
-												{dataForm[fans][0].title}
+												{dataFormShowExcel[fans][0].title}
 											</th>
 										);
 									})}
@@ -219,7 +135,7 @@ const SubmitFormPage = ({ params }: { params: { id: string } }) => {
 							</tbody>
 						</table>
 					</div>
-					{getFormAnswer.data?.metadata.formAnswer && openDetailAnswer && formAnswerDetail && (
+					{openDetailAnswer && formAnswerDetail && (
 						<AnswerDetailModel
 							setOpenModel={setOpenDetailAnswer}
 							formAnswer={formAnswerDetail}

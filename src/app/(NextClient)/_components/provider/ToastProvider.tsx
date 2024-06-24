@@ -36,7 +36,7 @@ const ToastProvider = () => {
 
 	return (
 		<div className="fixed z-[1000] right-0 top-0 w-[32rem] h-screen mt-[2rem] px-[2rem]">
-			<div className="relative min-h-full flex flex-col gap-[4rem]">
+			<div className="relative min-h-[14rem] max-h-screen flex flex-col gap-[4rem]">
 				{renderToastStack}
 
 				{toast_queue.length < 2 && renderToastQueue}

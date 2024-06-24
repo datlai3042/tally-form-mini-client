@@ -18,12 +18,13 @@ import NotFoundPage from "@/app/(NextClient)/_components/_StatusCodeComponent/No
 
 moment.locale("vi");
 
-const SummaryFormPage = ({ params }: { params: { id: string } }) => {
+const SummaryFormPage = () => {
+	const { dataFormShowChart, form_id } = useSelector((state: RootState) => state.dataFormHandler);
+
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 	const colorMain = formCore.form_title.form_title_color || formCore.form_setting_default.form_title_color_default;
+	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[form_id]);
 
-	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[params.id]);
-	const dispatch = useDispatch();
 	const [openDetailAnswer, setOpenDetailAnswer] = useState<boolean>(false);
 	const [formAnswerDetail, setFormAnswerDetail] = useState<FormCore.FormAnswer.OneReport | null>(null);
 
@@ -34,99 +35,22 @@ const SummaryFormPage = ({ params }: { params: { id: string } }) => {
 		newCount: formAnswer?.formAnswer.reports.length || 0,
 	});
 
-	const [dataForm, setDataForm] = useState<{
-		[key: string]: { _id: string; title: string; value: string | string[]; time: Date; form_answer_id: string }[];
-	}>({});
-
-	const getFormAnswer = useQuery({
-		queryKey: ["get-form-answer", params.id],
-		queryFn: () => FormAnswerService.getFormAnswer(params.id),
-		enabled: !formAnswer,
-	});
-
-	const filterDataRender = (reports: FormCore.FormAnswer.FormAnswerCore["reports"]) => {
-		let filterForm: {
-			[key: string]: {
-				_id: string;
-				title: string;
-				value: string | string[];
-				time: Date;
-				form_answer_id: string;
-			}[];
-		} = {};
-		reports.map((rp) => {
-			rp.answers.map((ans) => {
-				if (!filterForm[ans._id + "_#_" + ans.type]) {
-					filterForm[ans._id + "_#_" + ans.type] = [];
-
-					const answerItem = {
-						_id: ans._id,
-						title: ans.title,
-						value: ans.value as string,
-						time: rp.createdAt,
-						form_answer_id: rp._id,
-					};
-
-					filterForm[ans._id + "_#_" + ans.type].push(answerItem);
-				} else {
-					filterForm[ans._id + "_#_" + ans.type] = filterForm[ans._id + "_#_" + ans.type].concat({
-						_id: ans._id,
-						title: ans.title,
-						value: ans.value,
-						time: rp.createdAt,
-						form_answer_id: rp._id,
-					});
-				}
-			});
-		});
-		console.log({ "Lọc dữ liệu": filterForm });
-
-		setDataForm(filterForm);
-	};
-
-	console.log({ newCount });
-
-	useEffect(() => {
-		if (!formAnswer && getFormAnswer.isSuccess && getFormAnswer.data.metadata.formAnswer) {
-			const { formAnswer } = getFormAnswer.data.metadata;
-			dispatch(addFormAnswer({ form_id: formAnswer.form_id, reports: formAnswer }));
-			setNewCount({ newCount: formAnswer.reports.length, old_count: formAnswer.reports.length });
-			const arrayReserver = [...formAnswer.reports];
-			filterDataRender(arrayReserver.reverse());
-			console.log("OK");
-		}
-	}, [getFormAnswer.isSuccess, getFormAnswer.data]);
-
-	useEffect(() => {
-		if (formAnswer) {
-			const arrayReserver = [...formAnswer.formAnswer.reports];
-
-			filterDataRender(arrayReserver.reverse());
-			setNewCount((prev) => {
-				return {
-					old_count: prev.old_count,
-					newCount: formAnswer.formAnswer.reports.length,
-				};
-			});
-		}
-	}, [formAnswer]);
-
 	return (
 		<div className="flex flex-col gap-[6rem] min-h-[30rem] pb-[8rem]">
 			{formAnswer &&
-				Object.keys(dataForm).map((dt, i) => {
+				Object.keys(dataFormShowChart).map((dt, i) => {
 					const type = dt.split("_#_")[1] as InputCore.InputForm["type"];
 					return (
 						<div key={dt + i} className="flex flex-col gap-[3rem]  ">
-							<h3 className="text-[2.4rem] font-medium">{dataForm[dt][0]?.title}</h3>
-							{type === "OPTION" && <AnalysisAnswer data={dataForm[dt]} />}
-							{type === "OPTION_MULTIPLE" && <AnalysisAnswer data={dataForm[dt]} />}
+							<h3 className="text-[2.4rem] font-medium">{dataFormShowChart[dt][0]?.title}</h3>
+							{type === "OPTION" && <AnalysisAnswer data={dataFormShowChart[dt]} />}
+							{type === "OPTION_MULTIPLE" && <AnalysisAnswer data={dataFormShowChart[dt]} />}
 
 							<div
 								style={{ "--scorll-form-answer-detail": colorMain } as React.CSSProperties}
 								className="scroll-form-answer-detail flex flex-col gap-[.8rem] max-h-[30rem] overflow-y-scroll  pb-[.8rem]"
 							>
-								{dataForm[dt].map((info, i) => {
+								{dataFormShowChart[dt].map((info, i) => {
 									const checkNewReportRealTime = newCount.newCount - newCount.old_count - 1 === i;
 									return (
 										<div
