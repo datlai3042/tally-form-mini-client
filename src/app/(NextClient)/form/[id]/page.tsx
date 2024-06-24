@@ -25,6 +25,17 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 		icons: {
 			icon: iconForm,
 		},
+		alternates: {
+			canonical: "/",
+		},
+		openGraph: {
+			type: "website",
+			locale: "vi",
+			title: form.form_title.form_title_value,
+			siteName: "Một cách để tạo Form nhanh chóng",
+			url: process.env.NEXT_PUBLIC_BACK_END_URL + "/form/" + form._id,
+			images: [{ url: iconForm }],
+		},
 	};
 }
 
