@@ -12,22 +12,58 @@ class FormService {
 	}
 
 	static async getForms() {
-		return Http.get<ResponseApi<{ forms: FormCore.Form[] }>>(`/v1/api/form/get-forms`);
+		return Http.get<ResponseApi<{ forms: FormCore.Form[] }>>(`/v1/api/form/get-forms`, { cache: "no-store" });
 	}
 
 	static async getForm({ form_id }: { form_id: string }) {
-		return Http.get<ResponseApi<{ form: FormCore.Form }>>(`/v1/api/form/get-form-id?form_id=${form_id}`);
+		return Http.get<ResponseApi<{ form: FormCore.Form }>>(`/v1/api/form/get-form-id?form_id=${form_id}`, {
+			cache: "no-store",
+		});
+	}
+
+	static async deleteFormForever({ form_id }: { form_id: string }) {
+		return Http.delete<ResponseApi<{ message: string }>>(`/v1/api/form/delete-form-forever?form_id=${form_id}`);
+	}
+
+	static async setTitleForm({ form_id, value }: { form_id: string; value: string }) {
+		return await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/set-title-form", {
+			form_id,
+			value,
+		});
+	}
+
+	static async getListFormDelete() {
+		return Http.get<ResponseApi<{ forms: FormCore.Form[] }>>("/v1/api/form/get-list-form-delete", {
+			cache: "no-cache",
+		});
+	}
+
+	static async addSubTitleItem({ type, form_id }: { type: FormCore.Title.TitleSub; form_id: string }) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-sub-title-item", { type, form_id });
+	}
+
+	static async changeModeForm({ mode, form_id }: { mode: FormCore.FormState; form_id: string }) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/change-form-mode", { mode, form_id });
+	}
+
+	static async changeModeDisplay({ mode, form_id }: { mode: FormCore.FormModeDisplay; form_id: string }) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/change-mode-display", { mode, form_id });
 	}
 
 	static async updateSubTitle({
-		form_title_sub,
+		form_title_sub_id,
+		form_title_sub_content,
+
 		form_id,
 	}: {
-		form_title_sub: FormCore.Form["form_title"]["form_title_sub"];
+		form_title_sub_id: string;
+		form_title_sub_content: string;
+
 		form_id: string;
 	}) {
-		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-sub-title", {
-			form_title_sub,
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-sub-title-text", {
+			form_title_sub_content,
+			form_title_sub_id,
 			form_id,
 		});
 	}
@@ -44,7 +80,7 @@ class FormService {
 	}
 
 	static async deleteFormId({ form_id }: { form_id: string }) {
-		return Http.get<ResponseApi<{ form: FormCore.Form }>>(`/v1/api/form/delete-form-id?form_id=${form_id}`);
+		return Http.delete<ResponseApi<{ form: FormCore.Form }>>(`/v1/api/form/delete-form-id?form_id=${form_id}`);
 	}
 
 	static async getFormGuess({ form_id, options }: { form_id: string; options?: RequestInit }) {
@@ -100,6 +136,12 @@ class FormService {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-avatar", {
 			form,
 		});
+	}
+
+	static async getInfoFormNotification({ form_id, notification_id }: { form_id: string; notification_id: string }) {
+		return Http.get<
+			ResponseApi<{ form: Pick<FormCore.Form, "form_avatar" | "form_title" | "form_setting_default"> }>
+		>(`/v1/api/form/info-form-notification?form_id=${form_id}&notification_id=${notification_id}`);
 	}
 }
 

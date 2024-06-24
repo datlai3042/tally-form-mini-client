@@ -10,6 +10,16 @@ export const inputIntroduceText = {
 		"Input type Text được dùng để thu thập dạng chữ, với những dữ liệu nào cần nhiều dòng thông tin thì Input Text là phù hợp nhất",
 };
 
+export const inputIntroduceVote = {
+	title: "Đánh giá",
+	description: "Input Vote được dùng để thu thập các đánh giá theo thang điểm từ 1 đến 5 sao",
+};
+
+export const inputIntroducePhone = {
+	title: "Số điện thoại",
+	description: "Input Phone được dùng để thu thập thông tin số điện thoại",
+};
+
 export const inputIntroduceOption = {
 	title: "Lựa chọn đơn",
 	description: "Input option cho phép mọi người chọn một lựa chọn trên nhiều lựa chọn trong câu câu hỏi",

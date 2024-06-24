@@ -1,8 +1,8 @@
 export const FormText = {
 	buttonDesign: {
-		custom: "Tùy chình Form",
+		custom: "Tùy chình giao diện",
 		avatar: "Thêm ảnh đại diện",
-		background: "Thêm hình nên",
+		background: "Thêm hình nền",
 	},
 	title: {
 		message: "Tạo tiêu đề",

@@ -15,36 +15,6 @@ type Props = {
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-	const cookieStore = cookies();
-	const client_id = cookieStore.get("next_client_id")?.value;
-	const access_token = cookieStore.get("next_access_token")?.value;
-	const refresh_token = cookieStore.get("next_refresh_token")?.value;
-	const code_verify_token = cookieStore.get("next_code_verify_token")?.value;
-
-	const res = await Http.get<ResponseApi<{ user: UserType }>>(`/v1/api/account/me`, {
-		credentials: "include",
-		headers: {
-			Cookie: `refresh_token=${refresh_token};access_token=${access_token};client_id=${client_id};code_verify_token=${code_verify_token}`,
-			CodeVerifyToken: code_verify_token,
-		} as HeadersInit,
-	});
-
-	const { user } = res.metadata;
-
-	const fullName = user?.user_first_name + " " + user?.user_last_name;
-	const imageAvatar = user?.user_avatar_current?.secure_url || user?.user_avatar_system;
-
-	console.log({ fullName });
-
-	return {
-		title: fullName,
-		icons: {
-			icon: imageAvatar,
-		},
-	};
-}
-
 type TProps = {
 	children: React.ReactNode;
 };

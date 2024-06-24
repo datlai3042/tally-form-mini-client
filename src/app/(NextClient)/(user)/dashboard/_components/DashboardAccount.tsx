@@ -34,7 +34,7 @@ const DashboardAccount = () => {
 							</div>
 						)}
 
-						<span className="font-semibold w-[90%] break-words line-clamp-2 " title={"Nickname"}>
+						<span className="font-semibold w-fullbreak-words line-clamp-2 " title={"Nickname"}>
 							{user?.user_first_name + " " + user?.user_last_name}
 						</span>
 						<DashBoardButtonModel />
@@ -42,7 +42,7 @@ const DashboardAccount = () => {
 					<ButtonIcon
 						Icon={<ChevronsLeft className="w-[1.4rem]" />}
 						onClick={() => setOpenSidebar(false)}
-						className="invisible group-hover:visible bg-transparent hover:bg-slate-200 rounded-lg"
+						className=" bg-transparent hover:bg-slate-200 rounded-lg"
 					/>
 				</>
 			)}

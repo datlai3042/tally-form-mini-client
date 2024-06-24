@@ -38,7 +38,7 @@ const ButtonAddAvatarForm = (props: ButtonAddAvatarFormProps) => {
 			{...buttonProps}
 			className={` ${
 				buttonProps.className ? buttonProps.className : ""
-			} min-w-[14rem]  w-max px-[1rem] flex items-center sm:justify-center gap-[.5rem] text-textHeader  rounded-md text-[1.5rem] font-bold hover:bg-gray-200 hover:text-slate-700`}
+			} min-w-[14rem]  w-max  h-[4rem] p-[1rem] flex items-center sm:justify-center gap-[.5rem] text-textHeader  rounded-xl text-[1.5rem] font-bold hover:bg-gray-200 hover:text-slate-700`}
 			onClick={onAddAvatar}
 		>
 			<Hexagon />

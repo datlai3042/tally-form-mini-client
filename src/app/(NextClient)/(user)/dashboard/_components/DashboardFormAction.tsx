@@ -1,4 +1,5 @@
 "use client";
+import BoxCopySuccess from "@/app/(NextClient)/form/[id]/(owner)/_components/BoxCopySuccess";
 import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 import FormService from "@/app/_services/form.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +7,6 @@ import { Pencil, Link as LinkIcon, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import BoxCopySuccess from "../../form/[id]/(owner)/_components/BoxCopySuccess";
 
 type TProps = {
 	form_id: string;
@@ -18,13 +18,16 @@ const DashboardFormAction = (props: TProps) => {
 	const { form_id } = props;
 	const dispatch = useDispatch();
 	const router = useRouter();
-	const clienQuery = useQueryClient();
+	const queryClient = useQueryClient();
 
 	const deleteFormId = useMutation({
 		mutationKey: ["delete-form", form_id],
 		mutationFn: (formId: string) => FormService.deleteFormId({ form_id: formId }),
 		onSuccess: (res) => {
-			clienQuery.invalidateQueries({ queryKey: ["get-forms"] });
+			queryClient.invalidateQueries({ queryKey: ["get-forms"] });
+			queryClient.invalidateQueries({ queryKey: ["get-list-form-delete"] });
+
+			// router.refresh();
 		},
 	});
 
@@ -58,7 +61,7 @@ const DashboardFormAction = (props: TProps) => {
 	};
 
 	return (
-		<div className="flex gap-[1rem]">
+		<div className="flex  gap-[1rem]">
 			<button
 				className="flex items-center gap-[1rem] p-[.5rem_.7rem] hover:bg-gray-300 rounded-lg"
 				onClick={(e) => {

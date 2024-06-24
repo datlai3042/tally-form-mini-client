@@ -10,6 +10,8 @@ import DivNative from "./(NextClient)/_components/ui/NativeHtml/DivNative";
 import Head from "next/head";
 import SidebarContextProvider from "./(NextClient)/(user)/dashboard/SidebarContext";
 import CheckExprireToken from "./(NextClient)/_components/Layout/CheckExprireToken";
+import ToastProvider from "./(NextClient)/_components/provider/ToastProvider";
+import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,17 +30,13 @@ type TProps = {
 export default function RootLayout(props: TProps) {
 	return (
 		<html lang="vi" suppressHydrationWarning={true}>
-			<head>
-				<link rel="icon" type="image/x-icon" href="/icon_core.png" />
-			</head>
+			<head></head>
 			<body className={inter.className}>
 				<ReduxProvider>
 					<ReactQueryProvider>
 						<SidebarContextProvider>
 							<AppProvider>{props.children}</AppProvider>
-							<DivNative className="fixed bottom z-[100000]">
-								<Toaster />
-							</DivNative>
+							<ToastProvider />
 						</SidebarContextProvider>
 					</ReactQueryProvider>
 				</ReduxProvider>

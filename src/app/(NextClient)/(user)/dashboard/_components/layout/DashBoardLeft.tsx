@@ -30,10 +30,10 @@ const DashBoardLeft = () => {
 	}, [fetchMe.isSuccess, dispatch, fetchMe]);
 
 	return (
-		<div className="p-[1rem_.4rem] flex flex-col gap-[1.1rem] bg-[#fffffff] text-[1.4rem]">
+		<div className="p-[1rem] flex flex-col gap-[1.1rem] bg-[#fffffff] text-[1.4rem]">
 			<DashboardAccount />
 			<DashBoardWork />
-			<div className="mt-[1.6rem] flex flex-col gap-[1.8rem]">
+			<div className="mt-[1rem] flex flex-col gap-[1.8rem] text-[1.4rem]">
 				<DashboardWorkspaces />
 				<DashboardProduct />
 				<DashboardHelp />

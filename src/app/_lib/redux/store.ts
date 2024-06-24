@@ -2,8 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/authentication.slice";
 import formEditSlice from "./features/formEdit.slice";
 import formAnswerSlice from "./features/formAnswer.slice";
+import notificationSlice from "./features/notification.slice";
+import toastSlice from "./features/toast.slice";
 const store = configureStore({
-	reducer: { authReducer, form: formEditSlice, formAsnwer: formAnswerSlice },
+	reducer: {
+		authReducer,
+		form: formEditSlice,
+		formAsnwer: formAnswerSlice,
+		notification: notificationSlice,
+		toast: toastSlice,
+	},
 });
 
 export type RootState = ReturnType<typeof store.getState>;

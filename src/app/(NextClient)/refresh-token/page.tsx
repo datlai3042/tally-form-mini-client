@@ -1,7 +1,7 @@
 "use client";
 
 import { redirect, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import AuthService from "@/app/_services/auth.service";
 import LayoutTokenFailure from "../_components/Layout/LayoutTokenFailure";
@@ -29,9 +29,12 @@ const RefreshTokenPage = () => {
 		}
 		if (code_verify_token_cl === code_verify_token_sv) {
 			AuthService.refreshTokenServer(signal).then(() => {
+				// timer.current = setTimeout(() => {
+				router.replace("/dashboard");
 				router.refresh();
-				router.push("/");
+				// }, 2000);
 			});
+			return;
 		} else {
 			console.log("set-state");
 			setError(true);
@@ -41,8 +44,8 @@ const RefreshTokenPage = () => {
 		};
 	}, [code_verify_token_sv, pathName, router]);
 
-	if (error) return <LayoutTokenFailure message="Yêu cầu không hợp lệ" />;
-	return <LayoutRequestLoading message="Đang xử lí" />;
+	if (error) return <LayoutTokenFailure message="Yêu cầu không hợp lệ, vui lòng quay về giao diện đăng nhập" />;
+	return <LayoutRequestLoading message="Server đang xác thực lại một số thông tin" />;
 };
 
 export default RefreshTokenPage;

@@ -4,7 +4,7 @@ import React from "react";
 import { ButtonCustomProps } from "./Button";
 import { ButtonCustomNavigation } from "./ButtonNavigation";
 import Link from "next/link";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
 import { useRouter } from "next/navigation";
 
@@ -17,12 +17,15 @@ const ButtonCreateForm = (props: TProps) => {
 	const { textContent, urlNavigation, position = "LEFT", icon, ...AnchorProps } = props;
 
 	const router = useRouter();
+	const queryClient = useQueryClient();
+
 	const createNewForm = useMutation({
 		mutationKey: ["create-new-form"],
 		mutationFn: () => FormService.createForm(),
 		onSuccess: (dataResponse) => {
 			const { form_id } = dataResponse.metadata;
 			router.push(`/form/${form_id}/edit`);
+			queryClient.invalidateQueries({ queryKey: ["get-forms"] });
 		},
 	});
 
@@ -32,7 +35,7 @@ const ButtonCreateForm = (props: TProps) => {
 			tabIndex={-1}
 			href={urlNavigation}
 			{...AnchorProps}
-			className={`${AnchorProps.className}  p-[6px_12px] flex  justify-center items-center gap-[.8rem] text-[1.8rem] text-[#ffffff] bg-[rgb(0_112_215)] opacity-[.95] hover:opacity-100 transition-colors duration-200 rounded-[.6rem]`}
+			className={`${AnchorProps.className} w-[60%] xl:w-[20rem] h-[4rem]  p-[1rem_2rem] flex  justify-center items-center gap-[.8rem] text-[1.8rem] text-[#ffffff] bg-[rgb(0_112_215)] opacity-[.95] hover:opacity-100 transition-colors duration-200 rounded-[.4rem]`}
 		>
 			{position === "LEFT" && icon && icon}
 			{textContent}

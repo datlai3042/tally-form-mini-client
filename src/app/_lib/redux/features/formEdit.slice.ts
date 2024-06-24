@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type InitialState = {
 	formCoreOriginal: FormCore.Form;
 	formCoreBackUp: FormCore.Form;
+	colorCore: string;
 };
 
 const formInitital: FormCore.Form = {
@@ -21,6 +22,7 @@ const formInitital: FormCore.Form = {
 	form_button_label: "",
 	form_avatar_state: false,
 	form_background_state: false,
+	form_mode_display: "basic",
 	form_inputs: [],
 	form_setting_default: {
 		form_avatar_default_url: "",
@@ -41,6 +43,7 @@ const formInitital: FormCore.Form = {
 const initialState: InitialState = {
 	formCoreOriginal: formInitital,
 	formCoreBackUp: formInitital,
+	colorCore: "",
 };
 
 const formEditSlice = createSlice({
@@ -50,10 +53,16 @@ const formEditSlice = createSlice({
 		onFetchForm: (state, data: PayloadAction<{ form: FormCore.Form }>) => {
 			state.formCoreOriginal = data.payload.form;
 			state.formCoreBackUp = data.payload.form;
+			state.colorCore =
+				data.payload.form.form_title.form_title_color ||
+				data.payload.form.form_setting_default.form_title_color_default;
 		},
 
 		onEditForm: (state, data: PayloadAction<{ form: FormCore.Form }>) => {
 			state.formCoreOriginal = data.payload.form;
+			state.colorCore =
+				data.payload.form.form_title.form_title_color ||
+				data.payload.form.form_setting_default.form_title_color_default;
 		},
 	},
 });

@@ -12,7 +12,9 @@ const ButtonIcon = (props: TProps) => {
 	return (
 		<button
 			{...buttonProps}
-			className={`${buttonProps.className} min-w-[3rem] min-h-[3rem] w-max h-max flex justify-center items-center gap-[.5rem] `}
+			className={`${
+				buttonProps.className || ""
+			} min-w-[3rem] min-h-[3rem] w-max h-max flex justify-center items-center gap-[.5rem] `}
 		>
 			{textContent && textContent}
 			{Icon}

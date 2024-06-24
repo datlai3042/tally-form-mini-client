@@ -1,9 +1,14 @@
+"use client";
 import { addFormAnswer } from "@/app/_lib/redux/features/formAnswer.slice";
+import { onAddNewNotification, onFetchNotification } from "@/app/_lib/redux/features/notification.slice";
+import { addOneToastSuccess } from "@/app/_lib/redux/features/toast.slice";
 import { RootState } from "@/app/_lib/redux/store";
-import { FormCore } from "@/type";
+import { FormCore, Notification } from "@/type";
+import { useQueryClient } from "@tanstack/react-query";
 import React, { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io, Socket } from "socket.io-client";
+import { v4 as uunid } from "uuid";
 
 const URL = process.env.NEXT_PUBLIC_MODE === "PRO" ? process.env.BACK_END_URL : "http://localhost:4000";
 const SocketContext = createContext<Socket | null>(null);
@@ -12,23 +17,60 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 	const [socket, setSocket] = useState<Socket | null>(null);
 	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore);
 	const dispatch = useDispatch();
+	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		const socket = io(URL!, { withCredentials: true });
 		function onConnect() {
 			setSocket(socket);
-			console.log("123");
+			dispatch(
+				addOneToastSuccess({
+					toast_item: {
+						_id: uunid(),
+						type: "SUCCESS",
+						toast_title: "Socket",
+						core: {
+							message: `Kết nối socket thành công`,
+						},
+					},
+				})
+			);
 			socket.emit("checkError", { error: "Ok" });
 		}
+
+		const socketNewForm = (dataSocket: {
+			formAnswer: FormCore.FormAnswer.FormAnswerCore;
+			notification: { notifications: Notification.NotificationUser["notifications"] };
+			notification_item_id: string;
+			form_origin: FormCore.Form;
+		}) => {
+			const { formAnswer, notification, notification_item_id, form_origin } = dataSocket;
+			console.log({ dataSocket });
+			dispatch(addFormAnswer({ form_id: formAnswer.form_id, reports: formAnswer }));
+			dispatch(onFetchNotification({ notification: notification.notifications, animation: true }));
+			dispatch(onAddNewNotification({ notification_item_id }));
+			dispatch(
+				addOneToastSuccess({
+					toast_item: {
+						_id: uunid(),
+						type: "SUCCESS",
+						toast_title: "Bạn nhận được 1 phiếu trả lời",
+						core: {
+							message: `Bạn nhận được 1 phản hồi từ Form [${form_origin.form_title.form_title_value}]`,
+						},
+					},
+				})
+			);
+
+			queryClient.invalidateQueries({
+				queryKey: ["get-notification-type"],
+			});
+		};
 
 		function onDisconnect() {}
 		socket.on("connect", onConnect);
 		socket.on("disconnect", onDisconnect);
-		socket.on("add-new-reports", (dataSocket: { type: string; formAnswer: FormCore.FormAnswer.FormAnswerCore }) => {
-			const { formAnswer, type } = dataSocket;
-			console.log({ dataSocket });
-			dispatch(addFormAnswer({ form_id: formAnswer.form_id, reports: formAnswer }));
-		});
+		socket.on("add-new-reports", socketNewForm);
 
 		socket.on("mai", (data) => console.log({ data }));
 
@@ -41,6 +83,13 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 		return () => {
 			socket.off("connect", onConnect);
 			socket.off("disconnect", onDisconnect);
+			socket.off(
+				"add-new-notification",
+				(data: { notification: { notifications: Notification.NotificationUser } }) => {
+					const { notifications } = data.notification;
+					dispatch(onFetchNotification({ notification: notifications.notifications, animation: true }));
+				}
+			);
 		};
 	}, []);
 

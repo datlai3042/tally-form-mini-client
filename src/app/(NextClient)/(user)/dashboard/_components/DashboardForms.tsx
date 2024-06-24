@@ -9,26 +9,23 @@ import { Pencil } from "lucide-react";
 import DashboardFormAction from "./DashboardFormAction";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import StatusCodeResponse from "@/app/(NextClient)/_components/_StatusCodeComponent/StatusCodeResponse";
+import useGetAllFormUser from "@/app/hooks/useGetAllFormUser";
+import LoadingArea from "@/app/(NextClient)/_components/ui/loading/LoadingArea";
+import FormEmpty from "./FormEmpty";
 
 moment.locale("vi");
 
 const DashboardForms = () => {
-	const [forms, setForms] = useState<FormCore.Form[]>([]);
-	const formsQuery = useQuery({
-		queryKey: ["get-forms"],
-		queryFn: () => FormService.getForms(),
-	});
+	const { forms, pending, success } = useGetAllFormUser();
 
-	useEffect(() => {
-		if (formsQuery.isSuccess) {
-			const { forms } = formsQuery.data.metadata;
-			setForms(forms);
-		}
-	}, [formsQuery.isSuccess, formsQuery.data]);
 	return (
-		<DivNative className="max-w-full  flex flex-col">
-			{formsQuery.isPending && <DivNative className="w-full h-[12rem] animate-pulse bg-gray-200"></DivNative>}
-			{formsQuery.isSuccess && (
+		<DivNative className="max-w-full  flex flex-col ">
+			{pending && (
+				<div className="w-full min-h-[12rem]">
+					<LoadingArea />
+				</div>
+			)}
+			{success && (
 				<DivNative className="flex flex-col gap-[2rem] pb-[10rem]">
 					{forms.map((form, index) => (
 						<Link
@@ -50,12 +47,13 @@ const DashboardForms = () => {
 				</DivNative>
 			)}
 
-			{formsQuery.data?.metadata.forms.length === 0 && (
-				<div className="flex items-center mt-[10rem]  flex-col gap-[2rem]">
-					<p className="text-[6rem] font-medium">Bạn chưa tạo form</p>
-					<p>Hãy tạo form để trải nghiệm các chứa năng nha</p>
+			{pending && (
+				<div className="mt-[-10rem] w-full h-[50rem]">
+					<LoadingArea />
 				</div>
 			)}
+
+			{success && forms.length === 0 && <FormEmpty />}
 		</DivNative>
 	);
 };

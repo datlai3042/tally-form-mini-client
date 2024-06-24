@@ -1,17 +1,26 @@
 import React, { useContext } from "react";
-import { ChevronsRight, Flower, Search, Settings } from "lucide-react";
+import { Bell, ChevronsRight, Flower, Search, Settings } from "lucide-react";
 import { SidebarContext } from "../SidebarContext";
 import Link from "next/link";
 import ButtonIcon from "@/app/(NextClient)/_components/ui/button/ButtonIcon";
+import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
+import Notification from "@/app/(NextClient)/_components/notification/Notification";
+import Image from "next/image";
 
 const DashBoardRightHeader = () => {
 	const { openSidebar, setOpenSidebar } = useContext(SidebarContext);
 
 	return (
-		<div className=" w-full h-[3rem] flex items-center justify-between gap-[1rem] text-[1.3rem]">
+		<div className=" w-full h-[3rem] px-[1rem] py-[2rem] flex items-center justify-between gap-[1rem] text-[1.3rem]">
 			<div className="flex items-center gap-[1rem] ">
 				{!openSidebar && <ButtonIcon Icon={<ChevronsRight />} onClick={() => setOpenSidebar(true)} />}
-				<Flower className="w-[1.8rem]" />
+				{/* <Image
+					src={"/assets/images/icon/navigation/home.png"}
+					width={18}
+					height={18}
+					alt="icon"
+					className="w-[2.4rem] h-[2.4rem]"
+				/>{" "} */}
 			</div>
 			<div className="flex gap-[20px]">
 				<div
@@ -19,7 +28,7 @@ const DashBoardRightHeader = () => {
 					title="Tìm kiếm"
 				>
 					<Search className="w-[1.6rem]" />
-					<span>Search</span>
+					<span>Tìm kiếm</span>
 				</div>
 
 				<Link
@@ -29,6 +38,7 @@ const DashBoardRightHeader = () => {
 				>
 					<Settings className="w-[1.6rem]" />
 				</Link>
+				<Notification />
 			</div>
 		</div>
 	);

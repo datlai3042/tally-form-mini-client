@@ -31,6 +31,7 @@ const ButtonOptionsValue = (props: TProps) => {
 	} = props;
 
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
+	const checkModeDisplay = formCore.form_mode_display === "custom" ? true : false;
 
 	const divContentRef = useRef<HTMLDivElement | null>(null);
 	const content = divContentRef.current?.textContent;
@@ -58,7 +59,7 @@ const ButtonOptionsValue = (props: TProps) => {
 	const handleBlur = () => {
 		const content = divContentRef.current?.textContent;
 		if (!content) return;
-		if (!addOptionServer.isPending && content && content !== option.option_value) {
+		if (!addOptionServer.isPending && content && content !== option.option_value && option.option_id) {
 			addOptionServer.mutate({
 				form: formCore,
 				option_id: option.option_id || "",
@@ -110,7 +111,12 @@ const ButtonOptionsValue = (props: TProps) => {
 		>
 			<div className="w-[2rem] aspect-square rounded-full border-[.1rem] border-slate-400 flex items-center justify-center">
 				{selectValue.includes(option.option_id) && (
-					<div style={{ backgroundColor: colorMain }} className="w-[60%] h-[60%] rounded-full "></div>
+					<div
+						style={{ backgroundColor: checkModeDisplay ? colorMain : "#000" }}
+						className={`${
+							checkModeDisplay ? "group-hover:!bg-[#ffffff]" : "bg-blue-300"
+						} min-w-[60%] min-h-[60%] rounded-full `}
+					></div>
 				)}
 			</div>
 
@@ -130,13 +136,16 @@ const ButtonOptionsValue = (props: TProps) => {
 			</div>
 
 			<button
+				style={{ color: checkModeDisplay ? colorMain : "#000" }}
 				disabled={deleteOptionIdMutation.isPending}
 				onClick={(e) => {
 					e.preventDefault();
 
 					onDeleteOptionId();
 				}}
-				className="mr-auto flex items-center gap-[1rem] p-[.5rem_.7rem] hover:bg-gray-200 rounded-lg disabled:cursor-not-allowed"
+				className={`${
+					checkModeDisplay ? "group-hover:!bg-[#ffffff] hover:bg-gray-200" : "bg-gray-200 hover:bg-gray-300"
+				} mr-auto flex items-center gap-[1rem] p-[.5rem_.7rem]  rounded-lg disabled:cursor-not-allowed`}
 			>
 				<Trash2 size={16} />
 			</button>

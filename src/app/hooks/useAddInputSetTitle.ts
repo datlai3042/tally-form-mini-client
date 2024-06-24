@@ -3,7 +3,7 @@ import { RootState } from "@/app/_lib/redux/store";
 import FormInputService from "@/app/_services/FormInput.service";
 import FormService from "@/app/_services/form.service";
 import { FormCore } from "@/type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormInput } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,6 +11,7 @@ type TProps = {};
 
 const useAddInputSetTitle = () => {
 	const dispatch = useDispatch();
+	const queryClient = useQueryClient();
 
 	const updateFormMutation = useMutation({
 		mutationKey: ["add-input-form"],
@@ -19,6 +20,7 @@ const useAddInputSetTitle = () => {
 		onSuccess: (res) => {
 			const { form } = res.metadata;
 			dispatch(onFetchForm({ form }));
+			queryClient.invalidateQueries({ queryKey: ["get-forms"] });
 		},
 	});
 

@@ -6,13 +6,11 @@ import ButtonNative from "../ui/NativeHtml/ButtonNative";
 import { renderStyleTitleCore } from "@/app/_lib/utils";
 import FormAnswerProvider, { FormAnswerContext } from "../provider/FormAnswerProvider";
 import SliderImage from "../Model/SliderImage";
-import InputEmailAnswer from "../../(user)/form/[id]/_components/InputAnswer/_email/InputEmailAnswer";
-import InputTextAnswer from "../../(user)/form/[id]/_components/InputAnswer/_text/InputTextAnswer";
-import { superTextValidate } from "../../(user)/form/[id]/_components/InputAnswer/_validate/inputText.validate";
-import { superEmailValidate } from "../../(user)/form/[id]/_components/InputAnswer/_validate/inputEmail.validate";
-import { checkErrorFinal } from "../../(user)/form/[id]/_components/InputAnswer/_utils/formAnswer.uti";
-import RenderInputAnswers from "../../(user)/form/[id]/_components/RenderInputAnswers";
 import Portal from "../Portal";
+import InputEmailAnswer from "../../form/[id]/_components/InputAnswer/_email/InputEmailAnswer";
+import InputTextAnswer from "../../form/[id]/_components/InputAnswer/_text/InputTextAnswer";
+import { checkErrorFinal } from "../../form/[id]/_components/InputAnswer/_utils/formAnswer.uti";
+import RenderInputAnswers from "../../form/[id]/_components/RenderInputAnswers";
 
 type TProps = {
 	FormCore: FormCore.Form;
@@ -134,7 +132,7 @@ const FormPageGuess = (props: TProps) => {
 					{!FormCore.form_background?.form_background_iamge_url && (
 						<div
 							style={{ backgroundColor: colorMain }}
-							className="w-[66.8rem] aspect-[3/1] rounded-lg opacity-90"
+							className="w-full xl:w-[66.8rem] aspect-[3/1] rounded-lg opacity-90"
 						></div>
 					)}
 

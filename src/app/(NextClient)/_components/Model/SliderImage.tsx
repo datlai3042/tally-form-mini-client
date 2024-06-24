@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { FormCore } from "@/type";
 import ModelShowImage from "./ModelShowImage";
-import FormTitleImage from "../../(user)/form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
+import FormTitleImage from "../../form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
 
 type TProps = {
 	images: string[] | FormCore.Title.FormTitleSub[];

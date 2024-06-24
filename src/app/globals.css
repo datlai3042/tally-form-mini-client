@@ -5,6 +5,9 @@
 @layer base {
 	:root {
 		--borderInputAnswerFocus: "#ccc", --background: 0 0% 100%;
+		--bg-input-core: #ffffff;
+		--bg-input-core-2: #000000;
+
 		--foreground: 222.2 84% 4.9%;
 
 		--card: 0 0% 100%;
@@ -127,6 +130,28 @@
 		/* border-radius: 10px; */
 	}
 
+	.scroll-common::-webkit-scrollbar {
+		width: 0.6rem;
+	}
+
+	.scroll-common::-webkit-scrollbar-thumb {
+		background: #000;
+		border-radius: 0.2rem;
+	}
+
+	.scroll-notification::-webkit-scrollbar {
+		width: 0.6rem;
+	}
+	.scroll-notification::-webkit-scrollbar-thumb {
+		background: rgb(22, 73, 240);
+		border-radius: 0.2rem;
+		/* border-radius: 10px; */
+	}
+
+	.color-core:hover {
+		background-color: var(--bg-input-core);
+	}
+
 	/* Handle on hover */
 }
 
@@ -185,8 +210,26 @@
 		border-color: var(--borderInputAnswerFocus) !important;
 	}
 
-	.reset-border-outline,
-	button {
+	.input-core {
+		background-color: #ffffff;
+	}
+
+	.input-core:hover {
+		background-color: var(--bg-input-core);
+	}
+
+	.input-core-children {
+		color: #000000;
+	}
+	.input-core:hover .input-core-children {
+		color: #ffffff !important;
+	}
+
+	.title-input {
+		color: var(--bg-input-core-2) !important;
+	}
+
+	.reset-border-outline {
 		border: none;
 		outline: none;
 	}

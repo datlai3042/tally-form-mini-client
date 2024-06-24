@@ -2,8 +2,8 @@ import React from "react";
 import ModelWrapper from "./ModelWrapper";
 import DivNative from "../ui/NativeHtml/DivNative";
 import { ReactCustom } from "@/type";
-import FormBackgoundUpload from "../../(user)/form/[id]/(owner)/edit/components/FormBackgoundUpload";
-import FormAvatarUpload from "../../(user)/form/[id]/(owner)/edit/components/FormAvatarUpload";
+import FormBackgoundUpload from "../../form/[id]/(owner)/edit/components/FormBackgoundUpload";
+import FormAvatarUpload from "../../form/[id]/(owner)/edit/components/FormAvatarUpload";
 
 type TProps = {
 	setOpenModel: ReactCustom.SetStateBoolean;

@@ -20,8 +20,7 @@ const LogoutPage = () => {
 		const localCodeJSON = localStorage.getItem("code_verify_token");
 
 		const logoutFunction = async () => {
-			await AuthService.logoutNextClient()
-			.catch(() => {
+			await AuthService.logoutNextClient().catch(() => {
 				setError(true);
 				return;
 			});
@@ -52,7 +51,7 @@ const LogoutPage = () => {
 		return () => {
 			abort.abort();
 		};
-	}, [code_verify_token_sv, router]);
+	}, [code_verify_token_sv, router, force]);
 
 	return <div>{error ? "Yêu cầu không hợp lệ" : "Đang xử lí"}</div>;
 };

@@ -4,11 +4,9 @@ import Link from "next/link";
 import React, { SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 
 const WorkItem = [
-	{ Title: "Home", Icon: <Flower className="w-[1.8rem]" />, Href: "/" },
-	{ Title: "Search", Icon: <Search className="w-[1.8rem]" />, Model: "search" },
-	{ Title: "Menbers", Icon: <Users className="w-[1.8rem]" />, Model: "users" },
-	{ Title: "Domains", Icon: <Globe className="w-[1.8rem]" />, Href: "/domain" },
-	{ Title: "Settings", Icon: <Settings className="w-[1.8rem]" />, Href: "/settings" },
+	{ Title: "Trang chủ", Icon: <Flower className="w-[1.8rem]" />, Href: "/" },
+	{ Title: "Tìm kiếm", Icon: <Search className="w-[1.8rem]" />, Model: "search" },
+	{ Title: "Cài đặt", Icon: <Settings className="w-[1.8rem]" />, Href: "/settings" },
 ];
 
 type TProps = {
@@ -37,7 +35,7 @@ const DashBoardModel = (props: TProps) => {
 
 	return (
 		<div
-			className="border-shadow-normal absolute w-[20rem] min-h-[15rem] p-[1rem_.8rem] h-max bg-[#ffffff] rounded-md  flex flex-col gap-[.5rem] text-[1.4rem]"
+			className=" absolute w-[20rem] min-h-[10rem] py-[1rem] h-max bg-[#ffffff] rounded-lg border-[.1rem] border-gray-200 shadow-lg flex flex-col gap-[.5rem] text-[1.4rem]"
 			ref={divRef}
 		>
 			{WorkItem.map((work) => {

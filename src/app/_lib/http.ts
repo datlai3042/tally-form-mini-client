@@ -3,6 +3,7 @@ import { generateInfoRequest, normalizePath, removeValueLocalStorage, setValueLo
 import { CustomRequest, Method, TokenNextSync } from "@/type";
 import AuthService from "../_services/auth.service";
 import { httpCaseErrorNextClient, httpCaseErrorNextServer } from "./httpCase";
+import { redirect } from "next/navigation";
 
 class ClientToken {
 	private _access_token: string = "";
@@ -54,7 +55,6 @@ let NOT_RETRY: null | Promise<any> = null;
 
 export const resquest = async <Response>(method: Method, url: string, options?: CustomRequest | undefined) => {
 	const { body, baseHeader, fullUrl } = generateInfoRequest(url, options as CustomRequest);
-	console.log("gọi api chính", options);
 
 	const optionsRequest: RequestInit = {
 		...options,
@@ -69,11 +69,14 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 
 	console.log({ optionsRequest, fullUrl });
 
-	const response = await fetch(fullUrl, optionsRequest);
+	const response = await fetch(fullUrl, optionsRequest)
+		.then((data: any) => data)
+		.catch((e: Error) => {
+			redirect("/errors/internal-server-error");
+		});
 
 	//RESPONSE: ERROR
 	if (!response.ok) {
-		console.log({ response: response.status });
 		//ERROR: ACCESS_TOKEN
 		if (typeof window !== "undefined") {
 			const result = await httpCaseErrorNextClient<Response>(

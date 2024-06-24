@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { onEditForm, onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 import { RootState } from "@/app/_lib/redux/store";
 import { FormDesignContext } from "../provider/FormDesignProvider";
-import { TypeEdit } from "../../(user)/form/[id]/(owner)/edit/components/FormDesign/DesignCommon/ButtonColor";
+import { TypeEdit } from "../../form/[id]/(owner)/edit/components/FormDesign/DesignCommon/ButtonColor";
 
 type TProps = {
 	setOpenColorModel: ReactCustom.SetStateBoolean;

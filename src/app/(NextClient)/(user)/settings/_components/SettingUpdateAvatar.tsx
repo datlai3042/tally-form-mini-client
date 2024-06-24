@@ -47,7 +47,7 @@ const SettingUpdateAvatar = () => {
 		<div className="group w-full h-[140px] flex flex-col gap-[1rem]">
 			<p className="text-[1.4rem] font-bold">Photo</p>
 			<div className="flex items-center gap-[2rem]">
-				{user?.user_avatar_current.secure_url && (
+				{user?.user_avatar_current?.secure_url && (
 					<Image
 						src={user.user_avatar_current.secure_url}
 						width={100}
@@ -56,7 +56,7 @@ const SettingUpdateAvatar = () => {
 						className="w-[10rem] h-[10rem] rounded-full"
 					/>
 				)}
-				{!user?.user_avatar_current.secure_url && (
+				{!user?.user_avatar_current?.secure_url && (
 					<div className="w-[10rem] aspect-square bg-green-400 flex items-center justify-center rounded-full text-[#ffffff]">
 						L
 					</div>

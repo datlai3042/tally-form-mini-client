@@ -1,5 +1,6 @@
 "use client";
 
+import { QueryCache, QueryClient } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 
 type TProps = {

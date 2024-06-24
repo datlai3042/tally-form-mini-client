@@ -5,13 +5,48 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import AuthService from "@/app/_services/auth.service";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const WorkItem = [
-	{ Title: "Home", Icon: <Flower className="w-[1.8rem]" />, Href: "/dashboard" },
-	{ Title: "Search", Icon: <Search className="w-[1.8rem]" />, Model: "search" },
-	{ Title: "Menbers", Icon: <Users className="w-[1.8rem]" />, Model: "users" },
-	{ Title: "Domains", Icon: <Globe className="w-[1.8rem]" />, Href: "/domain" },
-	{ Title: "Settings", Icon: <Settings className="w-[1.8rem]" />, Href: "/settings" },
+	{
+		Title: "Trang chủ",
+		Icon: (
+			<Image
+				src={"/assets/images/icon/navigation/home.png"}
+				width={18}
+				height={18}
+				alt="icon"
+				className="w-[2.4rem] h-[2.4rem]"
+			/>
+		),
+		Href: "/dashboard",
+	},
+	{
+		Title: "Tìm kiếm",
+		Icon: (
+			<Image
+				src={"/assets/images/icon/navigation/search.png"}
+				width={18}
+				height={18}
+				alt="icon"
+				className="w-[2.4rem] h-[2.4rem]"
+			/>
+		),
+		Model: "search",
+	},
+	{
+		Title: "Cài đặt",
+		Icon: (
+			<Image
+				src={"/assets/images/icon/navigation/setting.png"}
+				width={18}
+				height={18}
+				alt="icon"
+				className="w-[2.4rem] h-[2.4rem]"
+			/>
+		),
+		Href: "/settings",
+	},
 ];
 
 const DashBoardWork = () => {
@@ -28,14 +63,14 @@ const DashBoardWork = () => {
 	});
 
 	return (
-		<div className="flex flex-col gap-[.4rem] text-[1.4rem] ">
+		<div className="flex flex-col gap-[.8rem] text-[1.4rem] ">
 			{WorkItem.map((work) => {
 				if (work.Href)
 					return (
 						<Link
 							key={work.Title}
 							href={work.Href}
-							className="p-[.2rem_.8rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
+							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
 						>
 							{work.Icon}
 							<span className="font-medium text-slate-600">{work.Title}</span>
@@ -45,7 +80,7 @@ const DashBoardWork = () => {
 					return (
 						<button
 							key={work.Title}
-							className="p-[.2rem_.8rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
+							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
 							onClick={() => setOpenModelDomain(true)}
 						>
 							{work.Icon}
@@ -57,7 +92,7 @@ const DashBoardWork = () => {
 					return (
 						<button
 							key={work.Title}
-							className="p-[.2rem_.8rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
+							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
 							onClick={() => setopenModelSearch(true)}
 						>
 							{work.Icon}
@@ -67,10 +102,16 @@ const DashBoardWork = () => {
 			})}
 
 			<button
-				className="p-[.2rem_.8rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
+				className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md text-[1.4rem]"
 				onClick={() => logoutMutation.mutate()}
 			>
-				<LogOut />
+				<Image
+					src={"/assets/images/icon/navigation/logout.png"}
+					width={18}
+					height={18}
+					alt="icon"
+					className="w-[2.4rem] h-[2.4rem]"
+				/>
 				Đăng xuất
 			</button>
 		</div>

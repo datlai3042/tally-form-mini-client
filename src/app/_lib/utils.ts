@@ -66,13 +66,13 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 
 // Handle Form
 
-export const setTitleForm = async (form: FormCore.Form) => {
-	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/set-title-form", {
-		form,
-	});
+// export const setTitleForm = async (form: FormCore.Form) => {
+// 	const addInputAPI = await Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/set-title-form", {
+// 		form,
+// 	});
 
-	return addInputAPI;
-};
+// 	return addInputAPI;
+// };
 
 export const addInputToSectionTitle = async (title: string, form: FormCore.Form) => {
 	const newForm = structuredClone(form);

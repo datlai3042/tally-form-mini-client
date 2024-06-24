@@ -60,7 +60,10 @@ namespace InputCore {
 		} & InputCore.Setting.InputSettingCommon;
 
 		type InputSettingOptionCommon = InputCore.Setting.InputSettingCommon;
+		type InputSettingVoteCommon = InputCore.Setting.InputSettingCommon;
+		type InputSettingPhoneCommon = InputCore.Setting.InputSettingCommon;
 		type InputSettingDate = InputCore.Setting.InputSettingCommon;
+		type SettingAll = InputSettingTextCommon & InputSettingOptionCommon & InputSettingDate;
 	}
 
 	namespace Commom {
@@ -70,11 +73,16 @@ namespace InputCore {
 				setting:
 					| InputCore.Setting.InputSettingTextCommon
 					| InputCore.Setting.InputSettingOptionCommon
-					| InputCore.Setting.InputSettingDate;
+					| InputCore.Setting.InputSettingDate
+					| InputCore.Setting.InputSettingVoteCommon
+					| InputCore.Setting.InputSettingPhoneCommon;
 			};
 		};
 
 		type InputCommonText = { core: { setting: InputCore.Setting.InputSettingTextCommon }; _id?: string };
+		type InputCommonVote = { core: { setting: InputCore.Setting.InputSettingVoteCommon }; _id?: string };
+		type InputCommonPhone = { core: { setting: InputCore.Setting.InputSettingPhoneCommon }; _id?: string };
+
 		type InputCommonOption = { core: { setting: InputCore.Setting.InputSettingOptionCommon }; _id?: string };
 		type InputCommonDate = { core: { setting: InputCore.Setting.InputSettingDate }; _id?: string };
 
@@ -86,9 +94,9 @@ namespace InputCore {
 		export type InputTypeEmail = InputCore.Commom.InputCommon &
 			InputCore.Commom.InputCommonText & {
 				type: "EMAIL";
-				core: {
-					setting: InputCore.Setting.InputSettingTextCommon;
-				};
+				// core: {
+				// 	setting: InputCore.Setting.InputSettingTextCommon;
+				// };
 			};
 	}
 
@@ -108,8 +116,30 @@ namespace InputCore {
 		export type InputTypeText = InputCore.Commom.InputCommon &
 			InputCore.Commom.InputCommonText & {
 				type: InputText;
+				// core: {
+				// 	setting: InputCore.Setting.InputSettingTextCommon;
+				// };
+			};
+	}
+
+	namespace InputPhone {
+		export type InputSettingPhone = InputCore.Setting.InputSettingPhoneCommon;
+		export type InputTypePhone = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonPhone & {
+				type: "PHONE";
+				// core: {
+				// 	setting: InputCore.Setting.InputSettingPhoneCommon;
+				// };
+			};
+	}
+
+	namespace InputVote {
+		export type InputSettingVote = InputCore.Setting.InputSettingVoteCommon;
+		export type InputTypeVote = InputCore.Commom.InputCommon &
+			InputCore.Commom.InputCommonVote & {
+				type: "VOTE";
 				core: {
-					setting: InputCore.Setting.InputSettingTextCommon;
+					setting: InputCore.Setting.InputSettingVoteCommon;
 				};
 			};
 	}
@@ -148,6 +178,8 @@ namespace InputCore {
 	type InputForm =
 		| InputEmail.InputTypeEmail
 		| InputText.InputTypeText
+		| InputVote.InputTypeVote
+		| InputPhone.InputTypePhone
 		| InputOption.InputTypeOption
 		| InputOptionMultiple.InputTypeOptionMultiple
 		| InputDate.InputTypeDate;
@@ -204,16 +236,17 @@ namespace FormCore {
 		};
 	};
 
-	export type FormState = "isDraff" | "isPrivate" | "isPublic";
+	export type FormState = "isPrivate" | "isPublic" | "isDelete";
+	type FormModeDisplay = "basic" | "custom";
 
-	export type FormAvatarMode = "DEFAULT" | "CUSTOM";
-	export type FormAvatar = {
+	type FormAvatarMode = "DEFAULT" | "CUSTOM";
+	type FormAvatar = {
 		form_avatar_url: string;
 		mode: FormAvatarMode;
 		position: FormAvatarPosition;
 	};
 
-	export type FormTitle = {
+	type FormTitle = {
 		form_title_style?: FormTextStyle;
 		form_title_value: string;
 		form_title_color?: string;
@@ -235,6 +268,7 @@ namespace FormCore {
 		form_background?: FormCore.FormBackground;
 		form_setting_default: FormCore.FormSettingDefault;
 		form_state: FormCore.FormState;
+		form_mode_display: FormCore.FormModeDisplay;
 		form_button_label: FormCore.FormLabel;
 		form_avatar?: FormCore.FormAvatar;
 		form_inputs: InputCore.InputForm[];
@@ -284,4 +318,109 @@ namespace User {
 namespace ReactCustom {
 	export type SetStateBoolean = React.Dispatch<SetStateAction<boolean>>;
 	export type Form = React.Dispatch<SetStateAction<FormCore.Form>>;
+}
+
+namespace Notification {
+	namespace Type {
+		type System = "System";
+		type FormAnswers = "Form_Answers";
+		type Account = "Account";
+
+		type Common = System | FormAnswers | Account;
+	}
+
+	namespace Core {
+		type System = {
+			message: string;
+		};
+
+		type FormAnswers = {
+			message: string;
+			form_id: string;
+			form_answer_id: string;
+			create_time: string;
+		};
+
+		type Account = {
+			message: string;
+		};
+
+		type Common = System | FormAnswers | Account;
+	}
+
+	namespace System {
+		type NotificationSystem = Notification.Commom.TCommon & {
+			type: Type.System;
+			core: Core.System;
+		};
+	}
+
+	namespace Account {
+		type NotificationAccount = Notification.Commom.TCommon & {
+			type: Type.Account;
+			core: Core.Account;
+		};
+	}
+
+	namespace FormAnswers {
+		type NotificationFormAnswers = Notification.Commom.TCommon & {
+			type: Type.FormAnswers;
+			core: Core.FormAnswers;
+		};
+	}
+
+	namespace Commom {
+		type TCommon = {
+			create_time: Date;
+			_id: string;
+		};
+	}
+
+	type NotifcationCore =
+		| System.NotificationSystem
+		| Account.NotificationAccount
+		| FormAnswers.NotificationFormAnswers;
+
+	type NotificationUser = {
+		notification_user_id: string;
+		notifications: NotifcationCore[];
+	};
+}
+
+namespace Toast {
+	namespace ToastCommon {
+		type Common = {
+			_id: string;
+			toast_title: string;
+		};
+	}
+
+	namespace ToastSuccess {
+		type ToastSuccessCore = Toast.ToastCommon.Common & {
+			type: "SUCCESS";
+			core: {
+				message: string;
+			};
+		};
+	}
+
+	namespace ToastWarning {
+		type ToastWarningCore = Toast.ToastCommon.Common & {
+			type: "WARNING";
+			core: {
+				message: string;
+			};
+		};
+	}
+
+	namespace ToastError {
+		type ToastErrorCore = Toast.ToastCommon.Common & {
+			type: "ERROR";
+			core: {
+				message: string;
+			};
+		};
+	}
+
+	type ToastCore = ToastSuccess.ToastSuccessCore | ToastWarning.ToastWarningCore | ToastError.ToastErrorCore;
 }

@@ -13,6 +13,10 @@ import { CustomRequest, Method } from "@/type";
 import { removeValueLocalStorage } from "./utils";
 import { ResponseApi, ResponseAuth } from "../_schema/api/response.shema";
 import { toast } from "@/components/ui/use-toast";
+import { addOneToastError, addOneToastSuccess, addOneToastWarning } from "./redux/features/toast.slice";
+
+import { v4 as uuidv4 } from "uuid";
+import store from "./redux/store";
 
 type RetryAPI = RequestInit;
 
@@ -30,6 +34,22 @@ export const httpCaseErrorNextClient = async <TResponse>(
 
 	switch (statusCode) {
 		case AUTHORIZATION_ERROR_STATUS:
+			const urlAuthentication = ["/v1/api/auth/login", "/v1/api/auth/register"];
+			if (urlAuthentication.includes(url)) {
+				const _id = uuidv4();
+				console.log(msg);
+				store.dispatch(
+					addOneToastError({
+						toast_item: {
+							_id,
+							toast_title: "Lỗi xác thực",
+							core: { message: msg.metadata },
+							type: "ERROR",
+						},
+					})
+				);
+				throw new Error(msg.metadata);
+			}
 			return await nextClient401<TResponse>(fullUrl, options, signal);
 
 		case PERMISSION_ERROR_STATUS:
@@ -76,7 +96,8 @@ export const nextClient401 = async <Response>(fullUrl: string, options: RetryAPI
 		const call_again = await fetch(fullUrl, options);
 
 		if (!call_again.ok) {
-			throw new HttpError({ status: 500 });
+			redirect("/errors/internal-server-error");
+			// throw new HttpError({ status: 500 });
 		}
 
 		//FINALLY
@@ -110,7 +131,9 @@ export const httpCaseErrorNextServer = async (statusCode: number, options: Custo
 			return await nextServer403(options);
 
 		default:
-			throw new HttpError({ status: 500 });
+			redirect("/errors/internal-server-error");
+
+		// throw new HttpError({ status: 500 });
 	}
 };
 

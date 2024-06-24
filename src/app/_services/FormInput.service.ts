@@ -7,6 +7,10 @@ class FormInputService {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-input-to-title", { form, title });
 	}
 
+	static async addInput({ form_id }: { form_id: string }) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-input", { form_id });
+	}
+
 	static async setTitleInput({
 		input_title_value,
 		input_id,

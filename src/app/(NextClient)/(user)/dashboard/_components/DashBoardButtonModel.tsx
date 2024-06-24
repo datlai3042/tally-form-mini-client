@@ -16,7 +16,7 @@ const DashBoardButtonModel = () => {
 	return (
 		<div className="relative ml-[-.2rem]">
 			<ButtonIcon
-				Icon={<ChevronDown className="w-[1.4rem] out " />}
+				Icon={<ChevronDown className="w-[1.4rem]  " />}
 				className={`${styleEffect.onCheckFocus(openSmallModel)} flex  rounded-lg !w-[20px] !h-[20px]`}
 				onClick={() => setOpenSmallModel((prev) => !prev)}
 			/>
