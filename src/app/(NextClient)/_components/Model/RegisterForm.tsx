@@ -25,6 +25,8 @@ import Input from "../ui/input/Input";
 import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
 import { useRouter } from "next/navigation";
 import AuthService from "@/app/_services/auth.service";
+import ButtonLoginGoogle from "../ui/button/ButtonLoginGoogle";
+import ButtonLoginFacebook from "../ui/button/ButtonLoginFacebook";
 type TProps = {
 	onClose?: (state: boolean) => void;
 };
@@ -66,15 +68,25 @@ const RegisterForm = (props: TProps) => {
 	};
 
 	return (
-		<div className="relative  xl:w-[70rem] mx-auto h-[80rem]  bg-[#ffffff] flex justify-start xl:justify-center items-center flex-col  gap-[2rem] rounded-[1.2rem] p-[2.4rem_2rem]">
-			<div className="mb-[4rem] flex items-center flex-col gap-[.2rem] ">
+		<div className="relative  xl:w-[47rem] mx-auto h-[80rem]  bg-[#ffffff] flex justify-start xl:justify-center items-center flex-col  gap-[2rem] rounded-[1.2rem] p-[2.4rem_2rem] mb-[4rem]">
+			<div className="mb-[2rem] flex items-center flex-col gap-[.2rem] ">
 				<p className="text-[2.4rem] xl:text-[3.8rem] font-semibold text-center">Tạo tài khoản</p>
 				<p className="text-[1.6rem] xl:text-[1.8rem] text-slate-400 text-center">
 					Đăng kí tài khoản để tạo cho bạn.
 				</p>
 			</div>
+
+			<div className="w-full flex gap-[1rem] my-[2rem]">
+				<div className="w-[50%]">
+					<ButtonLoginGoogle />
+				</div>
+
+				<div className="w-[50%]">
+					<ButtonLoginFacebook />
+				</div>
+			</div>
 			<form
-				className="w-[85%] sm:w-[75%] flex flex-col justify-center  gap-[1.8rem] rounded-[1.2rem] "
+				className="w-[85%] xl:w-full flex flex-col justify-center  gap-[2.4rem] rounded-[1.2rem] "
 				onSubmit={registerForm.handleSubmit(onSubmit)}
 			>
 				<Input<RegisterType>

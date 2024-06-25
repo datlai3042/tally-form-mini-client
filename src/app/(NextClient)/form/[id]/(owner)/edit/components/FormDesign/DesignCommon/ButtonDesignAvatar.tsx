@@ -17,7 +17,7 @@ const ButtonDesignAvatar = (props: TProps) => {
 
 	const dispatch = useDispatch();
 	const [modeCurrent, setModeCurrent] = useState<FormCore.FormAvatarMode>(
-		formCore.form_avatar?.mode || formCore.form_setting_default.form_avatar_default_mode
+		formCore.form_avatar?.mode_shape || formCore.form_setting_default.form_avatar_default_mode
 	);
 
 	const [positionAvatar, setPositionAvatar] = useState<FormCore.FormAvatarPosition>(

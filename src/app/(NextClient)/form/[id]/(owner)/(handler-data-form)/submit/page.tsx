@@ -145,11 +145,7 @@ const SubmitFormPage = () => {
 				</div>
 			)}
 
-			{!formAnswer && (
-				<div className="py-[3rem]">
-					<NotFoundPage gap="2rem" />
-				</div>
-			)}
+			{!formAnswer && <NotFoundPage gap="2rem" />}
 		</>
 	);
 };

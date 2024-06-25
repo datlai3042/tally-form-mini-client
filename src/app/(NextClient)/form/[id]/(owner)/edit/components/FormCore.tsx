@@ -131,7 +131,9 @@ const FormCore = () => {
 		<>
 			{modeScreen === "NORMAL" && (
 				<DivNative
-					className={` w-full pt-[4rem] pb-[50rem] sm:pb-[30rem] px-[2rem] sm:px-0  h-max  xl:ml-0 flex flex-col gap-[3rem]`}
+					className={`${
+						openFormDesign ? "mr-[28rem]" : ""
+					} w-full pt-[4rem] pb-[50rem] sm:pb-[30rem] px-[2rem] sm:px-0  h-max  xl:ml-0 flex flex-col gap-[3rem]`}
 				>
 					{(formCore.form_avatar ||
 						formCore.form_background ||
@@ -140,22 +142,23 @@ const FormCore = () => {
 
 					<DivNative
 						className={`${
-							openFormDesign ? "w-[79rem] mr-[40rem]" : "min-w-[35rem] sm:min-w-[60rem] xl:w-max"
+							openFormDesign ? "w-[79rem]" : "min-w-[35rem] sm:min-w-[60rem] xl:w-max"
 						} px-[1rem] sm:px-[4rem]  w-full xl:max-w-[70rem] mx-auto  h-max xl:pl-0  flex flex-col pb-[4rem] gap-[2rem] `}
 					>
 						<DivNative
 							className={`${
-								!(
-									formCore.form_avatar ||
-									formCore.form_background ||
-									formCore.form_background_state ||
-									formCore.form_avatar_state
-								)
+								!(formCore.form_avatar || formCore.form_avatar_state)
 									? "pt-0"
-									: "pt-[5rem] sm:pt-[10rem]"
+									: "pt-[5rem] sm:pt-[8rem]"
 							}`}
 						>
-							<DivNative className={`group max-h-[18rem] sm:max-h-[8rem] sm:min-h-[10rem] xl:min-h-max `}>
+							<DivNative
+								className={`${
+									!(formCore.form_avatar_state && formCore.form_background_state)
+										? " sm:min-h-[7rem]"
+										: "sm:min-h-[4rem]"
+								} group max-h-[18rem] sm:max-h-[8rem] xl:min-h-max `}
+							>
 								<DivNative className="mt-[2rem] w-full xl:min-w-[80rem] xl:w-max h-full   flex flex-wrap flex-col sm:flex-row sm:items-center  gap-[2rem]">
 									<ButtonDesgin className={`${openFormDesign ? "xl:ml-[8rem]" : "ml-0"}`} />
 

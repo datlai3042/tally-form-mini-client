@@ -217,6 +217,8 @@ namespace FormCore {
 	export type FormBackground = {
 		form_background_iamge_url?: string;
 		form_background_position?: { x?: number; y?: number };
+		backgroundColor?: string;
+		mode_show: "cover" | "contain";
 	};
 
 	export type FormSettingDefault = {
@@ -242,7 +244,7 @@ namespace FormCore {
 	type FormAvatarMode = "DEFAULT" | "CUSTOM";
 	type FormAvatar = {
 		form_avatar_url: string;
-		mode: FormAvatarMode;
+		mode_shape: FormAvatarMode;
 		position: FormAvatarPosition;
 	};
 

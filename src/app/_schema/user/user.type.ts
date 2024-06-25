@@ -20,6 +20,9 @@ export type UserType = {
 	user_gender: UserGender;
 	user_roles: UserRole;
 	user_avatar_system: string;
-	user_avatar_current: UserAvatar;
+	user_avatar_current: string;
+	user_atlas: string;
+	user_password_state: boolean;
+	user_auth: "email" | "oAuth";
 	user_avater_used: UserAvatar[];
 };

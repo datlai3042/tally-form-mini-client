@@ -11,7 +11,7 @@ const ToastStoreQueue = () => {
 	};
 
 	return (
-		<div className="absolute bottom-[2rem] border-[.1rem] border-gray-200 rounded-md p-[1rem_2rem] min-h-[10rem] w-full text-[1.6rem] flex flex-col justify-between">
+		<div className="fixed bottom-[2rem] border-[.1rem] border-gray-200 rounded-md p-[1rem_2rem] min-h-[10rem] w-full text-[1.6rem] flex flex-col justify-between">
 			<p>
 				Số toast đang lưu trữ <span>{toast_queue.length}</span>
 			</p>

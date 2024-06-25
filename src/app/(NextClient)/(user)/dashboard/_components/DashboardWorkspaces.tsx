@@ -42,12 +42,12 @@ const DashboardWorkspaces = () => {
 						<span>Nơi làm việc</span>
 					</div>
 					{openWorkspace && forms.length > 0 && (
-						<div className="mt-[1rem] scroll-common min-h-[2rem] max-h-[12rem] h-max transition-[height] duration-500 overflow-y-scroll  flex flex-col gap-[1.4rem]">
+						<div className="mt-[1rem] scroll-common min-h-[2rem] max-h-[12rem]  transition-[height] duration-500 overflow-y-scroll  flex flex-col gap-[1.4rem]">
 							{forms.map((form) => (
 								<Link
 									key={form._id}
 									href={`/form/${form._id}/edit`}
-									className="flex items-center  gap-[.8rem] text-[1.4rem] hover:bg-blue-100 p-[.6rem_1rem] "
+									className="flex items-center w-full h-[5rem]  gap-[.8rem] text-[1.4rem] hover:bg-blue-100 p-[.6rem_1rem] "
 								>
 									<Image
 										src={"/assets/images/icon/navigation/one_item.png"}
@@ -57,9 +57,9 @@ const DashboardWorkspaces = () => {
 										className="w-[2rem] h-[2rem]"
 										unoptimized={true}
 									/>
-									<span className="flex gap-[.6rem] ">
+									<p className="max-w-[80%] truncate ">
 										{form.form_title.form_title_value || "Chưa tạo tiêu đề"}
-									</span>
+									</p>
 								</Link>
 							))}
 						</div>

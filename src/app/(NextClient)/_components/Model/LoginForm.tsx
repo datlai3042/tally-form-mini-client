@@ -21,6 +21,8 @@ import { onFetchUser } from "@/app/_lib/redux/features/authentication.slice";
 import AuthService from "@/app/_services/auth.service";
 import { useToast } from "@/components/ui/use-toast";
 import { ConstructorError } from "@/app/_lib/httpError";
+import ButtonLoginGoogle from "../ui/button/ButtonLoginGoogle";
+import ButtonLoginFacebook from "../ui/button/ButtonLoginFacebook";
 
 type TProps = {
 	onClose?: (state: boolean) => void;
@@ -67,34 +69,46 @@ const LoginForm = (props: TProps) => {
 	return (
 		<div className="relative  h-[40rem] w-[32rem] sm:w-[37rem] xl:w-[40rem] xl:h-[40rem] mx-auto bg-[#ffffff] flex justify-center items-center flex-col  gap-[2rem] rounded-[1.2rem] p-[2.4rem_2rem]">
 			<p className="mb-[4rem] text-[3rem] font-semibold">Xin chào bạn</p>
-			<form
-				className="w-full h-full flex flex-col justify-center  gap-[1.8rem] rounded-[1.2rem]"
-				onSubmit={loginForm.handleSubmit(onSubmit)}
-			>
-				<Input<LoginType>
-					FieldKey="email"
-					placeholder="Email"
-					type="email"
-					register={loginForm.register}
-					error={loginForm.formState.errors}
-					watch={loginForm.watch}
-				/>
-				<Input<LoginType>
-					FieldKey="password"
-					placeholder="Mật khẩu"
-					type="password"
-					register={loginForm.register}
-					error={loginForm.formState.errors}
-					watch={loginForm.watch}
-				/>
-				<Button
-					disabled={loginMutation.isPending}
-					loading={loginMutation.isPending}
-					type="submit"
-					textContent="Đăng nhập"
-					className="!w-full !h-[4rem] !bg-blue-600 "
-				/>
-			</form>
+
+			<div className="my-[1rem] w-full flex flex-col gap-[6rem]">
+				<div className="w-full flex gap-[1rem]">
+					<div className="w-[50%]">
+						<ButtonLoginGoogle />
+					</div>
+
+					<div className="w-[50%]">
+						<ButtonLoginFacebook />
+					</div>
+				</div>
+				<form
+					className="w-full h-full flex flex-col justify-center  gap-[1.8rem] rounded-[1.2rem]"
+					onSubmit={loginForm.handleSubmit(onSubmit)}
+				>
+					<Input<LoginType>
+						FieldKey="email"
+						placeholder="Email"
+						type="email"
+						register={loginForm.register}
+						error={loginForm.formState.errors}
+						watch={loginForm.watch}
+					/>
+					<Input<LoginType>
+						FieldKey="password"
+						placeholder="Mật khẩu"
+						type="password"
+						register={loginForm.register}
+						error={loginForm.formState.errors}
+						watch={loginForm.watch}
+					/>
+					<Button
+						disabled={loginMutation.isPending}
+						loading={loginMutation.isPending}
+						type="submit"
+						textContent="Đăng nhập"
+						className="!w-full !h-[4rem] !bg-blue-600 "
+					/>
+				</form>
+			</div>
 
 			<p className="text-[1.4rem]">
 				Bạn chưa có tài khoản?{" "}

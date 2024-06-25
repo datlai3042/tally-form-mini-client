@@ -68,8 +68,8 @@ const InputTitle = (props: TProps) => {
 					className={`${
 						formCore.form_mode_display === "custom" ? "title-input input-core-children" : ""
 					}  group max-w-full gap-[.5rem] break-all whitespace-pre-wrap h-max border-none outline-none resize-none text-[2rem] font-medium sm:text-[2.4rem] `}
-					autoFocus={true}
 					ref={titleRef}
+					autoFocus={false}
 					onKeyDown={onPressEnter}
 					onBlur={onSetTitle}
 					contentEditable={true}

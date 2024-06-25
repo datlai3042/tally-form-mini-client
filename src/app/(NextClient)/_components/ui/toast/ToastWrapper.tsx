@@ -1,19 +1,28 @@
 import { onUpdateToastGlobal, removeOneToast } from "@/app/_lib/redux/features/toast.slice";
 import { RootState } from "@/app/_lib/redux/store";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 type TProps = {
 	children: React.ReactNode;
 	toast_item_id: string;
+	indexItem: number;
 };
 
 const ToastWrapper = (props: TProps) => {
-	const { children, toast_item_id } = props;
+	const { children, toast_item_id, indexItem = 0 } = props;
 
 	const timer = useRef<NodeJS.Timeout | null>(null);
+	const timer_animation = useRef<NodeJS.Timeout | null>(null);
+	const timer_postion = useRef<NodeJS.Timeout | null>(null);
+
+	const [addAnimation, setAddAnimation] = useState<boolean>(false);
+
 	const toast_timer = useSelector((state: RootState) => state.toast.toast_timer);
+
 	const toast_queue = useSelector((state: RootState) => state.toast.toast_queue);
+
+	const [postion, setPosition] = useState<number>(0);
 
 	const dispatch = useDispatch();
 
@@ -23,12 +32,34 @@ const ToastWrapper = (props: TProps) => {
 			dispatch(removeOneToast({ toast_item_id }));
 		}, toast_timer * 1000);
 
+		timer_animation.current = setInterval(
+			() => {
+				setAddAnimation(true);
+			},
+			toast_timer * 1000 - 225
+		);
+
+		timer_postion.current = setInterval(() => {
+			setPosition((prev) => (prev -= 1));
+		}, 1000);
+
 		return () => {
 			clearTimeout(timer.current as NodeJS.Timeout);
+			clearInterval(timer_animation.current as NodeJS.Timeout);
+			clearTimeout(timer_postion.current as NodeJS.Timeout);
 		};
 	}, []);
 
-	return <div className="w-full min-h-[8rem] h-max ">{children}</div>;
+	return (
+		<div
+			style={{ top: indexItem === 0 ? indexItem : indexItem * 170 }}
+			className={`${
+				addAnimation ? "animate-hiddenToast absolute" : ""
+			} transition-all duration-500 absolute  w-full min-h-[8rem] h-max `}
+		>
+			{children}
+		</div>
+	);
 };
 
 export default ToastWrapper;

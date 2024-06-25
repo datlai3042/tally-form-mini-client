@@ -26,94 +26,91 @@ const HanderlDataFormLayout = ({ params, children }: { params: { id: string }; c
 		enabled: !formAnswer,
 	});
 
-	const filterDataRender = useCallback(
-		(reports: FormCore.FormAnswer.FormAnswerCore["reports"]) => () => {
-			let filterFormShowChart: {
-				[key: string]: {
-					_id: string;
-					title: string;
-					value: string | string[];
-					time: Date;
-					form_answer_id: string;
-				}[];
-			} = {};
+	const filterDataRender = useCallback((reports: FormCore.FormAnswer.FormAnswerCore["reports"]) => {
+		let filterFormShowChart: {
+			[key: string]: {
+				_id: string;
+				title: string;
+				value: string | string[];
+				time: Date;
+				form_answer_id: string;
+			}[];
+		} = {};
 
-			let filterFormShowExcel: {
-				[key: string]: {
-					_id: string;
-					title: string;
-					value: string | string[];
-					time: Date;
-					form_answer_id: string;
-				}[];
-			} = {};
-			reports.map((rp) => {
-				let dataXlsx = {};
-				rp.answers.map((ans) => {
-					const convertArrayValueToString = typeof ans.value === "string" ? ans.value : ans.value.join(", ");
-					dataXlsx = {
-						...dataXlsx,
-						"Thời gian gửi": moment(new Date(rp.createdAt)).format("hh:mm Do MMMM YYYY"),
-						[ans.title]: convertArrayValueToString,
+		let filterFormShowExcel: {
+			[key: string]: {
+				_id: string;
+				title: string;
+				value: string | string[];
+				time: Date;
+				form_answer_id: string;
+			}[];
+		} = {};
+		reports.map((rp) => {
+			let dataXlsx = {};
+			rp.answers.map((ans) => {
+				const convertArrayValueToString = typeof ans.value === "string" ? ans.value : ans.value.join(", ");
+				dataXlsx = {
+					...dataXlsx,
+					"Thời gian gửi": moment(new Date(rp.createdAt)).format("hh:mm Do MMMM YYYY"),
+					[ans.title]: convertArrayValueToString,
+				};
+				if (!filterFormShowChart[ans._id]) {
+					filterFormShowChart[ans._id] = [];
+					filterFormShowChart[ans._id].push({
+						_id: ans._id,
+						title: ans.title,
+						value: convertArrayValueToString,
+						time: rp.createdAt,
+						form_answer_id: rp._id,
+					});
+				} else {
+					filterFormShowChart[ans._id] = filterFormShowChart[ans._id].concat({
+						_id: ans._id,
+						title: ans.title,
+						value: convertArrayValueToString,
+						time: rp.createdAt,
+						form_answer_id: rp._id,
+					});
+				}
+
+				if (!filterFormShowExcel[ans._id + "_#_" + ans.type]) {
+					filterFormShowExcel[ans._id + "_#_" + ans.type] = [];
+
+					const answerItem = {
+						_id: ans._id,
+						title: ans.title,
+						value: ans.value as string,
+						time: rp.createdAt,
+						form_answer_id: rp._id,
 					};
-					if (!filterFormShowChart[ans._id]) {
-						filterFormShowChart[ans._id] = [];
-						filterFormShowChart[ans._id].push({
-							_id: ans._id,
-							title: ans.title,
-							value: convertArrayValueToString,
-							time: rp.createdAt,
-							form_answer_id: rp._id,
-						});
-					} else {
-						filterFormShowChart[ans._id] = filterFormShowChart[ans._id].concat({
-							_id: ans._id,
-							title: ans.title,
-							value: convertArrayValueToString,
-							time: rp.createdAt,
-							form_answer_id: rp._id,
-						});
-					}
 
-					if (!filterFormShowExcel[ans._id + "_#_" + ans.type]) {
-						filterFormShowExcel[ans._id + "_#_" + ans.type] = [];
-
-						const answerItem = {
-							_id: ans._id,
-							title: ans.title,
-							value: ans.value as string,
-							time: rp.createdAt,
-							form_answer_id: rp._id,
-						};
-
-						filterFormShowExcel[ans._id + "_#_" + ans.type].push(answerItem);
-					} else {
-						filterFormShowExcel[ans._id + "_#_" + ans.type] = filterFormShowExcel[
-							ans._id + "_#_" + ans.type
-						].concat({
-							_id: ans._id,
-							title: ans.title,
-							value: ans.value,
-							time: rp.createdAt,
-							form_answer_id: rp._id,
-						});
-					}
-				});
-
-				dataExcel.current = dataExcel.current.concat(dataXlsx);
+					filterFormShowExcel[ans._id + "_#_" + ans.type].push(answerItem);
+				} else {
+					filterFormShowExcel[ans._id + "_#_" + ans.type] = filterFormShowExcel[
+						ans._id + "_#_" + ans.type
+					].concat({
+						_id: ans._id,
+						title: ans.title,
+						value: ans.value,
+						time: rp.createdAt,
+						form_answer_id: rp._id,
+					});
+				}
 			});
-			dispatch(
-				onCalculationData({
-					dataFormShowChart: filterFormShowChart,
-					dataFormShowExcel: filterFormShowExcel,
-					dataExcel: dataExcel.current,
-					form_id: params.id,
-				})
-			);
-			setReady(true);
-		},
-		[]
-	);
+
+			dataExcel.current = dataExcel.current.concat(dataXlsx);
+		});
+		dispatch(
+			onCalculationData({
+				dataFormShowChart: filterFormShowChart,
+				dataFormShowExcel: filterFormShowExcel,
+				dataExcel: dataExcel.current,
+				form_id: params.id,
+			})
+		);
+		return true;
+	}, []);
 
 	useEffect(() => {
 		if (!formAnswer && getFormAnswer.isSuccess && getFormAnswer.data.metadata.formAnswer) {
@@ -131,7 +128,8 @@ const HanderlDataFormLayout = ({ params, children }: { params: { id: string }; c
 			const { reports } = getFormAnswer.data.metadata.formAnswer;
 			const arrayReserver = [...reports];
 
-			filterDataRender(arrayReserver.reverse());
+			const OK = filterDataRender(arrayReserver.reverse());
+			setReady(OK);
 		}
 	}, [getFormAnswer.isSuccess, getFormAnswer.data]);
 
@@ -142,6 +140,14 @@ const HanderlDataFormLayout = ({ params, children }: { params: { id: string }; c
 			filterDataRender(arrayReserver.reverse());
 		}
 	}, [formAnswer]);
+
+	useEffect(() => {
+		if (!getFormAnswer.data?.metadata.formAnswer) {
+			return setReady(true);
+		}
+	}, [formAnswer, getFormAnswer.data]);
+
+	console.log("ready", ready);
 
 	return <>{ready ? children : <LoadingSpinner color="#000" />}</>;
 };

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const privateRouter = ["/dashboard", "/me", "/settings"];
+const privateRouter = ["/dashboard", "/me", "/settings", "/v1/api/token/refresh-token"];
 const authRouter = ["/login", "/register", "/"];
 
 // This function can be marked `async` if using `await` inside
@@ -48,5 +48,14 @@ const matcher = [...privateRouter, authRouter, "/"];
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ["/dashboard", "/settings", "/me", "/login", "/register", "/", "/form/:path*"],
+	matcher: [
+		"/dashboard",
+		"/settings",
+		"/me",
+		"/login",
+		"/register",
+		"/",
+		"/form/:path*",
+		"/v1/api/token/refresh-token",
+	],
 };

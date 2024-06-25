@@ -9,10 +9,11 @@ import { X } from "lucide-react";
 
 type TProps = {
 	toast_item: Toast.ToastWarning.ToastWarningCore;
+	index: number;
 };
 
 const ToastWarningItem = (props: TProps) => {
-	const { toast_item } = props;
+	const { toast_item, index } = props;
 	const toast_timer = useSelector((state: RootState) => state.toast.toast_timer);
 	const dispatch = useDispatch();
 
@@ -37,7 +38,7 @@ const ToastWarningItem = (props: TProps) => {
 	};
 
 	return (
-		<ToastWrapper toast_item_id={toast_item._id}>
+		<ToastWrapper toast_item_id={toast_item._id} indexItem={index}>
 			<div className="relative min-h-[12rem] h-max p-[1rem] flex justify-between rounded-xl border-[.3rem] border-orange-600 bg-[#ffffff] text-[1.4rem]">
 				<button
 					onClick={onDeleteToast}

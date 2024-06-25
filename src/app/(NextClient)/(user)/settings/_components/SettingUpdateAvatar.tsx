@@ -45,18 +45,20 @@ const SettingUpdateAvatar = () => {
 
 	return (
 		<div className="group w-full h-[140px] flex flex-col gap-[1rem]">
-			<p className="text-[1.4rem] font-bold">Photo</p>
+			<p className="text-[1.4rem] font-bold">Hình đại diện</p>
 			<div className="flex items-center gap-[2rem]">
-				{user?.user_avatar_current?.secure_url && (
+				{user?.user_avatar_current && (
 					<Image
-						src={user.user_avatar_current.secure_url}
+						src={user.user_avatar_current}
 						width={100}
 						height={100}
 						alt="avatar"
-						className="w-[10rem] h-[10rem] rounded-full"
+						className="w-[10rem] h-[10rem] rounded-full hover:cursor-pointer"
+						unoptimized={true}
+						onClick={onClickButton}
 					/>
 				)}
-				{!user?.user_avatar_current?.secure_url && (
+				{!user?.user_avatar_current && (
 					<div className="w-[10rem] aspect-square bg-green-400 flex items-center justify-center rounded-full text-[#ffffff]">
 						L
 					</div>
@@ -65,9 +67,9 @@ const SettingUpdateAvatar = () => {
 				<div className="hidden group-hover:flex">
 					<button
 						onClick={onClickButton}
-						className="p-[.2rem_.8rem] h-[30%] flex items-center gap-[.8rem] hover:bg-slate-200 rounded-md"
+						className="p-[.8rem] h-[30%] flex items-center gap-[.8rem] hover:bg-slate-200 rounded-lg"
 					>
-						Upload Photo
+						Tải ảnh lên
 					</button>
 					<input type="file" hidden ref={inputAvatar} onChange={onChangeFile} />
 				</div>

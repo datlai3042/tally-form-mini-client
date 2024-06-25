@@ -6,6 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import AuthService from "@/app/_services/auth.service";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/_lib/redux/store";
 
 const WorkItem = [
 	{
@@ -20,6 +22,20 @@ const WorkItem = [
 			/>
 		),
 		Href: "/dashboard",
+	},
+
+	{
+		Title: "Trang cá nhân",
+		Icon: (
+			<Image
+				src={"/assets/images/icon/navigation/profile_me.png"}
+				width={18}
+				height={18}
+				alt="icon"
+				className="w-[2.4rem] h-[2.4rem]"
+			/>
+		),
+		Href: (user_atlas: string) => `/profile/${user_atlas}`,
 	},
 	{
 		Title: "Tìm kiếm",
@@ -50,6 +66,8 @@ const WorkItem = [
 ];
 
 const DashBoardWork = () => {
+	const user = useSelector((state: RootState) => state.authReducer.user);
+
 	const [openModelDomain, setOpenModelDomain] = useState<boolean>(false);
 	const [openModelSearch, setopenModelSearch] = useState<boolean>(false);
 	const router = useRouter();
@@ -69,7 +87,7 @@ const DashBoardWork = () => {
 					return (
 						<Link
 							key={work.Title}
-							href={work.Href}
+							href={typeof work.Href === "string" ? work.Href : work.Href(user?.user_atlas!)}
 							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
 						>
 							{work.Icon}

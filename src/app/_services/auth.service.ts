@@ -67,8 +67,6 @@ class AuthService {
 			code_verify_token,
 		};
 
-		console.log({ body });
-
 		const syncToken = await Http.post<TokenNextSync>("/v1/api/auth/set-token", body, { baseUrl: "", signal });
 
 		console.log("da xet local");
@@ -91,10 +89,19 @@ class AuthService {
 		return callRefreshToken;
 	}
 
-	static async syncNextToken(tokenApi: ResponseApi<ResponseAuth>) {
-		const { access_token, refresh_token, code_verify_token } = tokenApi.metadata.token;
-		const { client_id, expireToken } = tokenApi.metadata;
-
+	static async syncNextToken({
+		access_token,
+		refresh_token,
+		code_verify_token,
+		client_id,
+		expireToken,
+	}: {
+		access_token: string;
+		refresh_token: string;
+		code_verify_token: string;
+		client_id: string;
+		expireToken: string;
+	}) {
 		const bodySyncTokenAPI = {
 			access_token,
 			refresh_token,
@@ -120,7 +127,7 @@ class AuthService {
 
 		const code_verify_token = getCookieValueHeader("code_verify_token", cookies);
 
-		return redirect(`/refresh-token?code_verify_token=${code_verify_token}&pathName=${pathName}`);
+		return redirect(`/v1/api/token/refresh-token?code_verify_token=${code_verify_token}&pathName=${pathName}`);
 	}
 
 	static async tokenPermission(statusCode: number, payload: ErrorPayload) {

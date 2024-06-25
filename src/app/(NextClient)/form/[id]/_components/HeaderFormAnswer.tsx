@@ -19,17 +19,15 @@ const HeaderFormAnswer = (props: TProps) => {
 	return (
 		<header
 			style={{ borderTopColor: colorMain }}
-			className="w-full min-h-[16rem] h-max p-[4rem_2rem] flex flex-col gap-[2rem] justify-between border-[.4rem] border-indigo-50 break-words	 border-t-[1.6rem]  bg-[#ffffff] rounded-lg"
+			className="w-full min-h-[20rem] h-max p-[1.4rem] flex flex-col gap-[.4rem]   break-words	 border-t-[1rem]  bg-[#ffffff] rounded-2xl"
 		>
-			<h1 style={renderStyleTitleCore(formCore)} className="text-[4rem] ">
-				{formCore.form_title.form_title_value}
-			</h1>
+			<h1 className="text-[3.2rem] ">{formCore.form_title.form_title_value}</h1>
 
 			{formCore.form_title.form_title_sub.map((ft) => {
 				if (ft.type === "Text" && ft.write)
 					return (
 						<span key={ft._id} className="text-[1.4rem] text-justify leading-10">
-							{ft.value}
+							{ft.value}123
 						</span>
 					);
 				if (ft.type === "Image") {

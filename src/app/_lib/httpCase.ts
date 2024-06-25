@@ -92,7 +92,11 @@ export const nextClient401 = async <Response>(fullUrl: string, options: RetryAPI
 		}
 		//CASE: SUCCESS
 		console.log("async");
-		await AuthService.syncNextToken(res);
+		const { access_token, code_verify_token, refresh_token } = res.metadata.token;
+		const { client_id, expireToken } = res.metadata;
+
+		const params = { access_token, code_verify_token, refresh_token, client_id, expireToken };
+		await AuthService.syncNextToken(params);
 		const call_again = await fetch(fullUrl, options);
 
 		if (!call_again.ok) {

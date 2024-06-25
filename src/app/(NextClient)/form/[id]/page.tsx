@@ -9,6 +9,7 @@ import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import FormAnswerProvider from "@/app/(NextClient)/_components/provider/FormAnswerProvider";
 import StatusCodeResponse from "@/app/(NextClient)/_components/_StatusCodeComponent/StatusCodeResponse";
 import NotFoundPage from "../../_components/_StatusCodeComponent/NotFoundPage";
+import FormAnswerHeader from "./_components/FormAnswerHeader";
 
 const getFormCache = cache(FormService.getFormGuess);
 
@@ -50,23 +51,7 @@ const FormPage = async ({ params }: { params: { id: string } }) => {
 			</div>
 		);
 
-	const colorMain = formCore.form_title.form_title_color || formCore.form_setting_default.form_title_color_default;
-
-	const formBackgroundImageUrl =
-		formCore.form_background?.form_background_iamge_url ||
-		formCore.form_setting_default.form_background_default_url;
-	const formBackgroundPosition =
-		formCore.form_background?.form_background_position ||
-		formCore.form_setting_default.form_background_position_default;
-
-	const modeAvatar = formCore.form_avatar?.mode || formCore.form_setting_default.form_avatar_default_mode;
-	const positionAvatar = formCore.form_avatar?.position || formCore.form_setting_default.form_avatar_default_postion;
-
 	const styleEffect = {
-		formMarginTop: (check: boolean) => {
-			if (check) return "mt-[6rem]";
-			return "mt-0";
-		},
 		onCheckModeAvatar: (mode: FormCore.FormAvatarMode) => {
 			if (mode === "circle") return "rounded-full";
 			return "";
@@ -81,59 +66,15 @@ const FormPage = async ({ params }: { params: { id: string } }) => {
 
 	return (
 		<div className="px-[2rem] xl:px-0 w-full  min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
-			<DivNative className="w-full sm:w-[66.8rem] flex flex-col gap-[4rem] ">
-				<DivNative className="relative w-full min-h-[20rem] aspect-[3.01/1]">
-					{formCore.form_background?.form_background_iamge_url && (
-						<Image
-							style={{
-								marginLeft: (formBackgroundPosition.y as number) * -1,
-								objectFit: "cover",
-								objectPosition: ` ${formBackgroundPosition?.y || 0}px ${
-									formBackgroundPosition?.x || 0
-								}px`,
-							}}
-							src={formBackgroundImageUrl}
-							width={800}
-							height={160}
-							quality={100}
-							alt="form background"
-							className="w-full sm:w-[66.8rem] aspect-[3/1]   rounded-lg"
-						/>
-					)}
-
-					{!formCore.form_background?.form_background_iamge_url && (
-						<div
-							style={{ backgroundColor: colorMain }}
-							className="w-full sm:w-[66.8rem] aspect-[3/1] rounded-lg opacity-90"
-						></div>
-					)}
-
-					{(formCore.form_avatar_state || formCore.form_avatar?.form_avatar_url) && (
-						// <DivNative className="absolute bottom-0 left-[50%] translate-x-[-50%] translate-y-[50%]  border-[.3rem] border-blue-800 rounded-full">
-						<Image
-							style={{
-								border: `.4rem solid ${
-									formCore.form_title.form_title_color ||
-									formCore.form_setting_default.form_title_color_default
-								}`,
-							}}
-							src={
-								formCore.form_avatar?.form_avatar_url ||
-								formCore.form_setting_default.form_avatar_default_url
-							}
-							width={800}
-							height={160}
-							quality={100}
-							alt="form background"
-							className={`${styleEffect.onCheckModeAvatar(
-								modeAvatar
-							)} ${styleEffect.onCheckPositionAvatar(
-								positionAvatar
-							)} absolute bottom-0 z-[3] object-center translate-y-[50%] w-[16rem] h-[16rem]  `}
-						/>
-					)}
+			<DivNative className="w-full sm:w-[64rem] flex flex-col gap-[1.5rem] ">
+				<DivNative className="relative w-full ">
+					<FormAnswerHeader formCore={formCore} />
 				</DivNative>
-				<DivNative className={`${styleEffect.formMarginTop(formCore.form_avatar_state)} w-full rounded-lg`}>
+				<DivNative
+					className={`${
+						formCore.form_background?.form_background_iamge_url ? "mt-[6rem]" : ""
+					} w-full rounded-lg`}
+				>
 					<DivNative className="flex flex-col gap-[3rem]">
 						<FormAnswerProvider formCore={formCore}>
 							<RenderInputAnswers formCore={formCore} />

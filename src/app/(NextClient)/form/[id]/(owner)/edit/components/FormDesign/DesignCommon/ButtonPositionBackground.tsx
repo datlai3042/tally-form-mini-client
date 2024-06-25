@@ -36,7 +36,7 @@ const ButtonPositionBackground = () => {
 			form_background: {
 				...formClone.form_background,
 				form_background_position: { ...formClone.form_background?.form_background_position, [type]: position },
-			},
+			} as FormCore.Form["form_background"],
 		};
 
 		console.log({ newForm });
@@ -45,8 +45,8 @@ const ButtonPositionBackground = () => {
 	};
 
 	return (
-		<div className="px-[3rem] flex flex-col gap-[2rem]">
-			<div className="flex items-center justify-between ">
+		<div className=" flex flex-col gap-[2rem]">
+			<div className="flex items-center gap-[2rem] ">
 				<span className="">Trục X</span>
 
 				<input
@@ -60,7 +60,7 @@ const ButtonPositionBackground = () => {
 					onChange={(e) => debounced(+e.target.value, "y")}
 				/>
 			</div>
-			<div className="flex items-center justify-between">
+			<div className="flex items-center gap-[2rem] ">
 				<span className="">Trục Y</span>
 				<input
 					style={{ color: colorMain }}

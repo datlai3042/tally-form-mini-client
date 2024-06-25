@@ -46,7 +46,7 @@ const FormPageGuess = (props: TProps) => {
 		FormCore.form_background?.form_background_position ||
 		FormCore.form_setting_default.form_background_position_default;
 
-	const modeAvatar = FormCore.form_avatar?.mode || FormCore.form_setting_default.form_avatar_default_mode;
+	const modeAvatar = FormCore.form_avatar?.mode_shape || FormCore.form_setting_default.form_avatar_default_mode;
 	const positionAvatar = FormCore.form_avatar?.position || FormCore.form_setting_default.form_avatar_default_postion;
 
 	const numberInputAPage = 3;

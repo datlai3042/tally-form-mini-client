@@ -31,7 +31,6 @@ const ProfileMe = async () => {
 
 	const header_url = headersList.get("x-url") || "";
 
-	console.log({ header_url });
 	// try {
 	res = await Http.get<ResponseApi<{ user: UserType }>>("/v1/api/account/me", {
 		credentials: "include",

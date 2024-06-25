@@ -11,27 +11,11 @@ export type FormAnswerControl = {
 };
 
 type TFormAnswerContext = {
-	// setInputFormData: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormData[]>>;
-
-	// setInputFormRequire: React.Dispatch<SetStateAction<FormCore.FormAnswer.InputFormRequire[]>>;
-
-	// setInputFormErrors: React.Dispatch<SetStateAction<InputCore.Commom.CatchError[]>>;
-
-	// setOpenModelError: React.Dispatch<SetStateAction<boolean>>;
-
 	formAnswer: FormAnswerControl;
 	setFormAnswer: React.Dispatch<SetStateAction<FormAnswerControl>>;
 };
 
 export const FormAnswerContext = createContext<TFormAnswerContext>({
-	// inputFormData: [],
-	// inputFormRequire: [],
-	// inputFormErrors: [],
-	// openModelError: false,
-	// setInputFormData: () => {},
-	// setInputFormRequire: () => {},
-	// setInputFormErrors: () => {},
-	// setOpenModelError: () => {},
 	formAnswer: {
 		inputFormData: [],
 		inputFormErrors: [],

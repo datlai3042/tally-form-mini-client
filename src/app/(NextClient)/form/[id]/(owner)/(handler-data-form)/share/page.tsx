@@ -4,7 +4,7 @@ import { RootState } from "@/app/_lib/redux/store";
 import { Copy } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import BoxCopySuccess from "../_components/BoxCopySuccess";
+import BoxCopySuccess from "../../_components/BoxCopySuccess";
 
 const ShareFormPage = () => {
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);

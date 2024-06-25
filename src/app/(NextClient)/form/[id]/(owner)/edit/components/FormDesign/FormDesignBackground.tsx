@@ -5,6 +5,8 @@ import ButtonEditTextStyle from "./DesignCommon/ButtonEditTextStyle";
 import ButtonPositionBackground from "./DesignCommon/ButtonPositionBackground";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
+import ButtonChangeModeBackground from "./ButtonChangeModeBackground";
+import ButtonBackgroundColor from "./DesignCommon/ButtonBackgroundColor";
 
 const FormDesignBackground = () => {
 	const formCore = useSelector((state: RootState) => state.form.formCoreBackUp);
@@ -27,6 +29,8 @@ const FormDesignBackground = () => {
 		>
 			<p className="font-medium">Tùy chỉnh ảnh bìa {!formBackground ? "(Chưa upload ảnh)" : ""}</p>
 			<ButtonPositionBackground />
+			<ButtonChangeModeBackground />
+			<ButtonBackgroundColor />
 		</div>
 	);
 };

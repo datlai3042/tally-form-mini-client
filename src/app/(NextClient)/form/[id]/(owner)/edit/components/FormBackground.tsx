@@ -33,18 +33,23 @@ const FormBackground = () => {
 		formCore.form_background?.form_background_position ||
 		formCore.form_setting_default.form_background_position_default;
 
+	const formBackgroundColor = formCore.form_background?.backgroundColor || "";
+	const formBackgroundSize = formCore.form_background?.mode_show;
+
 	const positionAvatar = formCore.form_avatar?.position;
 
 	return (
 		<React.Fragment>
 			<DivNativeRef
+				onClick={() => setOpenModel(true)}
 				style={{
 					backgroundImage: `url("${formBackgroundImageUrl}")`,
 					backgroundRepeat: "no-repeat",
-					backgroundSize: "cover",
+					backgroundSize: formBackgroundSize,
 					backgroundPosition: ` ${formBackgroundPosition?.y || 0}px ${formBackgroundPosition?.x || 0}px`,
+					backgroundColor: formBackgroundColor,
 				}}
-				className="absolute inset-0 z-[2] "
+				className="absolute inset-0 z-[2] hover:cursor-pointer "
 			></DivNativeRef>
 			{modeScreen === "NORMAL" && (
 				<React.Fragment>

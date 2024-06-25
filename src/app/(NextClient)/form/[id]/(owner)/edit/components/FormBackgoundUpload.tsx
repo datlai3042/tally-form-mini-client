@@ -97,7 +97,7 @@ const FormBackgoundUpload = (props: TProps) => {
 						className={`${styleEffect.onActive(
 							"UPLOAD"
 						)}  h-full w-max flex items-center border-b-[.2rem]  hover:border-slate-900 text-[1.6rem] font-bold text-textHeader hover:text-slate-800`}
-						textContent="Upload"
+						textContent="Tải ảnh lên"
 					/>
 					<ButtonNative
 						onClick={() => setMode("COLOR")}

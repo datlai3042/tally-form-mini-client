@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import FormService from "@/app/_services/form.service";
 import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { useSelectedLayoutSegment, useSelectedLayoutSegments } from "next/navigation";
 import LayoutSidebar from "@/app/(NextClient)/_components/Layout/LayoutSidebar";
 import Link from "next/link";
 
@@ -16,8 +16,8 @@ export type FormPageMode = "edit" | "submit" | "share" | "summary";
 
 const FormModeLayout = ({ children, params }: { children: React.ReactNode; params: { id: string } }) => {
 	const { modeScreen } = useContext(FormModeScreenContext);
-	const segment = useSelectedLayoutSegment();
-	const [formPageMode, setFormPageMode] = useState<FormPageMode>(segment as FormPageMode);
+	const segment = useSelectedLayoutSegments();
+	const [formPageMode, setFormPageMode] = useState<FormPageMode>(segment[1] as FormPageMode);
 
 	const dispatch = useDispatch();
 
@@ -46,16 +46,16 @@ const FormModeLayout = ({ children, params }: { children: React.ReactNode; param
 					} min-h-screen  h-max  flex flex-col  text-[1.4rem]   border-l-[.1rem]  border-slate-200 max-w-full `}
 				>
 					<DivNative className={`w-full rounded-lg h-max `}>
-						{segment !== "edit" && getFormQuery.data?.metadata.form && (
+						{segment[0] !== "edit" && getFormQuery.data?.metadata.form && (
 							<>
-								<HeaderEditForm showHeaderAction={segment === "edit"} />
+								<HeaderEditForm showHeaderAction={segment[1] === "edit"} />
 
 								<FormChangeMode formPageMode={formPageMode} setFormPageMode={setFormPageMode}>
 									{children}
 								</FormChangeMode>
 							</>
 						)}
-						{segment === "edit" && getFormQuery.data?.metadata.form && children}
+						{segment[0] === "edit" && getFormQuery.data?.metadata.form && children}
 					</DivNative>
 				</DivNative>
 			)}

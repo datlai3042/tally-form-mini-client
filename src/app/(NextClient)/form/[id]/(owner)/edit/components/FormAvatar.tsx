@@ -14,7 +14,7 @@ const FormAvatar = () => {
 		setOpenModel((prev) => !prev);
 	};
 
-	const modeAvatar = formCore.form_avatar?.mode || formCore.form_setting_default.form_avatar_default_mode;
+	const modeAvatar = formCore.form_avatar?.mode_shape || formCore.form_setting_default.form_avatar_default_mode;
 	const positionAvatar = formCore.form_avatar?.position || formCore.form_setting_default.form_avatar_default_postion;
 
 	const styleEffect = {

@@ -6,6 +6,10 @@ import React, { useEffect, useRef, useState } from "react";
 import AuthService from "@/app/_services/auth.service";
 import LayoutTokenFailure from "../_components/Layout/LayoutTokenFailure";
 import LayoutRequestLoading from "../_components/Layout/LayoutRequestLoading";
+import { useDispatch } from "react-redux";
+import { addOneToastSuccess } from "@/app/_lib/redux/features/toast.slice";
+import { v4 as uuid } from "uuid";
+import { time } from "console";
 
 const RefreshTokenPage = () => {
 	const router = useRouter();
@@ -14,6 +18,9 @@ const RefreshTokenPage = () => {
 
 	const pathName = searchParams.get("pathName");
 
+	const dispatch = useDispatch();
+
+	const timer = useRef<NodeJS.Timeout | null>(null);
 	const [error, setError] = useState(false);
 
 	useEffect(() => {
@@ -23,16 +30,31 @@ const RefreshTokenPage = () => {
 		const codeLocal = localStorage.getItem("code_verify_token");
 		const code_verify_token_cl = codeLocal ? JSON.parse(codeLocal) : "";
 
+		console.log({ code_verify_token_cl, code_verify_token_sv });
+
 		if (!code_verify_token_cl) {
 			setError(true);
 			return;
 		}
 		if (code_verify_token_cl === code_verify_token_sv) {
 			AuthService.refreshTokenServer(signal).then(() => {
-				// timer.current = setTimeout(() => {
-				router.replace("/dashboard");
-				router.refresh();
-				// }, 2000);
+				dispatch(
+					addOneToastSuccess({
+						toast_item: {
+							_id: uuid(),
+							type: "SUCCESS",
+							toast_title: "Bảo mật",
+							core: {
+								message:
+									"Xin lỗi nha, một số token hết hạn nhưng mình đã xử lí nó xong xuôi hết rồi :D",
+							},
+						},
+					})
+				);
+				timer.current = setTimeout(() => {
+					router.replace("/dashboard");
+					router.refresh();
+				}, 1000);
 			});
 			return;
 		} else {
@@ -40,6 +62,7 @@ const RefreshTokenPage = () => {
 			setError(true);
 		}
 		return () => {
+			clearTimeout(timer.current as NodeJS.Timeout);
 			abort.abort();
 		};
 	}, [code_verify_token_sv, pathName, router]);

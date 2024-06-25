@@ -19,16 +19,16 @@ const DashboardAccount = () => {
 			{user && (
 				<>
 					<div className="max-w-[90%] flex gap-[1rem] items-center ">
-						{user?.user_avatar_current?.secure_url && (
+						{user?.user_avatar_current && (
 							<Image
-								src={user.user_avatar_current.secure_url}
+								src={user.user_avatar_current}
 								width={20}
 								height={20}
 								alt="avatar"
 								className="w-[2rem] h-[2rem] rounded-full"
 							/>
 						)}
-						{!user?.user_avatar_current?.secure_url && (
+						{!user?.user_avatar_current && (
 							<div className="min-w-[2rem] h-[2rem] bg-green-300 rounded-full flex items-center justify-center">
 								{user?.user_first_name.slice(0, 1)}
 							</div>

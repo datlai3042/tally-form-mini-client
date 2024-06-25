@@ -10,14 +10,13 @@ import { FormDesignContext } from "@/app/(NextClient)/_components/provider/FormD
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
 import { CSS } from "styled-components/dist/types";
+import { useSelectedLayoutSegment, useSelectedLayoutSegments } from "next/navigation";
 
 const EditFormPage = ({ params }: { params: { id: string } }) => {
 	const { modeScreen } = useContext(FormModeScreenContext);
 	const { openFormDesign } = useContext(FormDesignContext);
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 	const colorMain = useSelector((state: RootState) => state.form.colorCore);
-
-	console.log({ formCore });
 
 	return (
 		<div className="min-w-full flex flex-col " style={{ "--bg-input-core": colorMain } as CSS.Properties}>

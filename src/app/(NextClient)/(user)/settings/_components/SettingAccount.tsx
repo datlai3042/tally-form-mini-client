@@ -16,15 +16,9 @@ const SettingAccount = () => {
 
 	const formUpdate = useForm<UserUpdateInfo>({
 		defaultValues: {
-			// return await new Promise((res, rej) => {
-			// if (user) {
-			// res({
 			first_name: user?.user_first_name || "",
 			last_name: user?.user_last_name || "",
 			email: user?.user_email || "",
-			// });
-			// }
-			// });
 		},
 		resolver: zodResolver(userUpdateSchema),
 	});
@@ -67,13 +61,12 @@ const SettingAccount = () => {
 							error={formUpdate.formState.errors}
 						/>
 					</form>
-					{/* <InputLayout placeholder="email" value="123" /> */}
 					<button
 						type="submit"
 						form="form_update"
-						className="w-[10%] p-[.2rem_.8rem] h-[2.7rem] flex justify-center items-center gap-[.8rem] bg-slate-700 text-white rounded-md"
+						className="w-[10%] p-[.8rem] h-[3.6rem] flex justify-center items-center gap-[.8rem] bg-blue-700 text-white rounded-lg"
 					>
-						Update
+						Cập nhập
 					</button>
 				</>
 			)}

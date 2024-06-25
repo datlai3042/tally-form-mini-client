@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 	const { user } = res.metadata;
 
 	const fullName = user?.user_first_name + " " + user?.user_last_name;
-	const imageAvatar = user?.user_avatar_current?.secure_url || "/icon_core.png";
+	const imageAvatar = user?.user_avatar_current || "/icon_core.png";
 	console.log({ imageAvatar, user });
 
 	return {

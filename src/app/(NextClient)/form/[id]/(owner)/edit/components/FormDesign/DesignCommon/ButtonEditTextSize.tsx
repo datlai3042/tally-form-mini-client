@@ -61,7 +61,7 @@ const ButtonEditTextSize = (props: TProps) => {
 	}, [globalClick]);
 
 	const onChangeTextSize = (size: number, type: "Input" | "Decrease" | "Increase") => {
-		const MAX = typeEdit === "Form" ? 60 : 40;
+		const MAX = typeEdit === "Form" ? 40 : 24;
 		const MIN = 1;
 
 		if (!size) {
@@ -142,6 +142,7 @@ const ButtonEditTextSize = (props: TProps) => {
 						setOpenModelSize(true);
 					}}
 					type="number"
+					max={typeEdit === "Form" ? 40 : 24}
 					onChange={(e) => debounced(+e.target.value, "Input")}
 					value={titleCoreSize}
 					className="w-[5rem] h-[3.6rem] text-center  bg-[#ffffff]  border-[.1rem] border-slate-300  rounded-lg outline-none"

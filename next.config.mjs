@@ -13,6 +13,11 @@ const nextConfig = {
 				port: "",
 				pathname: "/cloud304/image/**",
 			},
+			{
+				protocol: "https",
+				hostname: "lh3.googleusercontent.com",
+				port: "",
+			},
 		],
 	},
 	// reactStrictMode: false,

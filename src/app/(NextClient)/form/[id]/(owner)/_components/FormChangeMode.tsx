@@ -59,6 +59,8 @@ const FormChangeMode = (props: TProps) => {
 		};
 	}, [copySuccess]);
 
+	console.log({ formPageMode });
+
 	return (
 		<div className="w-full xl:w-[92rem] px-[2rem] xl:px-0 mx-auto mt-[6rem] flex justify-center flex-col gap-[2rem]">
 			<div className="w-full flex justify-between">

@@ -10,7 +10,7 @@ const SettingPage = () => {
 	const user = useSelector((state: RootState) => state.authReducer.user);
 
 	return (
-		<div className="w-full h-full   p-[.8rem_1.8rem] flex flex-col gap-[5rem] text-[1.4rem]">
+		<div className="w-full h-max   p-[.8rem_1.8rem_4rem] flex flex-col gap-[5rem] text-[1.4rem] mb-[2rem]">
 			<SettingHeader />
 			<div className="w-[90%] xl:w-[69%] mx-auto">
 				<SettingSection />
@@ -21,7 +21,7 @@ const SettingPage = () => {
 						<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
 						<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
 						<div className="animate-pulse w-full h-[2rem] rounded-md bg-slate-200"></div>
-						<div className="animate-pulse bg-slate-200 w-[10%] p-[.2rem_.8rem] h-[2.7rem] d">Update</div>
+						<div className="animate-pulse bg-slate-200 w-[10%] p-[.2rem_.8rem] h-[2.7rem] d"></div>
 					</div>
 				)}
 			</div>
