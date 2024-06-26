@@ -40,20 +40,18 @@ const ToastSuccessItem = (props: TProps) => {
 
 	return (
 		<ToastWrapper toast_item_id={toast_item._id} indexItem={index}>
-			<div className="relative min-h-[12rem] h-max p-[1rem] flex justify-between rounded-xl border-[.3rem] border-green-600 bg-[#ffffff] text-[1.4rem]">
+			<div className="relative min-h-[10rem] h-max p-[1rem] flex justify-between rounded-xl  bg-[#444] text-[#fff] text-[1.4rem]">
 				<button
 					onClick={onDeleteToast}
 					className="absolute right-[-1.5rem] top-[-1.5rem] w-[3rem] h-[3rem]  rounded-full bg-green-600 flex items-center justify-center"
 				>
 					<X size={18} color="white" />
 				</button>
-				<div className="flex flex-col max-w-[80%] gap-[1rem]">
-					<span className="text-green-600 font-extrabold max-w-[90%] break-words">
+				<div className="border-l-[.6rem] border-green-600 pl-[2rem] flex flex-col min-w-[70%] max-w-[80%] gap-[1rem]">
+					<span className=" text-green-600  font-extrabold max-w-[90%] break-words">
 						{toast_item.toast_title.toUpperCase()}
 					</span>
-					<span className="text-green-600 font-semibold max-w-[90%] break-words">
-						{toast_item.core.message}
-					</span>
+					<span className="opacity-80 font-semibold max-w-[90%] break-words">{toast_item.core.message}</span>
 				</div>
 				<div className="flex flex-col items-center justify-between gap-[.4rem]">
 					<Image

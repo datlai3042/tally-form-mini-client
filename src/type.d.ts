@@ -438,6 +438,16 @@ namespace Toast {
 		};
 	}
 
+	namespace ToastFormAnswer {
+		type ToastFormAnswerCore = Toast.ToastCommon.Common & {
+			type: "FormAnswer";
+			core: {
+				message: string;
+				url: string;
+			};
+		};
+	}
+
 	namespace ToastWarning {
 		type ToastWarningCore = Toast.ToastCommon.Common & {
 			type: "WARNING";
@@ -456,5 +466,9 @@ namespace Toast {
 		};
 	}
 
-	type ToastCore = ToastSuccess.ToastSuccessCore | ToastWarning.ToastWarningCore | ToastError.ToastErrorCore;
+	type ToastCore =
+		| ToastSuccess.ToastSuccessCore
+		| ToastWarning.ToastWarningCore
+		| ToastError.ToastErrorCore
+		| ToastFormAnswer.ToastFormAnswerCore;
 }

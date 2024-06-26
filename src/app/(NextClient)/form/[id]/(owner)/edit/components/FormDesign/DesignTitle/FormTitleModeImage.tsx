@@ -16,7 +16,7 @@ const FormTitleModeImage = () => {
 
 	const titleModeImageMutation = useMutation({
 		mutationKey: ["change-mode-image-title"],
-		mutationFn: ({ form_id, mode }: { form_id: string; mode: FormCore.Title.FormTitleImageMode }) =>
+		mutationFn: ({ form_id, mode }: { form_id: string; mode: FormCore.FormTitle["form_title_mode_image"] }) =>
 			FormService.setModeImageForm({ form_id, mode }),
 		onSuccess: (res) => {
 			const { form } = res.metadata;
@@ -25,7 +25,7 @@ const FormTitleModeImage = () => {
 		},
 	});
 
-	const onChangeMode = (mode: FormCore.Title.FormTitleImageMode) => {
+	const onChangeMode = (mode: FormCore.FormTitle["form_title_mode_image"]) => {
 		titleModeImageMutation.mutate({ form_id: formCore._id, mode });
 	};
 

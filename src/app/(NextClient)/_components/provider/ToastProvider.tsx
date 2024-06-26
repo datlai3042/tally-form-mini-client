@@ -9,6 +9,7 @@ import ToastSuccessItem from "../ui/toast/toast_type/ToastSuccessItem";
 import ToastStoreQueue from "../ui/toast/ToastStoreQueue";
 import ToastWarningItem from "../ui/toast/toast_type/ToastWarningItem";
 import ToastErrorItem from "../ui/toast/toast_type/ToastErrorItem";
+import ToastFormAnswerItem from "../ui/toast/toast_type/ToastFormAnswerItem";
 
 const ToastContext = createContext<Toast.ToastCore[]>([]);
 
@@ -17,6 +18,7 @@ const generateToastType = (toasts: Toast.ToastCore[]) => {
 		if (toast.type === "SUCCESS") return <ToastSuccessItem index={i} key={toast._id} toast_item={toast} />;
 		if (toast.type === "WARNING") return <ToastWarningItem index={i} key={toast._id} toast_item={toast} />;
 		if (toast.type === "ERROR") return <ToastErrorItem index={i} key={toast._id} toast_item={toast} />;
+		if (toast.type === "FormAnswer") return <ToastFormAnswerItem index={i} key={toast._id} toast_item={toast} />;
 	});
 };
 
@@ -27,19 +29,17 @@ const ToastProvider = () => {
 
 	const toast_timer = useSelector((state: RootState) => state.toast.toast_timer);
 
-	const dispatch = useDispatch();
-
 	const renderToastStack = useMemo(() => generateToastType(toast_stack), [toast_stack]);
 	const renderToastQueue = useMemo(() => generateToastType(toast_queue), [toast_queue]);
 	if (toast_stack.length === 0 && toast_queue.length === 0) return;
 
 	return (
-		<div className="fixed z-[1000] right-0 top-0 w-[32rem]  mt-[2rem] px-[2rem]">
-			<div className="relative min-h-[14rem] max-h-screen flex flex-col gap-[4rem]">
+		<div className="fixed z-[1000] right-0 top-0 w-[36rem]  mt-[2rem] px-[2rem]">
+			<div className="relative max-h-screen flex flex-col gap-[2rem]">
 				{renderToastStack}
 
-				{toast_queue.length < 2 && renderToastQueue}
-				{toast_queue.length >= 2 && <ToastStoreQueue />}
+				{toast_queue.length < 1 && renderToastQueue}
+				{toast_queue.length >= 1 && <ToastStoreQueue />}
 			</div>
 		</div>
 	);

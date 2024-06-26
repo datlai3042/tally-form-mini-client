@@ -11,7 +11,7 @@ type InitialState = {
 const initialState: InitialState = {
 	toast_stack: [],
 	toast_queue: [],
-	toast_timer: 10,
+	toast_timer: 100,
 	toast_max_show: 3,
 };
 
@@ -43,6 +43,17 @@ const toastSlice = createSlice({
 		},
 
 		addOneToastError: (state, data: PayloadAction<{ toast_item: Toast.ToastError.ToastErrorCore }>) => {
+			const { toast_item } = data.payload;
+			console.log(state.toast_max_show, state.toast_stack.length, state.toast_queue.length);
+			state.toast_stack.length >= state.toast_max_show
+				? state.toast_queue.push(toast_item)
+				: state.toast_stack.push(toast_item);
+		},
+
+		addOneToastFormAnswer: (
+			state,
+			data: PayloadAction<{ toast_item: Toast.ToastFormAnswer.ToastFormAnswerCore }>
+		) => {
 			const { toast_item } = data.payload;
 			console.log(state.toast_max_show, state.toast_stack.length, state.toast_queue.length);
 			state.toast_stack.length >= state.toast_max_show
@@ -82,6 +93,7 @@ export const {
 	addOneToastSuccess,
 	addOneToastWarning,
 	addOneToastError,
+	addOneToastFormAnswer,
 	resetQueueToast,
 	removeOneToast,
 	onUpdateToastGlobal,

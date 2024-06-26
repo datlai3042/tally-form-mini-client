@@ -14,13 +14,6 @@ const DashBoardRightHeader = () => {
 		<div className=" w-full h-[3rem] px-[1rem] py-[2rem] flex items-center justify-between gap-[1rem] text-[1.3rem]">
 			<div className="flex items-center gap-[1rem] ">
 				{!openSidebar && <ButtonIcon Icon={<ChevronsRight />} onClick={() => setOpenSidebar(true)} />}
-				{/* <Image
-					src={"/assets/images/icon/navigation/home.png"}
-					width={18}
-					height={18}
-					alt="icon"
-					className="w-[2.4rem] h-[2.4rem]"
-				/>{" "} */}
 			</div>
 			<div className="flex gap-[20px]">
 				<div

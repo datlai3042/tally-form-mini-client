@@ -103,7 +103,7 @@ const FormPageGuess = (props: TProps) => {
 		}
 	};
 
-	const checkMode: FormCore.Title.FormTitleImageMode = "Slider";
+	const checkMode: FormCore.FormTitle["form_title_mode_image"] = "Slider";
 
 	let flag = false;
 

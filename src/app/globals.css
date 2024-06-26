@@ -142,6 +142,10 @@
 	.scroll-notification::-webkit-scrollbar {
 		width: 0.6rem;
 	}
+
+	.scroll-hidden::-webkit-scrollbar {
+		display: none;
+	}
 	.scroll-notification::-webkit-scrollbar-thumb {
 		background: rgb(22, 73, 240);
 		border-radius: 0.2rem;

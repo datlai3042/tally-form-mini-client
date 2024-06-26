@@ -29,7 +29,7 @@ const HeaderFormAnswer = (props: TProps) => {
 			<h1 className="text-[3.2rem] ">{formCore.form_title.form_title_value}</h1>
 
 			{formCore.form_title.form_title_sub.map((ft) => {
-				if (ft.type === "Text" && ft.core.value)
+				if (ft.type === "Text" && ft?.core?.value)
 					return (
 						<span key={ft._id} className="text-[1.4rem] text-justify leading-10">
 							{ft.core.value}

@@ -1,9 +1,10 @@
 "use client";
 import { addFormAnswer } from "@/app/_lib/redux/features/formAnswer.slice";
 import { onAddNewNotification, onFetchNotification } from "@/app/_lib/redux/features/notification.slice";
-import { addOneToastSuccess } from "@/app/_lib/redux/features/toast.slice";
+import { addOneToastFormAnswer, addOneToastSuccess } from "@/app/_lib/redux/features/toast.slice";
 import { RootState } from "@/app/_lib/redux/store";
 import { handleDataForm } from "@/app/_lib/utils";
+import FormAnswerService from "@/app/_services/formAnswer.service";
 import { FormCore, Notification } from "@/type";
 import { useQueryClient } from "@tanstack/react-query";
 import React, { createContext, useEffect, useState } from "react";
@@ -22,13 +23,10 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
 	useEffect(() => {
 		if (socketState === null) {
-			console.log("ok");
 			setSocketState(io(URL!, { withCredentials: true }));
 			return;
 		}
 		function onConnect() {
-			console.log("connect");
-
 			dispatch(
 				addOneToastSuccess({
 					toast_item: {
@@ -43,38 +41,45 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 			);
 			socketState!.emit("checkError", { error: "Ok" });
 		}
-		if (socketState) {
-			const socketStateNewForm = (dataSocket: {
-				formAnswer: FormCore.FormAnswer.FormAnswerCore;
-				notification: { notifications: Notification.NotificationUser["notifications"] };
-				notification_item_id: string;
-				form_origin: FormCore.Form;
-			}) => {
-				const { formAnswer, notification, notification_item_id, form_origin } = dataSocket;
-				console.log({ dataSocket });
-				dispatch(addFormAnswer({ form_id: formAnswer.form_id, reports: formAnswer }));
-				dispatch(onFetchNotification({ notification: notification.notifications, animation: true }));
-				dispatch(onAddNewNotification({ notification_item_id }));
-				dispatch(
-					addOneToastSuccess({
-						toast_item: {
-							_id: uunid(),
-							type: "SUCCESS",
-							toast_title: "Bạn nhận được 1 phiếu trả lời",
-							core: {
-								message: `Bạn nhận được 1 phản hồi từ Form [${form_origin.form_title.form_title_value}]`,
-							},
+		const socketStateNewForm = (dataSocket: {
+			form_answer_id: string;
+			form_answer_item_id: string;
+			notification: { notifications: Notification.NotificationUser["notifications"] };
+			notification_item_id: string;
+			form_origin: FormCore.Form;
+		}) => {
+			console.log({ dataSocket });
+			const { form_answer_id, notification, notification_item_id, form_origin, form_answer_item_id } = dataSocket;
+			dispatch(onFetchNotification({ notification: notification.notifications, animation: true }));
+			dispatch(onAddNewNotification({ notification_item_id }));
+			dispatch(
+				addOneToastFormAnswer({
+					toast_item: {
+						_id: uunid(),
+						type: "FormAnswer",
+						toast_title: "Bạn nhận được 1 phiếu trả lời",
+						core: {
+							message: `Bạn nhận được 1 phản hồi từ Form [${form_origin.form_title.form_title_value}]`,
+							url: `/form/${form_origin._id}/summary#${form_answer_item_id}`,
 						},
-					})
-				);
+					},
+				})
+			);
+			FormAnswerService.getFormAnswer(form_origin._id).then((data) => {
+				const { formAnswer } = data.metadata;
+				dispatch(addFormAnswer({ form_id: formAnswer.form_id, reports: formAnswer }));
 
-				handleDataForm(formAnswer.reports, formAnswer.form_id);
+				const { reports } = formAnswer;
+				const arrayReserver = [...reports];
+				console.log("dispatch api");
 
-				queryClient.invalidateQueries({
-					queryKey: ["get-notification-type"],
-				});
-			};
-
+				const OK = handleDataForm(arrayReserver.reverse(), formAnswer.form_id);
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["get-notification-type"],
+			});
+		};
+		if (socketState) {
 			socketState.on("connect", onConnect);
 			socketState.on("disconnect", onDisconnect);
 			socketState.on("add-new-reports", socketStateNewForm);
@@ -88,17 +93,13 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 			});
 		}
 
-		function onDisconnect() {}
+		function onDisconnect() {
+			console.log("OK");
+		}
 		return () => {
 			socketState.off("connect", onConnect);
 			socketState.off("disconnect", onDisconnect);
-			socketState.off(
-				"add-new-notification",
-				(data: { notification: { notifications: Notification.NotificationUser } }) => {
-					const { notifications } = data.notification;
-					dispatch(onFetchNotification({ notification: notifications.notifications, animation: true }));
-				}
-			);
+			socketState.off("add-new-notification", socketStateNewForm);
 		};
 	}, [socketState]);
 

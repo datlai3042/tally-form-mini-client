@@ -47,10 +47,12 @@ const Notification = () => {
 			</div>
 
 			{openModelNotification && (
-				<div className="absolute z-[11] top-[110%] right-0">
-					<ClickOutSide setOpenModel={setOpenNotification}>
-						<ModelNotification />
-					</ClickOutSide>
+				<div className="fixed top-[0] right-[0rem] z-[11] bg-[rgba(0,0,0,.2)] w-screen h-screen">
+					<div className="absolute z-[11] top-[4.7rem] right-[3rem]">
+						<ClickOutSide setOpenModel={setOpenNotification}>
+							<ModelNotification />
+						</ClickOutSide>
+					</div>
 				</div>
 			)}
 		</button>
