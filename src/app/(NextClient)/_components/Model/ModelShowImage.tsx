@@ -14,11 +14,18 @@ const ModelShowImage = (props: TProps) => {
 	const [imageShow, setImageShow] = useState<string>(imageActive);
 
 	return (
-		<div className="animate-modeScreen transition-[scale] duration-300 fixed inset-0 w-screen h-screen flex justify-center  bg-[rgba(0,0,0,.87)] z-[1000] hover:cursor-pointer">
+		<div className="animate-modeScreen transition-[scale] duration-300 fixed inset-0 w-screen h-screen flex items-center justify-center  bg-[rgba(0,0,0,.87)] z-[1000] hover:cursor-pointer">
 			<ClickOutSide setOpenModel={setOpenModel}>
-				<div className="mt-[6rem] w-[60rem] h-[48rem]  flex flex-col items-center gap-[5rem]">
-					<div className="w-full min-h-full">
-						<Image src={imageShow} width={400} height={400} alt="image form" className="w-full h-full" />
+				<div className=" w-[35rem] h-[35rem] xl:w-[60rem] xl:h-[60rem]  flex flex-col items-center gap-[5rem]">
+					<div className="w-full min-h-[80%]">
+						<Image
+							src={imageShow}
+							width={400}
+							height={400}
+							alt="image form"
+							className="w-full h-full"
+							unoptimized={false}
+						/>
 					</div>
 					<div className="flex gap-[4rem]">
 						{imagesUrl.map((img) => (

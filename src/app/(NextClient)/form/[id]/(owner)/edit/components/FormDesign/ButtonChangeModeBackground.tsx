@@ -28,22 +28,25 @@ const ButtonChangeModeBackground = () => {
 
 		dispatch(onFetchForm({ form: newFormEdit }));
 	};
+	const formBackground = !!formCore.form_background?.form_background_iamge_url || false;
 
 	return (
 		<div className="w-full h-[4rem] flex items-center gap-[2rem]">
 			<button
+				disabled={!formBackground}
 				onClick={() => onChangeModeBackground("contain")}
 				className={`${styleEffect.onCheckModeSelect(
 					formCore.form_background?.mode_show === "contain"
-				)} min-w-[10rem] h-full rounded-lg `}
+				)} min-w-[10rem]  h-full rounded-lg disabled:cursor-not-allowed `}
 			>
 				contain
 			</button>
 			<button
+				disabled={!formBackground}
 				onClick={() => onChangeModeBackground("cover")}
 				className={`${styleEffect.onCheckModeSelect(
 					formCore.form_background?.mode_show === "cover"
-				)} min-w-[10rem] h-full rounded-lg `}
+				)} min-w-[10rem] h-full rounded-lg disabled:cursor-not-allowed `}
 			>
 				cover
 			</button>

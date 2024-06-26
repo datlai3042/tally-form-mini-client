@@ -192,17 +192,45 @@ namespace FormCore {
 		export type RemoveInputItemWithIndex = (cb: ReactCustom.Form, index: number) => void;
 	}
 
-	namespace Title {
-		type TitleSub = "Text" | "Image";
+	namespace FormTitleSub {
+		namespace Common {
+			type Type = "Text" | "Image" | "FullDescription";
+			type FormTilteCommon = {
+				_id: string;
+				type: Type;
+				form_id: string;
+			};
+		}
 
-		type FormTitleSub = {
-			type: TitleSub;
-			value: string;
-			write: boolean;
-			_id: string;
-		};
+		namespace Text {
+			type Core = Common.FormTilteCommon & {
+				type: "Text";
+				core: {
+					value: string;
+				};
+			};
+		}
 
-		type FormTitleImageMode = "Normal" | "Slider";
+		namespace Image {
+			type Core = Common.FormTilteCommon & {
+				type: "Image";
+				core: {
+					url: string;
+				};
+			};
+		}
+
+		namespace FullDescription {
+			type Core = Common.FormTilteCommon & {
+				type: "FullDescription";
+				core: {
+					header_value: string;
+					value: string;
+				};
+			};
+		}
+
+		type FormTitleBase = Text.Core | Image.Core | FullDescription.Core;
 	}
 
 	type FormAvatarPosition = "left" | "center" | "right";
@@ -219,6 +247,10 @@ namespace FormCore {
 		form_background_position?: { x?: number; y?: number };
 		backgroundColor?: string;
 		mode_show: "cover" | "contain";
+		padding: {
+			x: number;
+			y: number;
+		};
 	};
 
 	export type FormSettingDefault = {
@@ -253,7 +285,7 @@ namespace FormCore {
 		form_title_value: string;
 		form_title_color?: string;
 		form_title_size?: number;
-		form_title_sub: FormCore.Title.FormTitleSub[];
+		form_title_sub: FormCore.FormTitleSub.FormTitleBase[];
 		form_title_mode_image: FormCore.Title.FormTitleImageMode;
 	};
 	export type FormLabel = string;

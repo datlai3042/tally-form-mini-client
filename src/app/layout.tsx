@@ -13,7 +13,7 @@ import CheckExprireToken from "./(NextClient)/_components/Layout/CheckExprireTok
 import ToastProvider from "./(NextClient)/_components/provider/ToastProvider";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["vietnamese"] });
 
 export const metadata: Metadata = {
 	title: "Form builder",

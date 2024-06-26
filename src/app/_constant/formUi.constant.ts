@@ -8,7 +8,13 @@ export const FormText = {
 		message: "Tạo tiêu đề",
 		addOptionTitle: "Thêm các mục phụ cho tiêu đề chính",
 		optionText: {
-			message: "Đoạn văn",
+			message: "Đoạn mô tả ngắn",
+			complete: "Mô tả tiêu đề",
+			remove: "Xóa",
+		},
+
+		optionFullDescription: {
+			message: "Đoạn mô tả nhiều thông tin",
 			complete: "Mô tả tiêu đề",
 			remove: "Xóa",
 		},

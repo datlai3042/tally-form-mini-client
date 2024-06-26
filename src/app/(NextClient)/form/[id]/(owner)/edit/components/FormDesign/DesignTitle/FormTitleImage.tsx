@@ -19,7 +19,7 @@ import { FormText } from "@/app/_constant/formUi.constant";
 import useUpdateForm from "@/app/hooks/useUpdateForm";
 
 type TProps = {
-	subTitleItem: FormCore.Title.FormTitleSub;
+	subTitleItem: FormCore.FormTitleSub.Image.Core;
 	className?: string;
 	page: "Edit" | "Answer";
 	mode: "Slider" | "Normal";
@@ -79,15 +79,15 @@ const FormTitleImage = (props: TProps) => {
 		updateFormAPI.mutate(newForm);
 	};
 
-	const widthPage = page === "Edit" ? "w-[35rem] sm:w-[50rem] xl:w-[80rem] " : "w-[62rem] h-max items-center";
+	const widthPage = page === "Edit" ? "w-[35rem] sm:w-[51rem] xl:w-[70rem] " : "w-[62rem]  items-center";
 
 	const heightWithModeNormal =
 		mode === "Normal" ? (page === "Edit" ? "h-[50rem] w-full" : "max-h-[30rem]  w-[70%]") : "";
-	const heightWithModeSlider = mode === "Slider" ? (page === "Edit" ? "h-[46rem] w-[70%]" : "h-[46rem] w-[90%]") : "";
+	const heightWithModeSlider = mode === "Slider" ? (page === "Edit" ? "w-full xl:w-[70%]" : "h-[30rem] w-[90%]") : "";
 
 	const colorMain = formCore.form_title.form_title_color || formCore.form_setting_default.form_title_color_default;
 
-	if (!subTitleItem.value && !subTitleItem.write && page === "Edit")
+	if (!subTitleItem?.core?.url && page === "Edit")
 		return (
 			<div className="flex flex-col	 gap-[1rem]">
 				<button
@@ -115,7 +115,7 @@ const FormTitleImage = (props: TProps) => {
 
 	return (
 		<div
-			className={`${widthPage}  h-max flex flex-col   gap-[.5rem]   outline-none rounded-lg my-[2rem]`}
+			className={`${widthPage}   flex flex-col   gap-[.5rem]   outline-none rounded-lg my-[2rem]`}
 			ref={setNodeRef}
 			{...attributes}
 			{...listeners}
@@ -131,7 +131,7 @@ const FormTitleImage = (props: TProps) => {
 					{FormText.title.optionImage.remove}
 				</button>
 			)}
-			{subTitleItem.value && (
+			{subTitleItem.core.url && (
 				<div className={` flex justify-center  w-full `}>
 					<Image
 						// style={{ backgroundColor: colorMain }}
@@ -140,8 +140,8 @@ const FormTitleImage = (props: TProps) => {
 						quality={100}
 						unoptimized
 						alt="avatar title"
-						src={subTitleItem.value}
-						className={`${className} ${heightWithModeNormal}  ${heightWithModeSlider} bg-gray-200 object-center rounded-lg`}
+						src={subTitleItem.core.url}
+						className={`${className} ${heightWithModeNormal}  ${heightWithModeSlider} object-contain	  object-center rounded-lg`}
 					/>
 				</div>
 			)}

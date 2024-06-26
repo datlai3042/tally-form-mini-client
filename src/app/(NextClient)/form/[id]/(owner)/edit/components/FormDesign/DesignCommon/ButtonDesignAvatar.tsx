@@ -13,6 +13,7 @@ const ButtonDesignAvatar = (props: TProps) => {
 	const { isDesignForm, setIsDesginForm } = useContext(FormDesignContext);
 
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
+	const formAvatar = !!formCore.form_avatar?.form_avatar_url || false;
 	const colorMain = useSelector((state: RootState) => state.form.colorCore);
 
 	const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const ButtonDesignAvatar = (props: TProps) => {
 			...formClone,
 			form_avatar: {
 				...formClone.form_avatar,
-				mode: value,
+				mode_shape: value,
 			},
 		} as FormCore.Form;
 
@@ -67,36 +68,39 @@ const ButtonDesignAvatar = (props: TProps) => {
 		<div className="px-[2rem] flex flex-col  gap-[4rem]">
 			<div className="flex gap-[4rem] ">
 				<button
+					disabled={!formAvatar}
 					onClick={() => {
 						onChangeAvatarPosition("left");
 						setPositionAvatar("left");
 					}}
 					className={`${styleEffect.onCheckStyleActive(
 						positionAvatar === "left"
-					)} w-[3rem] h-[3rem] flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
+					)} w-[3rem] h-[3rem] disabled:cursor-not-allowed flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
 				>
 					<AlignLeft size={18} style={{ color: colorMain }} />
 				</button>
 
 				<button
+					disabled={!formAvatar}
 					onClick={() => {
 						onChangeAvatarPosition("center");
 						setPositionAvatar("center");
 					}}
 					className={`${styleEffect.onCheckStyleActive(
 						positionAvatar === "center"
-					)} w-[3rem] h-[3rem] flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
+					)} w-[3rem] h-[3rem] disabled:cursor-not-allowed flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
 				>
 					<AlignCenter size={18} style={{ color: colorMain }} />
 				</button>
 				<button
+					disabled={!formAvatar}
 					onClick={() => {
 						onChangeAvatarPosition("right");
 						setPositionAvatar("right");
 					}}
 					className={`${styleEffect.onCheckStyleActive(
 						positionAvatar === "right"
-					)} w-[3rem] h-[3rem] flex items-center justify-center   border-[.1rem] border-slate-300  rounded-full  bg-[#ffffff]`}
+					)} w-[3rem] h-[3rem] disabled:cursor-not-allowed flex items-center justify-center   border-[.1rem] border-slate-300  rounded-full  bg-[#ffffff]`}
 				>
 					<AlignRight size={18} style={{ color: colorMain }} />
 				</button>
@@ -104,24 +108,26 @@ const ButtonDesignAvatar = (props: TProps) => {
 
 			<div className="flex  gap-[4rem] ">
 				<button
+					disabled={!formAvatar}
 					onClick={() => {
 						onChangeAvatarMode("circle");
 						setModeCurrent("circle");
 					}}
 					className={`${styleEffect.onCheckStyleActive(
 						modeCurrent === "circle"
-					)} w-[3rem] h-[3rem] flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
+					)} w-[3rem] h-[3rem] disabled:cursor-not-allowed flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
 				>
 					<Circle size={18} style={{ color: colorMain }} />
 				</button>
 				<button
+					disabled={!formAvatar}
 					onClick={() => {
 						onChangeAvatarMode("square");
 						setModeCurrent("square");
 					}}
 					className={`${styleEffect.onCheckStyleActive(
 						modeCurrent === "square"
-					)} w-[3rem] h-[3rem] flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
+					)} w-[3rem] h-[3rem] disabled:cursor-not-allowed flex items-center justify-center   border-[.1rem] border-slate-300   rounded-full  bg-[#ffffff]`}
 				>
 					<Square size={18} style={{ color: colorMain }} />
 				</button>

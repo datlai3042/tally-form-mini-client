@@ -10,6 +10,8 @@ import FormAnswerProvider from "@/app/(NextClient)/_components/provider/FormAnsw
 import StatusCodeResponse from "@/app/(NextClient)/_components/_StatusCodeComponent/StatusCodeResponse";
 import NotFoundPage from "../../_components/_StatusCodeComponent/NotFoundPage";
 import FormAnswerHeader from "./_components/FormAnswerHeader";
+import { stringToSlug } from "@/app/_lib/utils";
+import FormAnswerEmpty from "./_components/InputAnswer/FormAnswerEmpty";
 
 const getFormCache = cache(FormService.getFormGuess);
 
@@ -20,9 +22,10 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 	const { form } = res.metadata;
 
 	const iconForm = form?.form_avatar?.form_avatar_url || form?.form_setting_default.form_avatar_default_url;
+	const title = stringToSlug(form?.form_title.form_title_value || "");
 
 	return {
-		title: form?.form_title.form_title_value || "Không tìm thấy thông tin",
+		title: title || "Không tìm thấy thông tin",
 		icons: {
 			icon: iconForm,
 		},
@@ -32,9 +35,9 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 		openGraph: {
 			type: "website",
 			locale: "vi",
-			title: form.form_title.form_title_value,
+			title: title,
 			siteName: "Một cách để tạo Form nhanh chóng",
-			url: process.env.NEXT_PUBLIC_BACK_END_URL + "/form/" + form._id,
+			url: process.env.NEXT_PUBLIC_BACK_END_URL + "/form/" + form?._id,
 			images: [{ url: iconForm }],
 		},
 	};
@@ -66,22 +69,25 @@ const FormPage = async ({ params }: { params: { id: string } }) => {
 
 	return (
 		<div className="px-[2rem] xl:px-0 w-full  min-h-screen h-max flex justify-center  p-[2rem] bg-formCoreBgColor ">
-			<DivNative className="w-full sm:w-[64rem] flex flex-col gap-[1.5rem] ">
-				<DivNative className="relative w-full ">
-					<FormAnswerHeader formCore={formCore} />
-				</DivNative>
-				<DivNative
-					className={`${
-						formCore.form_background?.form_background_iamge_url ? "mt-[6rem]" : ""
-					} w-full rounded-lg`}
-				>
-					<DivNative className="flex flex-col gap-[3rem]">
-						<FormAnswerProvider formCore={formCore}>
-							<RenderInputAnswers formCore={formCore} />
-						</FormAnswerProvider>
+			{formCore.form_inputs.length === 0 && !formCore.form_title.form_title_value && <FormAnswerEmpty />}
+			{(formCore.form_inputs.length > 0 || formCore.form_title.form_title_value) && (
+				<DivNative className="w-full sm:w-[64rem] flex flex-col gap-[1.5rem] ">
+					<DivNative className="relative w-full ">
+						<FormAnswerHeader formCore={formCore} />
+					</DivNative>
+					<DivNative
+						className={`${
+							formCore.form_background?.form_background_iamge_url ? "mt-[6rem]" : ""
+						} w-full rounded-lg`}
+					>
+						<DivNative className="flex flex-col gap-[3rem]">
+							<FormAnswerProvider formCore={formCore}>
+								<RenderInputAnswers formCore={formCore} />
+							</FormAnswerProvider>
+						</DivNative>
 					</DivNative>
 				</DivNative>
-			</DivNative>
+			)}
 		</div>
 	);
 };

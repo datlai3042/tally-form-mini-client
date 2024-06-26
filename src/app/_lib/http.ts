@@ -67,8 +67,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 		credentials: "include",
 	};
 
-	console.log({ optionsRequest, fullUrl });
-
 	const response = await fetch(fullUrl, optionsRequest)
 		.then((data: any) => data)
 		.catch((e: Error) => {
@@ -96,7 +94,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 	const payload: Response = await response.json();
 
 	if ("v1/api/auth/set-token".includes(normalizePath(url))) {
-		console.log({ payload });
 		const { expireToken, code_verify_token } = payload as { expireToken: string; code_verify_token: string };
 
 		setValueLocalStorage("expireToken", expireToken);
@@ -133,7 +130,6 @@ export const resquest = async <Response>(method: Method, url: string, options?: 
 class Http {
 	static get<Response>(url: string, options: Omit<CustomRequest, "body"> = {}) {
 		const method: Method = "GET";
-		console.log(options, url);
 		return resquest<Response>(method, url, options);
 	}
 

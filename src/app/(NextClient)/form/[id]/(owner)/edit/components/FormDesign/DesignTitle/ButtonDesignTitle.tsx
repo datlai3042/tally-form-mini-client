@@ -13,16 +13,12 @@ const ButtonDesignTitle = (props: ButtonDesginProps) => {
 
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 
-	const colorMain = formCore.form_title.form_title_color || formCore.form_setting_default.form_title_color_default;
-
 	return (
 		<button
-			// style={{ color: colorMain }}
 			{...buttonProps}
 			className={` ${
 				buttonProps.className || ""
 			}  text-textHeader  rounded-xl text-[1.5rem] font-bold hover:bg-gray-200 hover:text-slate-700 w-max px-[1rem] h-[4rem]  flex items-center sm:justify-center gap-[.5rem]  outline-none`}
-			// onClick={onOpenDesignModel}
 		>
 			<LayoutTemplate />
 			{textContent}

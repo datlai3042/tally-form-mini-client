@@ -17,15 +17,23 @@ import NotFoundPage from "@/app/(NextClient)/_components/_StatusCodeComponent/No
 import AnswerDetailModel from "../summary/_components/AnswerDetailModel";
 moment.locale("vi");
 
+type TProps = {};
+
 const SubmitFormPage = () => {
-	const { dataExcel, dataFormShowExcel, form_id } = useSelector((state: RootState) => state.dataFormHandler);
+	const { form_id_current } = useSelector((state: RootState) => state.dataFormHandler);
+
+	const formCache = useSelector((state: RootState) => state.dataFormHandler.form_cache[form_id_current]);
 
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
-	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[form_id]);
+	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[form_id_current]);
 	const dispatch = useDispatch();
 
 	const [openDetailAnswer, setOpenDetailAnswer] = useState<boolean>(false);
 	const [formAnswerDetail, setFormAnswerDetail] = useState<FormCore.FormAnswer.OneReport | null>(null);
+
+	if (!formCache) return <NotFoundPage />;
+
+	const { dataExcel, dataFormShowExcel } = formCache;
 
 	const color = formCore.form_title.form_title_color
 		? formCore.form_title.form_title_color

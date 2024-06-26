@@ -5,7 +5,6 @@ import { NotificationMode } from "../(NextClient)/(user)/notification/_component
 
 class NotificationService {
 	static async getAllNotification() {
-		console.log("run dispatch");
 		return Http.get<ResponseApi<{ notification_user: Notification.NotificationUser }>>(
 			"/v1/api/notification/get-all-notification",
 			{ cache: "no-store" }

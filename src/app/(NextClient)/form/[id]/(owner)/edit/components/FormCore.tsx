@@ -2,6 +2,11 @@
 
 import React, { useContext, useEffect, useMemo } from "react";
 
+import { RootState } from "@/app/_lib/redux/store";
+import { FormDesignContext } from "@/app/(NextClient)/_components/provider/FormDesignProvider";
+import { SidebarContext } from "@/app/(NextClient)/(user)/dashboard/SidebarContext";
+import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
+
 import InputCoreText from "./InputCore/InputCoreText";
 import InputCoreEmail from "./InputCore/InputCoreEmail";
 import { InputCore, FormCore as TFormCore } from "@/type";
@@ -12,17 +17,14 @@ import InputCoreDate from "./InputCore/InputCoreDate";
 
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
-import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
 import ButtonAddAvatarForm from "@/app/(NextClient)/_components/ui/button/ButtonAddAvatarForm";
 import ButtonAddBackgroundForm from "@/app/(NextClient)/_components/ui/button/ButtonAddBackgroudForm";
 
 import FormImage from "./FormImage";
 import FormPageGuess from "@/app/(NextClient)/_components/Layout/FormPageGuess";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/app/_lib/redux/store";
-import { FormDesignContext } from "@/app/(NextClient)/_components/provider/FormDesignProvider";
+
 import ButtonDesgin from "./FormDesign/DesignCommon/ButtonDesgin";
-import { SidebarContext } from "@/app/(NextClient)/(user)/dashboard/SidebarContext";
 
 import {
 	DndContext,
@@ -75,7 +77,7 @@ const FormCore = () => {
 	const colorMain = useSelector((state: RootState) => state.form.colorCore);
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
 	const { openFormDesign } = useContext(FormDesignContext);
-	const { setOpenSidebar } = useContext(SidebarContext);
+	const { openSidebar, setOpenSidebar } = useContext(SidebarContext);
 
 	const updateFormAPI = useUpdateForm();
 
@@ -127,37 +129,41 @@ const FormCore = () => {
 		window.scrollTo(0, 0);
 	}, []);
 
+	const showComponentImage =
+		formCore.form_avatar ||
+		formCore.form_background ||
+		formCore.form_background_state ||
+		formCore.form_avatar_state;
+
+	const containerStyleWhenOpenFormDesign = openFormDesign ? "mr-[36rem]" : "";
+	const wrapperStyleWhenOpenFormDesign = openFormDesign
+		? "w-[79rem]"
+		: "min-w-[35rem] sm:min-w-[45rem] xl:min-w-[60rem] xl:w-max";
+
+	const wrapperStyleWhenOpenSideBar = openSidebar ? "sm:px-[2rem]" : "sm:px-[8rem]";
+
+	const gapWhenAppearImage = !(formCore.form_avatar || formCore.form_avatar_state)
+		? "pt-0"
+		: "pt-[5rem] sm:pt-[8rem]";
+
+	const heightWhenAppearImage = !(formCore.form_avatar_state && formCore.form_background_state)
+		? " sm:min-h-[7rem]"
+		: "sm:min-h-[4rem]";
+
 	return (
 		<>
 			{modeScreen === "NORMAL" && (
 				<DivNative
-					className={`${
-						openFormDesign ? "mr-[28rem]" : ""
-					} w-full pt-[4rem] pb-[50rem] sm:pb-[30rem] px-[2rem] sm:px-0  h-max  xl:ml-0 flex flex-col gap-[3rem]`}
+					className={`${containerStyleWhenOpenFormDesign} w-full pt-[4rem] pb-[50rem] sm:pb-[30rem] px-[2rem] sm:px-0  h-max  xl:ml-0 flex flex-col gap-[3rem]`}
 				>
-					{(formCore.form_avatar ||
-						formCore.form_background ||
-						formCore.form_background_state ||
-						formCore.form_avatar_state) && <FormImage />}
+					{showComponentImage && <FormImage />}
 
 					<DivNative
-						className={`${
-							openFormDesign ? "w-[79rem]" : "min-w-[35rem] sm:min-w-[60rem] xl:w-max"
-						} px-[1rem] sm:px-[4rem]  w-full xl:max-w-[70rem] mx-auto  h-max xl:pl-0  flex flex-col pb-[4rem] gap-[2rem] `}
+						className={`${wrapperStyleWhenOpenFormDesign} ${wrapperStyleWhenOpenSideBar} px-[1rem]  w-full xl:max-w-[70rem] mx-auto  h-max xl:pl-0  flex flex-col  xl:pb-[4rem] gap-[4rem] xl:gap-[2rem] `}
 					>
-						<DivNative
-							className={`${
-								!(formCore.form_avatar || formCore.form_avatar_state)
-									? "pt-0"
-									: "pt-[5rem] sm:pt-[8rem]"
-							}`}
-						>
+						<DivNative className={`${gapWhenAppearImage}`}>
 							<DivNative
-								className={`${
-									!(formCore.form_avatar_state && formCore.form_background_state)
-										? " sm:min-h-[7rem]"
-										: "sm:min-h-[4rem]"
-								} group max-h-[18rem] sm:max-h-[8rem] xl:min-h-max `}
+								className={`${heightWhenAppearImage} group max-h-[18rem] sm:max-h-[8rem] xl:min-h-max `}
 							>
 								<DivNative className="mt-[2rem] w-full xl:min-w-[80rem] xl:w-max h-full   flex flex-wrap flex-col sm:flex-row sm:items-center  gap-[2rem]">
 									<ButtonDesgin className={`${openFormDesign ? "xl:ml-[8rem]" : "ml-0"}`} />
@@ -176,18 +182,26 @@ const FormCore = () => {
 
 						<DivNative className={`${openFormDesign ? "xl:ml-[8rem]" : "ml-0"} flex flex-col gap-[4rem]`}>
 							<InputCoreTitle />
-							<DivNative className=" h-max w-full flex flex-col gap-[8rem] ">
-								<DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={onDrapEnd}>
-									<SortableContext
-										items={
-											formCore.form_inputs.map((ip) => ip._id) as unknown as UniqueIdentifier[]
-										}
-										strategy={verticalListSortingStrategy}
+							{formCore.form_inputs.length > 0 && (
+								<DivNative className=" h-max w-full flex flex-col gap-[8rem] ">
+									<DndContext
+										sensors={sensors}
+										collisionDetection={closestCorners}
+										onDragEnd={onDrapEnd}
 									>
-										{RenderArrayInput}
-									</SortableContext>
-								</DndContext>
-							</DivNative>
+										<SortableContext
+											items={
+												formCore.form_inputs.map(
+													(ip) => ip._id
+												) as unknown as UniqueIdentifier[]
+											}
+											strategy={verticalListSortingStrategy}
+										>
+											{RenderArrayInput}
+										</SortableContext>
+									</DndContext>
+								</DivNative>
+							)}
 							<ButtonAddInput />
 							<ButtonNative
 								style={{ backgroundColor: colorMain }}

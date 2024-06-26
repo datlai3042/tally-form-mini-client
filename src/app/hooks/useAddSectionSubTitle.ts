@@ -9,7 +9,7 @@ const useAddSectionSubTitle = () => {
 
 	const addSubTitleItem = useMutation({
 		mutationKey: ["update-title-sub"],
-		mutationFn: ({ type, form_id }: { type: FormCore.Title.TitleSub; form_id: string }) =>
+		mutationFn: ({ type, form_id }: { type: FormCore.FormTitleSub.FormTitleBase["type"]; form_id: string }) =>
 			FormService.addSubTitleItem({ type, form_id }),
 		onSuccess: (res) => {
 			const { form } = res.metadata;

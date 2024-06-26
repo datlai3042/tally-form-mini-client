@@ -6,7 +6,7 @@ import ButtonDesignAvatar from "./DesignCommon/ButtonDesignAvatar";
 const FormDesignAvatar = () => {
 	const formCore = useSelector((state: RootState) => state.form.formCoreBackUp);
 
-	const formAvatar = !!formCore.form_avatar?.form_avatar_url || formCore.form_avatar_state || false;
+	const formAvatar = !!formCore.form_avatar?.form_avatar_url || false;
 
 	const styleEffect = {
 		onCheckHasBackground: (check: boolean) => {

@@ -23,6 +23,7 @@ const formAnswerSlice = createSlice({
 			data: PayloadAction<{ form_id: string; reports: FormCore.FormAnswer.FormAnswerCore }>
 		) => {
 			const { form_id, reports } = data.payload;
+			console.log({ dispatch: data.type });
 			state.formAnswerStore = { ...state.formAnswerStore };
 			state.formAnswerStore[form_id] = { ...state.formAnswerStore[form_id], formAnswer: reports };
 		},

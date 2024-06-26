@@ -38,8 +38,20 @@ class FormService {
 		});
 	}
 
-	static async addSubTitleItem({ type, form_id }: { type: FormCore.Title.TitleSub; form_id: string }) {
+	static async addSubTitleItem({
+		type,
+		form_id,
+	}: {
+		type: FormCore.FormTitleSub.FormTitleBase["type"];
+		form_id: string;
+	}) {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/add-sub-title-item", { type, form_id });
+	}
+
+	static async deleteTitleSubItem({ title_sub_id, form_id }: { title_sub_id: string; form_id: string }) {
+		return Http.delete<ResponseApi<{ form: FormCore.Form }>>(
+			`/v1/api/form/delete-sub-title-item?form_id=${form_id}&title_sub_id=${title_sub_id}`
+		);
 	}
 
 	static async changeModeForm({ mode, form_id }: { mode: FormCore.FormState; form_id: string }) {
@@ -68,7 +80,32 @@ class FormService {
 		});
 	}
 
-	static async setModeImageForm({ form_id, mode }: { form_id: string; mode: FormCore.Title.FormTitleImageMode }) {
+	static async updateSubTitleDescription({
+		header_value,
+		value,
+		title_sub_id,
+		form_id,
+	}: {
+		header_value: string;
+		value: string;
+		title_sub_id: string;
+		form_id: string;
+	}) {
+		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-sub-title-description", {
+			header_value,
+			value,
+			title_sub_id,
+			form_id,
+		});
+	}
+
+	static async setModeImageForm({
+		form_id,
+		mode,
+	}: {
+		form_id: string;
+		mode: FormCore.FormTitle["form_title_mode_image"];
+	}) {
 		return Http.post<ResponseApi<{ form: FormCore.Form }>>("/v1/api/form/update-form-title-mode-image", {
 			form_id,
 			mode,

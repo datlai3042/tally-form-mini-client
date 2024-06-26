@@ -2,6 +2,10 @@ import { CustomRequest, FormCore, InputCore } from "@/type";
 import { inputSettingText } from "../_constant/input.constant";
 import Http from "./http";
 import { ResponseApi } from "../_schema/api/response.shema";
+import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
+import store from "./redux/store";
+import { onCalculationData } from "./redux/features/dataForm.slice";
+import moment from "moment";
 
 export const validateEmail = (email: string) => {
 	const regex = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
@@ -66,8 +70,6 @@ export const generateInfoRequest = (url: string, options: CustomRequest) => {
 	}
 
 	const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
-
-	console.log({ endPoint: fullUrl });
 
 	return { body, baseHeader, baseUrl, fullUrl };
 };
@@ -194,4 +196,93 @@ export const filterTypeInput = <InputType extends InputCore.InputForm>(
 	inputItem: InputCore.InputForm
 ): inputItem is InputType => {
 	return _id === inputItem._id;
+};
+
+export const handleDataForm = (reports: FormCore.FormAnswer.FormAnswerCore["reports"], form_id: string) => {
+	let dataExcel: { [key: string]: string }[] = [];
+
+	let filterFormShowChart: {
+		[key: string]: {
+			_id: string;
+			title: string;
+			value: string | string[];
+			time: Date;
+			form_answer_id: string;
+		}[];
+	} = {};
+
+	let filterFormShowExcel: {
+		[key: string]: {
+			_id: string;
+			title: string;
+			value: string | string[];
+			time: Date;
+			form_answer_id: string;
+		}[];
+	} = {};
+	reports.map((rp) => {
+		let dataXlsx = {};
+		rp.answers.map((ans) => {
+			const convertArrayValueToString = typeof ans.value === "string" ? ans.value : ans.value.join(", ");
+			dataXlsx = {
+				...dataXlsx,
+				"Thời gian gửi": moment(new Date(rp.createdAt)).format("hh:mm Do MMMM YYYY"),
+				[ans.title]: convertArrayValueToString,
+			};
+			if (!filterFormShowChart[ans._id]) {
+				filterFormShowChart[ans._id] = [];
+				filterFormShowChart[ans._id].push({
+					_id: ans._id,
+					title: ans.title,
+					value: convertArrayValueToString,
+					time: rp.createdAt,
+					form_answer_id: rp._id,
+				});
+			} else {
+				filterFormShowChart[ans._id] = filterFormShowChart[ans._id].concat({
+					_id: ans._id,
+					title: ans.title,
+					value: convertArrayValueToString,
+					time: rp.createdAt,
+					form_answer_id: rp._id,
+				});
+			}
+
+			if (!filterFormShowExcel[ans._id + "_#_" + ans.type]) {
+				filterFormShowExcel[ans._id + "_#_" + ans.type] = [];
+
+				const answerItem = {
+					_id: ans._id,
+					title: ans.title,
+					value: ans.value as string,
+					time: rp.createdAt,
+					form_answer_id: rp._id,
+				};
+
+				filterFormShowExcel[ans._id + "_#_" + ans.type].push(answerItem);
+			} else {
+				filterFormShowExcel[ans._id + "_#_" + ans.type] = filterFormShowExcel[
+					ans._id + "_#_" + ans.type
+				].concat({
+					_id: ans._id,
+					title: ans.title,
+					value: ans.value,
+					time: rp.createdAt,
+					form_answer_id: rp._id,
+				});
+			}
+		});
+
+		dataExcel = dataExcel.concat(dataXlsx);
+	});
+	store.dispatch(
+		onCalculationData({
+			dataFormShowChart: filterFormShowChart,
+			dataFormShowExcel: filterFormShowExcel,
+			dataExcel: dataExcel,
+			form_id,
+			form_answer_total: reports.length,
+		})
+	);
+	return true;
 };

@@ -9,7 +9,7 @@ import ModelShowImage from "./ModelShowImage";
 import FormTitleImage from "../../form/[id]/(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
 
 type TProps = {
-	images: string[] | FormCore.Title.FormTitleSub[];
+	images: FormCore.FormTitleSub.Image.Core[];
 	type: "stringUrl" | "Components";
 	page: "Edit" | "Answer";
 	colorMain: string;
@@ -55,12 +55,12 @@ const SliderImage = (props: TProps) => {
 		}
 	}, [indexImage]);
 
-	const widthPage = page === "Edit" ? "w-[35rem] sm:w-[50rem] xl:w-[80rem] w-full" : "w-[62rem]";
+	const widthPage = page === "Edit" ? "w-[35rem] sm:w-[50rem] xl:w-[70rem] w-full" : "w-[62rem]";
 
 	return (
 		<div
 			ref={divContainerRef}
-			className={`${widthPage} relative  pb-[6rem] h-max overflow-y-hidden overflow-x-hidden`}
+			className={`${widthPage} relative h-[47rem] pb-[6rem]  overflow-y-hidden overflow-x-hidden`}
 		>
 			<button
 				style={{ backgroundColor: colorMain }}
@@ -70,8 +70,8 @@ const SliderImage = (props: TProps) => {
 			>
 				<ChevronRight color="white" />
 			</button>
-			<div ref={divRef} className="min-w-full h-max w-max  flex pb-[5rem]  ">
-				{type === "stringUrl" &&
+			<div ref={divRef} className="min-w-full max-h-[30rem] w-max  flex items-center justify-center   ">
+				{/* {type === "stringUrl" &&
 					(images as string[]).map((image) => (
 						<Image
 							src={image}
@@ -82,19 +82,19 @@ const SliderImage = (props: TProps) => {
 							alt="form iamge"
 							className="!min-w-full w-[15rem] !h-[30rem] object-contain object-center "
 						/>
-					))}
+					))} */}
 
 				{type === "Components" &&
-					(images as FormCore.Title.FormTitleSub[]).map((img) => (
-						<div key={img._id} className="w-full min-h-[80%]" onClick={() => setShowImageModel(true)}>
-							<FormTitleImage mode="Slider" page={page} subTitleItem={img} className="!min-h-full " />
+					(images as FormCore.FormTitleSub.Image.Core[]).map((img) => (
+						<div key={img._id} className="w-full max-h-[30rem]" onClick={() => setShowImageModel(true)}>
+							<FormTitleImage mode="Slider" page={page} subTitleItem={img} className="!h-[30rem] " />
 						</div>
 					))}
 			</div>
 			{showImageModel && (
 				<ModelShowImage
-					imageActive={(images as FormCore.Title.FormTitleSub[])[indexImage].value}
-					imagesUrl={(images as FormCore.Title.FormTitleSub[]).map((img) => img.value)}
+					imageActive={images[indexImage].core.url}
+					imagesUrl={images.map((img) => img.core.url)}
 					setOpenModel={setShowImageModel}
 				/>
 			)}
@@ -121,15 +121,15 @@ const SliderImage = (props: TProps) => {
 				))}
 			</div>
 			{type === "Components" && (
-				<div className="absolute bottom-[4rem]  left-[50%] translate-x-[-50%] flex gap-[2rem] hover:cursor-pointer">
-					{(images as FormCore.Title.FormTitleSub[]).map((img, i) => (
+				<div className="absolute bottom-[5rem]  left-[50%] translate-x-[-50%] flex gap-[2rem] hover:cursor-pointer">
+					{images.map((img, i) => (
 						<div
 							key={img._id}
 							onClick={() => iamgeChange(i)}
 							className="relative group w-[7rem] h-[7rem] rounded-lg overflow-hidden"
 						>
 							<Image
-								src={img.value}
+								src={img.core.url}
 								width={70}
 								height={70}
 								alt="image form"

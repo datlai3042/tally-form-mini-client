@@ -152,6 +152,11 @@
 		background-color: var(--bg-input-core);
 	}
 
+	button,
+	input {
+		outline: none;
+	}
+
 	/* Handle on hover */
 }
 

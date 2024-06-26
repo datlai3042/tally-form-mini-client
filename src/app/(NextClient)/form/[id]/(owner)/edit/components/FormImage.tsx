@@ -19,8 +19,8 @@ const FormImage = () => {
 	return (
 		<DivNative
 			className={`${styleEffect.onCheckBackground(
-				!!formCore.form_background_state || !!formCore.form_background?.form_background_iamge_url
-			)} group relative w-full aspect-[3/1] `}
+				!!formCore.form_background?.form_background_iamge_url
+			)} group  relative w-full min-h-[40rem] h-max `}
 		>
 			{(formCore.form_background || formCore.form_background_state) && <FormBackground />}
 

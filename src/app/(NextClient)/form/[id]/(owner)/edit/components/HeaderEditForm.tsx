@@ -54,8 +54,11 @@ const HeaderEditForm = (props: TProps) => {
 		onCheckLengthTitle: () => {
 			return formCore?.form_title ? "w-max max-w-[9rem] xl:max-w-[20rem]" : "w-max";
 		},
-		onCheckOpenDesignForm: () => {
-			if (openFormDesign) return "w-[77%]";
+
+		onCheckWidthHeader: () => {
+			if (openFormDesign && !openSidebar) return "w-[78%]";
+			if (openSidebar && !openFormDesign) return "w-full sm:w-[65%] xl:w-[86%] xl:left-[14%]";
+			if (openSidebar && openFormDesign) return "w-full sm:w-[65%] xl:w-[68%] xl:left-[14%]";
 			return "w-full";
 		},
 	};
@@ -66,7 +69,7 @@ const HeaderEditForm = (props: TProps) => {
 
 	return (
 		<DivNative
-			className={`${styleEffect.onCheckOpenDesignForm()} relative z-[101]  h-[5rem] p-[.8rem_1.8rem]  flex items-center justify-between gap-[1rem] text-[1.3rem]`}
+			className={`${styleEffect.onCheckWidthHeader()}  bg-[#fff] fixed  z-[101]  h-[5rem] p-[.8rem_1.8rem]  flex items-center justify-between gap-[1rem] text-[1.3rem]`}
 		>
 			<DivNative className="h-[3.6rem] flex items-center   text-textHeader ">
 				{!openSidebar && <ButtonIcon Icon={<ChevronsRight />} onClick={() => setOpenSidebar(true)} />}

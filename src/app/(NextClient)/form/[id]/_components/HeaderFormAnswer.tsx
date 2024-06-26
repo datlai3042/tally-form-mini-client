@@ -1,8 +1,9 @@
 import { renderStyleTitleCore } from "@/app/_lib/utils";
 import { FormCore } from "@/type";
-import React from "react";
+import React, { useContext } from "react";
 import FormTitleImage from "../(owner)/edit/components/FormDesign/DesignTitle/FormTitleImage";
 import SliderImage from "@/app/(NextClient)/_components/Model/SliderImage";
+import { FormAnswerContext } from "@/app/(NextClient)/_components/provider/FormAnswerProvider";
 
 type TProps = {
 	formCore: FormCore.Form;
@@ -11,8 +12,12 @@ type TProps = {
 const HeaderFormAnswer = (props: TProps) => {
 	const { formCore } = props;
 
+	const {
+		formAnswer: { inputFormRequire },
+	} = useContext(FormAnswerContext);
+
 	const colorMain = formCore.form_title.form_title_color || formCore.form_setting_default.form_title_color_default;
-	const checkMode: FormCore.Title.FormTitleImageMode = "Slider";
+	const checkMode: FormCore.FormTitle["form_title_mode_image"] = "Slider";
 
 	let flag = false;
 
@@ -24,10 +29,10 @@ const HeaderFormAnswer = (props: TProps) => {
 			<h1 className="text-[3.2rem] ">{formCore.form_title.form_title_value}</h1>
 
 			{formCore.form_title.form_title_sub.map((ft) => {
-				if (ft.type === "Text" && ft.write)
+				if (ft.type === "Text" && ft.core.value)
 					return (
 						<span key={ft._id} className="text-[1.4rem] text-justify leading-10">
-							{ft.value}123
+							{ft.core.value}
 						</span>
 					);
 				if (ft.type === "Image") {
@@ -38,8 +43,8 @@ const HeaderFormAnswer = (props: TProps) => {
 					if (formCore.form_title.form_title_mode_image === "Slider" && !flag) {
 						flag = true;
 						const images = formCore.form_title.form_title_sub.filter(
-							(image) => image.type === "Image" && image.value
-						);
+							(image) => image.type === "Image" && image.core.url
+						) as FormCore.FormTitleSub.Image.Core[];
 						return (
 							<SliderImage
 								colorMain={colorMain as string}
@@ -53,7 +58,9 @@ const HeaderFormAnswer = (props: TProps) => {
 				}
 			})}
 
-			<span className="text-red-600 text-[1.4rem] mt-[2rem]">* Biểu thị câu hỏi bắt buộc</span>
+			{inputFormRequire.length > 0 && (
+				<span className="text-red-600 text-[1.4rem] mt-[2rem]">* Biểu thị câu hỏi bắt buộc</span>
+			)}
 		</header>
 	);
 };

@@ -1,19 +1,21 @@
-import ModelFormImage from "@/app/(NextClient)/_components/Model/ModelFormImage";
-import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
-import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
-import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
-import ButtonRemoveBackgroudForm from "@/app/(NextClient)/_components/ui/button/ButtonRemoveBackgroudForm";
-import ButtonSave from "@/app/(NextClient)/_components/ui/button/ButtonSave";
-import { RootState } from "@/app/_lib/redux/store";
 import { FormCore } from "@/type";
+import { RootState } from "@/app/_lib/redux/store";
+
 import React, { useContext, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useMouse, useMove } from "@mantine/hooks";
+import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
+
+import ModelFormImage from "@/app/(NextClient)/_components/Model/ModelFormImage";
+import ButtonSave from "@/app/(NextClient)/_components/ui/button/ButtonSave";
+import ButtonNative from "@/app/(NextClient)/_components/ui/NativeHtml/ButtonNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
+import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
+
+import { useSelector } from "react-redux";
+import { generateStyleBackgroundImageForm } from "@/app/utils/form.utils";
+import Image from "next/image";
 
 const FormBackground = () => {
 	const { modeScreen, setModeScreen } = useContext(FormModeScreenContext);
-	const dispatch = useDispatch();
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 	const [openModel, setOpenModel] = useState<boolean>(false);
 
@@ -21,36 +23,37 @@ const FormBackground = () => {
 		setOpenModel((prev) => !prev);
 	};
 
+	const formBackgroundColor = formCore.form_background?.backgroundColor || "";
+
 	const onSetScreen = () => {
 		if (modeScreen === "FULL") return setModeScreen("NORMAL");
 		return setModeScreen("FULL");
 	};
 
-	const formBackgroundImageUrl =
-		formCore.form_background?.form_background_iamge_url ||
-		formCore.form_setting_default.form_background_default_url;
-	const formBackgroundPosition =
-		formCore.form_background?.form_background_position ||
-		formCore.form_setting_default.form_background_position_default;
+	const myBackgroundStyle = generateStyleBackgroundImageForm({ formCore });
 
-	const formBackgroundColor = formCore.form_background?.backgroundColor || "";
-	const formBackgroundSize = formCore.form_background?.mode_show;
+	const paddingX = formCore.form_background?.padding.x;
+	const paddingY = formCore.form_background?.padding.y;
 
-	const positionAvatar = formCore.form_avatar?.position;
+	const padding = `${paddingY}px ${paddingX}px`;
 
 	return (
 		<React.Fragment>
 			<DivNativeRef
 				onClick={() => setOpenModel(true)}
-				style={{
-					backgroundImage: `url("${formBackgroundImageUrl}")`,
-					backgroundRepeat: "no-repeat",
-					backgroundSize: formBackgroundSize,
-					backgroundPosition: ` ${formBackgroundPosition?.y || 0}px ${formBackgroundPosition?.x || 0}px`,
-					backgroundColor: formBackgroundColor,
-				}}
-				className="absolute inset-0 z-[2] hover:cursor-pointer "
-			></DivNativeRef>
+				style={{ backgroundColor: formBackgroundColor, padding }}
+				className="absolute inset-0 z-[2]  hover:cursor-pointer "
+			>
+				<Image
+					src={formCore.form_background?.form_background_iamge_url!}
+					width={800}
+					height={160}
+					quality={100}
+					style={myBackgroundStyle.style_background}
+					alt="form background"
+					className="w-full h-full   rounded-lg"
+				/>
+			</DivNativeRef>
 			{modeScreen === "NORMAL" && (
 				<React.Fragment>
 					<DivNative className={` flex xl:hidden absolute right-[1rem] top-[1rem]  gap-[1rem]`}>
@@ -72,9 +75,7 @@ const FormBackground = () => {
 						</DivNative>
 					</DivNative>
 					<DivNative
-						className={`${
-							positionAvatar === "left" ? "right-[2rem] xl:right-[6rem]" : "left-[2rem] xl:left-[6rem]"
-						} hidden group-hover:flex absolute gap-[1rem]  flex-col justify-center  bottom-[2rem] z-[3]`}
+						className={`${myBackgroundStyle.position_buttn} hidden group-hover:flex absolute gap-[1rem]  flex-col justify-center  bottom-[2rem] z-[3]`}
 					>
 						<ButtonNative
 							onClick={() => setOpenModel(true)}

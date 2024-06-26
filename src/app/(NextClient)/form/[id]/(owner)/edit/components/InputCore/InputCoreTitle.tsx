@@ -83,7 +83,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 						}`,
 					}}
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} py-[1rem] w-full   title-core group min-h-[10rem]  max-w-full xl:max-w-[90rem]  break-words flex items-center  h-max border-none outline-none   text-[4rem]  font-extrabold text-justify hover:cursor-pointer`}
+					className={`${styleEffect.onCheckTitle()} py-[1rem] w-full   title-core group min-h-[8rem]  max-w-full xl:max-w-[90rem]  break-words flex items-center  h-max border-none outline-none     font-extrabold text-justify hover:cursor-pointer`}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}

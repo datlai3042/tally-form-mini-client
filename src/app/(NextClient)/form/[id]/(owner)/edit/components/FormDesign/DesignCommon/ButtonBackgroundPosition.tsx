@@ -1,19 +1,21 @@
+import { FormDesignContext } from "@/app/(NextClient)/_components/provider/FormDesignProvider";
 import { onEditForm } from "@/app/_lib/redux/features/formEdit.slice";
 import { RootState } from "@/app/_lib/redux/store";
 import { FormCore } from "@/type";
 import { useDebouncedCallback } from "@mantine/hooks";
-import React from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const ButtonPositionBackground = () => {
+const ButtonBackgroundPostition = () => {
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 	const colorMain = useSelector((state: RootState) => state.form.colorCore);
-
 	const dispatch = useDispatch();
+
+	const { isDesignForm, setIsDesginForm } = useContext(FormDesignContext);
+
 	const debounced = useDebouncedCallback((position: number, type: "x" | "y") => onChangePosition(position, type), 0);
 
-	const formBackground =
-		!!formCore.form_background?.form_background_iamge_url || formCore.form_background_state || false;
+	const formBackground = !!formCore.form_background?.form_background_iamge_url || false;
 
 	const styleEffect = {
 		onCheckHasBackground: (check: boolean) => {
@@ -39,7 +41,9 @@ const ButtonPositionBackground = () => {
 			} as FormCore.Form["form_background"],
 		};
 
-		console.log({ newForm });
+		if (!isDesignForm) {
+			setIsDesginForm(true);
+		}
 
 		dispatch(onEditForm({ form: newForm }));
 	};
@@ -48,33 +52,45 @@ const ButtonPositionBackground = () => {
 		<div className=" flex flex-col gap-[2rem]">
 			<div className="flex items-center gap-[2rem] ">
 				<span className="">Trục X</span>
-
-				<input
-					style={{ color: colorMain }}
-					disabled={!formBackground}
-					defaultValue={directionY}
-					type="number"
+				<div
 					className={`${styleEffect.onCheckHasBackground(
 						formBackground
-					)} w-[7rem] p-[.2rem_1.6rem]    border-[.1rem] border-slate-300  rounded-lg bg-[#ffffff]`}
-					onChange={(e) => debounced(+e.target.value, "y")}
-				/>
+					)} w-[7rem] flex items-center gap-[1rem] h-[3rem] p-[.2rem_1rem]
+border-[.1rem] border-slate-300  rounded-lg bg-[#ffffff]`}
+				>
+					<input
+						style={{ color: colorMain }}
+						disabled={!formBackground}
+						defaultValue={directionY}
+						type="number"
+						className={` w-[80%] disabled:cursor-not-allowed  `}
+						onChange={(e) => debounced(+e.target.value, "y")}
+					/>
+
+					<span className="opacity-75">%</span>
+				</div>
 			</div>
 			<div className="flex items-center gap-[2rem] ">
 				<span className="">Trục Y</span>
-				<input
-					style={{ color: colorMain }}
-					disabled={!formBackground}
-					defaultValue={directionX}
-					type="number"
+				<div
 					className={`${styleEffect.onCheckHasBackground(
 						formBackground
-					)} w-[7rem] p-[.2rem_1.6rem]    border-[.1rem] border-slate-300  rounded-lg bg-[#ffffff]`}
-					onChange={(e) => debounced(+e.target.value, "x")}
-				/>
+					)} w-[7rem] flex items-center gap-[1rem] h-[3rem] p-[.2rem_1rem]
+border-[.1rem] border-slate-300  rounded-lg bg-[#ffffff]`}
+				>
+					<input
+						style={{ color: colorMain }}
+						disabled={!formBackground}
+						defaultValue={directionX}
+						type="number"
+						className={` w-[80%] disabled:cursor-not-allowed  `}
+						onChange={(e) => debounced(+e.target.value, "x")}
+					/>
+					<span className="opacity-75">%</span>
+				</div>
 			</div>
 		</div>
 	);
 };
 
-export default ButtonPositionBackground;
+export default ButtonBackgroundPostition;

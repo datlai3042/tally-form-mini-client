@@ -19,21 +19,25 @@ import NotFoundPage from "@/app/(NextClient)/_components/_StatusCodeComponent/No
 moment.locale("vi");
 
 const SummaryFormPage = () => {
-	const { dataFormShowChart, form_id } = useSelector((state: RootState) => state.dataFormHandler);
+	const { form_id_current } = useSelector((state: RootState) => state.dataFormHandler);
+
+	const formCache = useSelector((state: RootState) => state.dataFormHandler.form_cache[form_id_current]);
 
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 	const colorMain = formCore.form_title.form_title_color || formCore.form_setting_default.form_title_color_default;
-	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[form_id]);
+	const formAnswerId = window.location.hash.slice(1);
+	const formAnswer = useSelector((state: RootState) => state.formAsnwer.formAnswerStore[form_id_current]);
 
 	const [openDetailAnswer, setOpenDetailAnswer] = useState<boolean>(false);
 	const [formAnswerDetail, setFormAnswerDetail] = useState<FormCore.FormAnswer.OneReport | null>(null);
-
-	const formAnswerId = window.location.hash.slice(1);
 
 	const [newCount, setNewCount] = useState({
 		old_count: formAnswer?.formAnswer.reports.length || 0,
 		newCount: formAnswer?.formAnswer.reports.length || 0,
 	});
+	if (!formCache) return <NotFoundPage />;
+
+	const { dataFormShowChart } = formCache;
 
 	return (
 		<div className="flex flex-col gap-[6rem] min-h-[30rem] pb-[8rem]">

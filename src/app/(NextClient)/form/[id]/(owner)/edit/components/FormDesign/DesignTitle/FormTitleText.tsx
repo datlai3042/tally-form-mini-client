@@ -1,6 +1,7 @@
 import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 import { RootState } from "@/app/_lib/redux/store";
 import FormService from "@/app/_services/form.service";
+import useDeleteTitleSubItem from "@/app/hooks/title_form/useDeleteTitleSubItem";
 import useUpdateForm from "@/app/hooks/useUpdateForm";
 import { FormCore } from "@/type";
 import { UniqueIdentifier } from "@dnd-kit/core";
@@ -12,13 +13,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 type TProps = {
-	subTitleItem: FormCore.Title.FormTitleSub;
+	subTitleItem: FormCore.FormTitleSub.Text.Core;
 };
 
 const FormTitleText = (props: TProps) => {
 	const { subTitleItem } = props;
 
-	const [value, setValue] = useState<string>(subTitleItem.value || "");
+	const [value, setValue] = useState<string>(subTitleItem?.core?.value || "");
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal);
 
 	const [isWritten, setIsWritten] = useState<boolean>(false);
@@ -45,7 +46,7 @@ const FormTitleText = (props: TProps) => {
 
 		const newForm = structuredClone(formCore);
 		const findIndex = newForm.form_title.form_title_sub.findIndex((ft) => ft._id === subTitleItem._id);
-		if (content && content !== newForm.form_title.form_title_sub[findIndex].value) {
+		if (content) {
 			setValue(content);
 
 			updateTitleSub.mutate({
@@ -74,15 +75,10 @@ const FormTitleText = (props: TProps) => {
 		},
 	});
 
-	const updateFormAPI = useUpdateForm();
+	const deleteTitleSubItem = useDeleteTitleSubItem();
 
 	const handleDelete = () => {
-		const newForm = structuredClone(formCore);
-		newForm.form_title.form_title_sub = newForm.form_title.form_title_sub.filter(
-			(ft) => ft._id !== subTitleItem._id
-		);
-		console.log({ newForm, subTitleItem });
-		updateFormAPI.mutate(newForm);
+		deleteTitleSubItem.mutate({ form_id: formCore._id, title_sub_id: subTitleItem._id });
 	};
 
 	return (
@@ -90,7 +86,7 @@ const FormTitleText = (props: TProps) => {
 			<button
 				className="flex items-center gap-[.5rem] text-[1.4rem] font-bold text-textHeader hover:text-slate-800"
 				onClick={handleDelete}
-				disabled={updateFormAPI.isPending}
+				disabled={deleteTitleSubItem.isPending}
 			>
 				<Trash2 size={16} />
 				Xóa

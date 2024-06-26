@@ -22,7 +22,6 @@ const notificationSlice = createSlice({
 			data: PayloadAction<{ notification: Notification.NotificationUser["notifications"]; animation?: boolean }>
 		) => {
 			const { notification, animation = false } = data.payload;
-			console.log({ notification });
 			state.notification = notification;
 			state.animation = animation;
 		},

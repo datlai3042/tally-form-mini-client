@@ -2,7 +2,7 @@ import { FormCore } from "@/type";
 import React from "react";
 
 type TProps = {
-	subTitleItem: FormCore.Title.FormTitleSub;
+	subTitleItem: string;
 };
 
 const FormTitleList = (props: TProps) => {

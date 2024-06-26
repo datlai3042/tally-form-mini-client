@@ -19,12 +19,7 @@ const DesignTitleForm = () => {
 
 	const addSubTitleItem = useAddSectionSubTitle();
 
-	const onAddTitleSub = (type: FormCore.Title.TitleSub) => {
-		// const data = {
-		// 	type,
-		// 	write: false,
-		// 	value: "",
-		// } as FormCore.Title.FormTitleSub;
+	const onAddTitleSub = (type: FormCore.FormTitleSub.FormTitleBase["type"]) => {
 		addSubTitleItem.mutate({ type, form_id: formCore._id });
 	};
 
@@ -39,6 +34,16 @@ const DesignTitleForm = () => {
 			</button>
 
 			<button
+				onClick={() => onAddTitleSub("FullDescription")}
+				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] bg-gray-200 rounded-lg"
+			>
+				<Type size={iconSize} />
+
+				{/* // eslint-disable-next-line jsx-a11y/alt-text */}
+				<span>{FormText.title.optionFullDescription.message}</span>
+			</button>
+
+			<button
 				onClick={() => onAddTitleSub("Image")}
 				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] bg-gray-200 rounded-lg"
 			>
@@ -46,6 +51,7 @@ const DesignTitleForm = () => {
 				<Image size={iconSize} />
 				<span>{FormText.title.optionImage.message}</span>
 			</button>
+
 			<FormTitleModeImage />
 		</div>
 	);

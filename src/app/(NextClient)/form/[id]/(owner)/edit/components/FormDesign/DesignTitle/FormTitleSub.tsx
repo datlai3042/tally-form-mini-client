@@ -19,9 +19,10 @@ import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-ki
 import { onFetchForm } from "@/app/_lib/redux/features/formEdit.slice";
 import SliderImage from "@/app/(NextClient)/_components/Model/SliderImage";
 import useUpdateForm from "@/app/hooks/useUpdateForm";
+import FormTitleFullDescription from "./FormTitleFullDescription";
 
 const generateSubTitle = (formCore: FormCore.Form) => {
-	const checkMode: FormCore.Title.FormTitleImageMode = "Slider";
+	const checkMode: FormCore.FormTitle["form_title_mode_image"] = "Slider";
 	const mode = formCore.form_title.form_title_mode_image === checkMode;
 
 	let flag = false;
@@ -31,6 +32,9 @@ const generateSubTitle = (formCore: FormCore.Form) => {
 			case "Text":
 				return <FormTitleText subTitleItem={ft} key={ft._id} />;
 
+			case "FullDescription":
+				return <FormTitleFullDescription subTitleItem={ft} key={ft._id} />;
+
 			case "Image":
 				if (formCore.form_title.form_title_mode_image !== checkMode) {
 					return <FormTitleImage mode="Normal" page="Edit" subTitleItem={ft} key={ft._id} />;
@@ -39,8 +43,8 @@ const generateSubTitle = (formCore: FormCore.Form) => {
 				if (formCore.form_title.form_title_mode_image === "Slider" && !flag) {
 					flag = true;
 					const images = formCore.form_title.form_title_sub.filter(
-						(image) => image.type === "Image" && image.value
-					);
+						(image) => image.type === "Image" && image?.core?.url
+					) as FormCore.FormTitleSub.Image.Core[];
 					return (
 						<SliderImage
 							colorMain={
@@ -55,7 +59,7 @@ const generateSubTitle = (formCore: FormCore.Form) => {
 					);
 				}
 
-				if (formCore.form_title.form_title_mode_image === "Slider" && !ft.value) {
+				if (formCore.form_title.form_title_mode_image === "Slider" && !ft?.core?.url) {
 					return <FormTitleImage mode="Normal" page="Edit" subTitleItem={ft} key={ft._id} />;
 				}
 				return null;

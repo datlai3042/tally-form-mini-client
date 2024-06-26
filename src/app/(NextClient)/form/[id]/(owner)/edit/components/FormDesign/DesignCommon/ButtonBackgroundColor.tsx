@@ -25,21 +25,26 @@ const ButtonBackgroundColor = () => {
 
 		dispatch(onFetchForm({ form: newFormEdit }));
 	};
+	const formBackground = !!formCore.form_background?.form_background_iamge_url || false;
 
 	return (
 		<div className="flex flex-col gap-[1rem]">
 			<button
+				disabled={!formBackground}
 				onClick={() => setOpenModelColor((prev) => !prev)}
 				className="relative flex items-center gap-[2rem] h-[4rem]"
 			>
 				<p>Màu nền </p>
 				<div className="w-[6rem] h-[3rem] flex items-center justify-center border-[.1rem] border-slate-300 rounded-md">
-					<div className="w-[4rem] h-[1.5rem] border-[.1rem] border-slate-300"></div>
+					<div className="w-[4rem] h-[1.5rem] border-[.1rem] border-slate-300">
+						{formCore.form_background?.backgroundColor ? "" : "none"}
+					</div>
 				</div>
 				{openModelColor && (
 					<ClickOutSide setOpenModel={setOpenModelColor}>
-						<div
-							className="absolute top-[100%] z-[2]  left-0"
+						<button
+							disabled={!formBackground}
+							className="absolute top-[100%] z-[2]  left-0  disabled:cursor-not-allowed"
 							// onBlur={() => setOpenColorModel(false)}
 							onClick={(e) => e.stopPropagation()}
 						>
@@ -47,7 +52,7 @@ const ButtonBackgroundColor = () => {
 								color={formCore.form_background?.backgroundColor}
 								onChange={onChangeColor}
 							/>
-						</div>
+						</button>
 					</ClickOutSide>
 				)}
 			</button>
