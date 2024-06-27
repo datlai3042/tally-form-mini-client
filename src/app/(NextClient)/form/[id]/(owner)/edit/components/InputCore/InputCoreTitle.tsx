@@ -15,6 +15,7 @@ import { FormText } from "@/app/_constant/formUi.constant";
 import InputCore from "./InputCore";
 import useSetTitleForm from "@/app/hooks/useSetTitleForm";
 import useAddInputSetTitle from "@/app/hooks/useAddInputSetTitle";
+import { ThemeContext } from "@/app/(NextClient)/_components/provider/ThemeProvider";
 
 export interface InputCoreTitleProps extends React.ComponentProps<"div"> {}
 
@@ -29,6 +30,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 		formCore.form_title.form_title_value ? formCore.form_title.form_title_value : ""
 	);
 	const { modeScreen } = useContext(FormModeScreenContext);
+	const { theme } = useContext(ThemeContext);
 
 	const useAddInputSetValueTitle = useAddInputSetTitle();
 	const setTilteForm = useSetTitleForm();
@@ -72,7 +74,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 								: formCore.form_setting_default.form_title_size_default / 10 + "rem"
 						}`,
 						color: `${
-							formCore.form_title.form_title_color
+							theme === "light" && formCore.form_title.form_title_color
 								? formCore.form_title.form_title_color
 								: formCore.form_setting_default.form_title_color_default
 						}`,
@@ -83,7 +85,7 @@ const InputCoreTitle = (props: InputCoreTitleProps) => {
 						}`,
 					}}
 					ref={divContentRef}
-					className={`${styleEffect.onCheckTitle()} py-[1rem] w-full   title-core group min-h-[8rem]  max-w-full xl:max-w-[90rem]  break-words flex items-center  h-max border-none outline-none     font-extrabold text-justify hover:cursor-pointer`}
+					className={`${styleEffect.onCheckTitle()} text-text-theme py-[1rem] w-full   title-core group min-h-[8rem]  max-w-full xl:max-w-[90rem]  break-words flex items-center  h-max border-none outline-none     font-extrabold text-justify hover:cursor-pointer`}
 					onClick={() => divContentRef.current?.focus()}
 					onKeyDown={onPressEnter}
 					contentEditable={true}

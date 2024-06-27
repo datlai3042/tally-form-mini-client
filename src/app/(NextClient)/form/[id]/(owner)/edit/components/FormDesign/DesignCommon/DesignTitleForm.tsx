@@ -24,10 +24,10 @@ const DesignTitleForm = () => {
 	};
 
 	return (
-		<div className=" w-full min-h-[4rem] h-max p-[2rem_1rem] flex flex-wrap gap-[3rem]">
+		<div className=" w-full min-h-[4rem] h-max p-[2rem_0rem] flex flex-wrap gap-[3rem]">
 			<button
 				onClick={() => onAddTitleSub("Text")}
-				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] bg-gray-200 rounded-lg"
+				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] text-[#fff] bg-blue-400 hover:bg-color-main rounded-lg"
 			>
 				<Type size={iconSize} />
 				<span>{FormText.title.optionText.message}</span>
@@ -35,7 +35,7 @@ const DesignTitleForm = () => {
 
 			<button
 				onClick={() => onAddTitleSub("FullDescription")}
-				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] bg-gray-200 rounded-lg"
+				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] text-[#fff] bg-blue-400 hover:bg-color-main rounded-lg"
 			>
 				<Type size={iconSize} />
 
@@ -45,7 +45,7 @@ const DesignTitleForm = () => {
 
 			<button
 				onClick={() => onAddTitleSub("Image")}
-				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] bg-gray-200 rounded-lg"
+				className="min-w-[12rem] h-[4rem] flex items-center gap-[1rem] p-[.1rem_.7rem] text-[#fff] bg-blue-400 hover:bg-color-main rounded-lg"
 			>
 				{/* // eslint-disable-next-line jsx-a11y/alt-text */}
 				<Image size={iconSize} />

@@ -35,7 +35,7 @@ const DashBoardModel = (props: TProps) => {
 
 	return (
 		<div
-			className=" absolute w-[20rem] min-h-[10rem] py-[1rem] h-max bg-[#ffffff] rounded-lg border-[.1rem] border-gray-200 shadow-lg flex flex-col gap-[.5rem] text-[1.4rem]"
+			className=" absolute z-[2] right-0 w-[20rem] min-h-[10rem] py-[1rem] h-max bg-[#ffffff] rounded-lg border-[.1rem] border-gray-200 shadow-lg flex flex-col gap-[.5rem] text-[1.4rem]"
 			ref={divRef}
 		>
 			{WorkItem.map((work) => {

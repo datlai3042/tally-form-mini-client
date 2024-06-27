@@ -33,7 +33,7 @@ const ShareFormPage = () => {
 	}, [copySuccess]);
 
 	return (
-		<div className="mt-[2rem] w-full xl:w-[70%] flex flex-col gap-[2rem]">
+		<div className="mt-[2rem] w-full xl:w-[70%] flex flex-col gap-[2rem] text-text-theme">
 			<h2 className="text-[1.8rem] font-bold">Chia sẽ Link</h2>
 			<p className="text-justify text-[1.4rem] opacity-80">
 				Form của bạn đã được xây dựng xong, hãy chia sẽ Link qua các trang mạng xã hội hoặc các ứng dụng tin
@@ -45,7 +45,7 @@ const ShareFormPage = () => {
 				onBlur={() => setFocus(false)}
 				className={`${styleEffect.onFocus(
 					focus
-				)} w-full h-[4rem] px-[1rem] flex items-center text-[1.2rem] xl:text-[1.4rem] border-[.2rem] hover:border-blue-400  rounded-lg outline-none hover:`}
+				)} ml-[1rem] w-full h-[4rem] px-[1rem] flex items-center text-[1.2rem] xl:text-[1.4rem] border-[.2rem] hover:border-blue-400  rounded-lg outline-none text-color-main font-semibold`}
 				value={`${window.location.origin}/form/${formCore._id}`}
 				readOnly={true}
 			/>

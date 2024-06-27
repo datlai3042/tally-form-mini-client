@@ -15,7 +15,7 @@ const DashboardAccount = () => {
 	const user = useSelector((state: RootState) => state.authReducer.user) as UserType;
 
 	return (
-		<div className="pl-[.6rem] group max-w-full h-[3rem] flex items-center justify-between ">
+		<div className="group min-w-[17.2rem] h-[3rem] flex items-center justify-between ">
 			{user && (
 				<>
 					<div className="max-w-[90%] flex gap-[1rem] items-center ">
@@ -39,11 +39,6 @@ const DashboardAccount = () => {
 						</span>
 						<DashBoardButtonModel />
 					</div>
-					<ButtonIcon
-						Icon={<ChevronsLeft className="w-[1.4rem]" />}
-						onClick={() => setOpenSidebar(false)}
-						className=" bg-transparent hover:bg-slate-200 rounded-lg"
-					/>
 				</>
 			)}
 

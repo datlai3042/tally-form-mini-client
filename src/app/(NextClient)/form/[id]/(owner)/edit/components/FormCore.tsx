@@ -135,13 +135,6 @@ const FormCore = () => {
 		formCore.form_background_state ||
 		formCore.form_avatar_state;
 
-	const containerStyleWhenOpenFormDesign = openFormDesign ? "mr-[36rem]" : "";
-	const wrapperStyleWhenOpenFormDesign = openFormDesign
-		? "w-[79rem]"
-		: "min-w-[35rem] sm:min-w-[45rem] xl:min-w-[60rem] xl:w-max";
-
-	const wrapperStyleWhenOpenSideBar = openSidebar ? "sm:px-[2rem]" : "sm:px-[8rem]";
-
 	const gapWhenAppearImage = !(formCore.form_avatar || formCore.form_avatar_state)
 		? "pt-0"
 		: "pt-[5rem] sm:pt-[8rem]";
@@ -154,12 +147,12 @@ const FormCore = () => {
 		<>
 			{modeScreen === "NORMAL" && (
 				<DivNative
-					className={`${containerStyleWhenOpenFormDesign} w-full pt-[4rem] pb-[50rem] sm:pb-[30rem] px-[2rem] sm:px-0  h-max  xl:ml-0 flex flex-col gap-[3rem]`}
+					className={` w-full  pb-[50rem] sm:pb-[30rem] px-[2rem] sm:px-0  h-max  xl:ml-0 flex flex-col gap-[3rem] bg-color-section-theme text-text-theme`}
 				>
 					{showComponentImage && <FormImage />}
 
 					<DivNative
-						className={`${wrapperStyleWhenOpenFormDesign} ${wrapperStyleWhenOpenSideBar} px-[1rem]  w-full xl:max-w-[70rem] mx-auto  h-max xl:pl-0  flex flex-col  xl:pb-[4rem] gap-[4rem] xl:gap-[2rem] `}
+						className={` px-[1rem]  w-full xl:max-w-[70rem] mx-auto  h-max xl:pl-0  flex flex-col  xl:pb-[4rem] gap-[4rem] xl:gap-[2rem] `}
 					>
 						<DivNative className={`${gapWhenAppearImage}`}>
 							<DivNative

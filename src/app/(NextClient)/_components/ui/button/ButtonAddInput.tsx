@@ -22,7 +22,7 @@ const ButtonAddInput = (props: ButtonAddInputProps) => {
 			onClick={() => addInput.mutate({ form_id: formCore._id })}
 			className={`${
 				buttonProps.className || ""
-			} text-left mt-[1rem] w-[25%] xl:w-[15%] h-[3.2rem] flex items-center justify-center bg-gray-400 hover:bg-slate-600  text-white rounded-lg  text-[1.6rem`}
+			} text-left mt-[1rem] w-[25%] xl:w-[15%] h-[3.2rem] flex items-center justify-center bg-blue-400 hover:bg-color-main  text-white rounded-lg  text-[1.6rem`}
 		>
 			{textContent}
 		</button>

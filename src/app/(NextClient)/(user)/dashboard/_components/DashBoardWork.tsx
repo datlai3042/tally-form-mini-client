@@ -1,26 +1,19 @@
 "use client";
-import { Flower, Globe, LogOut, Search, Settings, Users } from "lucide-react";
+import { Flower, Globe, Home, HomeIcon, LogOut, LogOutIcon, Search, Settings, User, Users } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import AuthService from "@/app/_services/auth.service";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
+import path from "path";
 
 const WorkItem = [
 	{
 		Title: "Trang chủ",
-		Icon: (
-			<Image
-				src={"/assets/images/icon/navigation/home.png"}
-				width={18}
-				height={18}
-				alt="icon"
-				className="w-[2.4rem] h-[2.4rem]"
-			/>
-		),
+		Icon: <Home />,
 		Href: "/dashboard",
 	},
 
@@ -72,6 +65,10 @@ const DashBoardWork = () => {
 	const [openModelSearch, setopenModelSearch] = useState<boolean>(false);
 	const router = useRouter();
 
+	const pathName = usePathname();
+
+	console.log({ pathName });
+
 	const logoutMutation = useMutation({
 		mutationKey: ["logout"],
 		mutationFn: () => AuthService.logoutNextClient(),
@@ -80,56 +77,50 @@ const DashBoardWork = () => {
 		},
 	});
 
+	const matchPathName = (link: string) => link === pathName;
+
+	const urlProlife = `/profile/${user?.user_atlas}`;
+
 	return (
 		<div className="flex flex-col gap-[.8rem] text-[1.4rem] ">
-			{WorkItem.map((work) => {
-				if (work.Href)
-					return (
-						<Link
-							key={work.Title}
-							href={typeof work.Href === "string" ? work.Href : work.Href(user?.user_atlas!)}
-							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
-						>
-							{work.Icon}
-							<span className="font-medium text-slate-600">{work.Title}</span>
-						</Link>
-					);
-				if (work.Model === "users")
-					return (
-						<button
-							key={work.Title}
-							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
-							onClick={() => setOpenModelDomain(true)}
-						>
-							{work.Icon}
-							<span className="font-medium text-slate-600">{work.Title}</span>
-						</button>
-					);
-
-				if (work.Model === "search")
-					return (
-						<button
-							key={work.Title}
-							className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md"
-							onClick={() => setopenModelSearch(true)}
-						>
-							{work.Icon}
-							<span className="font-medium text-slate-600">{work.Title}</span>
-						</button>
-					);
-			})}
-
-			<button
-				className="p-[.6rem] flex items-center gap-[1rem] hover:bg-slate-200 rounded-md text-[1.4rem]"
-				onClick={() => logoutMutation.mutate()}
+			<Link
+				href={"/"}
+				className={`nav ${
+					matchPathName("/dashboard") ? "nav__isActive" : "nav__normal !text-text-theme "
+				} group  `}
 			>
-				<Image
-					src={"/assets/images/icon/navigation/logout.png"}
-					width={18}
-					height={18}
-					alt="icon"
-					className="w-[2.4rem] h-[2.4rem]"
-				/>
+				<HomeIcon size={18} />
+				<span className="font-medium">Trang chủ</span>
+			</Link>
+
+			<Link
+				href={urlProlife}
+				className={`nav ${matchPathName(urlProlife) ? "nav__isActive" : "nav__normal !text-text-theme "} group`}
+			>
+				<User size={18} />
+				<span className="font-medium  ">Trang cá nhân</span>
+			</Link>
+
+			<Link
+				href={urlProlife}
+				className={`nav ${matchPathName("/search") ? "nav__isActive" : "nav__normal !text-text-theme"} group `}
+			>
+				<Search size={18} />
+				<span className="font-medium">Tìm kiếm</span>
+			</Link>
+
+			<Link
+				href={"/settings"}
+				className={`nav ${
+					matchPathName("/settings") ? "nav__isActive" : "nav__normal !text-text-theme"
+				} group `}
+			>
+				<Settings size={18} />
+				<span className="font-medium">Cài đặt</span>
+			</Link>
+
+			<button className="nav nav__normal !text-text-theme " onClick={() => logoutMutation.mutate()}>
+				<LogOutIcon size={18} />
 				Đăng xuất
 			</button>
 		</div>

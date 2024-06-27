@@ -40,7 +40,7 @@ const SummaryFormPage = () => {
 	const { dataFormShowChart } = formCache;
 
 	return (
-		<div className="flex flex-col gap-[6rem] min-h-[30rem] pb-[8rem]">
+		<div className="flex flex-col gap-[6rem] min-h-[30rem] pb-[8rem] text-text-theme">
 			{formAnswer &&
 				Object.keys(dataFormShowChart).map((dt, i) => {
 					const type = dt.split("_#_")[1] as InputCore.InputForm["type"];
@@ -58,10 +58,6 @@ const SummaryFormPage = () => {
 									const checkNewReportRealTime = newCount.newCount - newCount.old_count - 1 === i;
 									return (
 										<div
-											style={{
-												backgroundColor: formAnswerId === info.form_answer_id ? colorMain : "",
-												color: formAnswerId === info.form_answer_id ? "#fff" : "",
-											}}
 											id={info.form_answer_id}
 											key={info._id + i}
 											onClick={() => {
@@ -72,7 +68,9 @@ const SummaryFormPage = () => {
 												});
 												setOpenDetailAnswer(true);
 											}}
-											className="pb-[.3rem] px-[1rem] min-h-[4rem] flex items-center justify-between border-b-[.1rem] border-gray-200 hover:cursor-pointer"
+											className={`${
+												formAnswerId === info.form_answer_id ? "bg-color-main text-[#fff]" : ""
+											} pb-[.3rem] px-[1rem] min-h-[4rem] flex items-center justify-between border-b-[.1rem] border-gray-200 hover:cursor-pointer`}
 										>
 											<span className="max-w-[50%] break-words leading-10">
 												{(typeof info.value === "string"

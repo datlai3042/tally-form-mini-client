@@ -39,8 +39,8 @@ const FormChangeMode = (props: TProps) => {
 
 	const styleEffect = {
 		linkActive: (checkLink: boolean) => {
-			if (!checkLink) return "border-transparent text-slate-400 hover:text-slate-700";
-			return "border-slate-500 text-slate-700";
+			if (!checkLink) return "border-transparent";
+			return "border-text-theme font-bold";
 		},
 	};
 
@@ -60,14 +60,13 @@ const FormChangeMode = (props: TProps) => {
 	}, [copySuccess]);
 
 	return (
-		<div className="w-full xl:w-[92rem] px-[2rem] xl:px-0 mx-auto mt-[6rem] flex justify-center flex-col gap-[2rem]">
+		<div className=" w-full p-[6rem]  mx-auto h-full flex  flex-col gap-[2rem] text-text-theme">
 			<div className="w-full flex justify-between">
 				<h1
 					title={formCore.form_title.form_title_value}
-					className="line-clamp-2 w-[80%]"
+					className="line-clamp-2 w-[80%] text-text-theme"
 					style={{
 						fontSize,
-						color,
 						fontStyle,
 					}}
 				>
@@ -83,7 +82,7 @@ const FormChangeMode = (props: TProps) => {
 									.writeText(`${window.location.origin}/form/${formCore._id}`)
 									.then(() => setCopySuccess(true));
 							}}
-							className="flex items-center gap-[1rem] p-[.5rem_.7rem] hover:bg-gray-300 rounded-lg"
+							className="flex items-center gap-[1rem] p-[.5rem_.7rem] hover:bg-color-main rounded-lg"
 						>
 							<LinkIcon size={iconSize} />
 						</button>
@@ -107,7 +106,7 @@ const FormChangeMode = (props: TProps) => {
 					)}
 
 					<button
-						className="flex items-center gap-[1rem] p-[.5rem_.7rem] hover:bg-gray-300 rounded-lg"
+						className="flex items-center gap-[1rem] p-[.5rem_.7rem] hover:bg-color-main rounded-lg"
 						onClick={(e) => {
 							e.preventDefault();
 							router.push(`/form/${formCore._id}/edit`);
@@ -119,7 +118,7 @@ const FormChangeMode = (props: TProps) => {
 				</div>
 			</div>
 
-			<div className="w-full h-max flex items-center gap-[2rem] text-[1.4rem] border-b-[.1rem] border-slate-200 ">
+			<div className="w-full h-max flex items-center gap-[2rem] text-[1.4rem] border-b-[.1rem] border-slate-200 text-text-theme">
 				<Link
 					onClick={() => setFormPageMode("summary")}
 					href={`/form/${formCore._id}/summary`}
@@ -151,7 +150,9 @@ const FormChangeMode = (props: TProps) => {
 				</Link>
 			</div>
 
-			<div className="mt-[1rem]">{children}</div>
+			<div className="overflow-scroll scroll-color-main pr-[2rem]">
+				<div className="mt-[1rem]">{children}</div>
+			</div>
 		</div>
 	);
 };

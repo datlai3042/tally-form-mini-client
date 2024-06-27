@@ -40,20 +40,18 @@ const FormModeLayout = ({ children, params }: { children: React.ReactNode; param
 	return (
 		<LayoutSidebar>
 			{getFormQuery.data?.metadata.form && (
-				<DivNative
-					className={`${
-						modeScreen === "FULL" ? "bg-formCoreBgColor pb-[4rem]" : "bg-[#ffffff]"
-					} min-h-screen  h-max  flex flex-col  text-[1.4rem]   border-l-[.1rem]  border-slate-200 max-w-full `}
-				>
-					<DivNative className={`w-full rounded-lg h-max `}>
+				<DivNative className={`bg-gap-empty  min-h-screen  h-max  flex flex-col  text-[1.4rem]   max-w-full `}>
+					<DivNative className={` w-full min-h-screen rounded-lg h-max  `}>
 						{segment[0] !== "edit" && getFormQuery.data?.metadata.form && (
-							<>
+							<div className="px-[4rem] flex flex-col gap-[4rem]">
 								<HeaderEditForm showHeaderAction={segment[1] === "edit"} />
 
-								<FormChangeMode formPageMode={formPageMode} setFormPageMode={setFormPageMode}>
-									{children}
-								</FormChangeMode>
-							</>
+								<div className="layout-down bg-color-section-theme">
+									<FormChangeMode formPageMode={formPageMode} setFormPageMode={setFormPageMode}>
+										{children}
+									</FormChangeMode>
+								</div>
+							</div>
 						)}
 						{segment[0] === "edit" && getFormQuery.data?.metadata.form && children}
 					</DivNative>

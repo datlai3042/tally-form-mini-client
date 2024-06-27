@@ -12,6 +12,7 @@ import SidebarContextProvider from "./(NextClient)/(user)/dashboard/SidebarConte
 import CheckExprireToken from "./(NextClient)/_components/Layout/CheckExprireToken";
 import ToastProvider from "./(NextClient)/_components/provider/ToastProvider";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
+import ThemeProvider from "./(NextClient)/_components/provider/ThemeProvider";
 
 const inter = Inter({ subsets: ["vietnamese"] });
 
@@ -34,10 +35,12 @@ export default function RootLayout(props: TProps) {
 			<body className={inter.className}>
 				<ReduxProvider>
 					<ReactQueryProvider>
-						<SidebarContextProvider>
-							<AppProvider>{props.children}</AppProvider>
-							<ToastProvider />
-						</SidebarContextProvider>
+						<ThemeProvider>
+							<SidebarContextProvider>
+								<AppProvider>{props.children}</AppProvider>
+								<ToastProvider />
+							</SidebarContextProvider>
+						</ThemeProvider>
 					</ReactQueryProvider>
 				</ReduxProvider>
 			</body>

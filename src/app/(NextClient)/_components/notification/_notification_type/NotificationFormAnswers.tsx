@@ -73,7 +73,7 @@ const NotificationFormAnswers = (props: TProps) => {
 				<div className="flex items-center gap-[2rem]">
 					<Link
 						href={`/form/${notification_item.core.form_id}/summary#${notification_item.core.form_answer_id}`}
-						className="flex items-center gap-[1rem] text-left border-[.1rem] border-gray-200 p-[.3rem_2rem] rounded-full w-max"
+						className="button-color-core flex items-center gap-[1rem] text-left border-[.1rem] border-gray-200 p-[.3rem_2rem] rounded-full w-max"
 					>
 						Xem chi tiết
 						{new_notification.includes(notification_item._id) && (

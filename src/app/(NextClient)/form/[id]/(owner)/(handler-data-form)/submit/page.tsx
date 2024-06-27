@@ -50,7 +50,7 @@ const SubmitFormPage = () => {
 	return (
 		<>
 			{formAnswer && (
-				<div className=" flex flex-col gap-[2rem] ">
+				<div className=" flex flex-col gap-[2rem] text-text-theme ">
 					<button
 						onClick={handleDownloadExcel}
 						style={{ backgroundColor: color }}

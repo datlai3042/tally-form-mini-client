@@ -1,4 +1,5 @@
 import { FormModeScreenContext } from "@/app/(NextClient)/_components/provider/FormModeScreen";
+import { ThemeContext } from "@/app/(NextClient)/_components/provider/ThemeProvider";
 import DivNative from "@/app/(NextClient)/_components/ui/NativeHtml/DivNative";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import ParagraphNative from "@/app/(NextClient)/_components/ui/NativeHtml/ParagraphNative";
@@ -16,6 +17,7 @@ type TProps = {
 const InputTitle = (props: TProps) => {
 	const { inputItem, dataTextTitle } = props;
 	const { modeScreen } = useContext(FormModeScreenContext);
+	const { theme } = useContext(ThemeContext);
 	const formCore = useSelector((state: RootState) => state.form.formCoreOriginal) as FormCore.Form;
 	const checkModeDisplay = formCore.form_mode_display === "custom" ? true : false;
 
@@ -51,7 +53,8 @@ const InputTitle = (props: TProps) => {
 	};
 
 	let fontSize = inputItem.core.setting.input_size || formCore.form_setting_default.input_size;
-	const color = inputItem.core.setting.input_color || formCore.form_setting_default.input_color;
+	const color =
+		(theme === "light" && (inputItem.core.setting.input_color || formCore.form_setting_default.input_color)) || "";
 	const fontStyle = inputItem.core.setting.input_style || formCore.form_setting_default.input_style;
 
 	useEffect(() => {}, [formCore, inputItem]);
@@ -60,7 +63,7 @@ const InputTitle = (props: TProps) => {
 		<DivNative
 			className={`${
 				checkModeDisplay ? "xl:w-[50%]" : "xl:w-[70%]"
-			} min-h-[2rem] h-max w-[60%] mb-[1rem] flex items-center gap-[1rem] hover:cursor-pointer`}
+			} min-h-[2rem] h-max w-[60%] mb-[1rem] flex items-center gap-[1rem] hover:cursor-pointer text-text-theme`}
 		>
 			{modeScreen === "NORMAL" && (
 				<DivNativeRef

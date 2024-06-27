@@ -35,7 +35,7 @@ const ButtonCreateForm = (props: TProps) => {
 			tabIndex={-1}
 			href={urlNavigation}
 			{...AnchorProps}
-			className={`${AnchorProps.className} w-[60%] xl:w-[20rem] h-[4rem]  p-[1rem_2rem] flex  justify-center items-center gap-[.8rem] text-[1.8rem] text-[#ffffff] bg-[rgb(0_112_215)] opacity-[.95] hover:opacity-100 transition-colors duration-200 rounded-[.4rem]`}
+			className={`${AnchorProps.className} w-[60%] xl:w-[20rem] h-[4rem]  p-[1rem_2rem] flex  justify-center items-center gap-[.8rem] text-[1.8rem] text-[#ffffff] bg-color-main opacity-[.95] hover:opacity-100 transition-colors duration-200 rounded-[.4rem]`}
 		>
 			{position === "LEFT" && icon && icon}
 			{textContent}

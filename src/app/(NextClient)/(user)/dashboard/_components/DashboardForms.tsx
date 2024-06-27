@@ -1,7 +1,7 @@
 import FormService from "@/app/_services/form.service";
 import { FormCore } from "@/type";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import moment from "moment";
 import "moment/locale/vi"; // without this line it didn't work
@@ -12,6 +12,7 @@ import StatusCodeResponse from "@/app/(NextClient)/_components/_StatusCodeCompon
 import useGetAllFormUser from "@/app/hooks/useGetAllFormUser";
 import LoadingArea from "@/app/(NextClient)/_components/ui/loading/LoadingArea";
 import FormEmpty from "./FormEmpty";
+import { SidebarContext } from "../SidebarContext";
 
 moment.locale("vi");
 
@@ -19,7 +20,7 @@ const DashboardForms = () => {
 	const { forms, pending, success } = useGetAllFormUser();
 
 	return (
-		<DivNative className="max-w-full  flex flex-col ">
+		<DivNative className="scroll-color-main max-w-full h-full overflow-scroll flex flex-col ">
 			{pending && (
 				<div className="w-full min-h-[12rem]">
 					<LoadingArea />
@@ -31,7 +32,7 @@ const DashboardForms = () => {
 						<Link
 							href={`/form/${form._id}/share`}
 							key={form._id}
-							className="group h-[12rem] xl:h-[8rem] w-full max-w-full p-[1rem_2rem] flex flex-col xl:flex-row  justify-between gap-[1rem]  hover:bg-gray-200 rounded-md"
+							className="group h-[12rem] xl:h-[8rem] w-full max-w-full p-[1rem_2rem] flex flex-col xl:flex-row  justify-between gap-[1rem]  text-text-theme bg-color-main rounded-md"
 						>
 							<div className="max-w-[70%] flex flex-col justify-center gap-[1rem]">
 								<span className="max-w-[90%] truncate text-[1.6rem] font-semibold">

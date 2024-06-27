@@ -4,6 +4,7 @@ import ButtonNavigation from "./ui/button/ButtonNavigation";
 import ButtonCreateForm from "./ui/button/ButtonCreateForm";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import Logo from "./logo/Logo";
 
 const Header = () => {
 	const cookieStore = cookies();
@@ -15,14 +16,8 @@ const Header = () => {
 	const authentication = !!client_id && !!access_token && !!refresh_token;
 
 	return (
-		<header className="p-[10px] xl:p-[20px] flex justify-between items-center ">
-			<Image
-				src={"/assets/images/icon/logo_v2.png"}
-				width={70}
-				height={28}
-				alt="logo"
-				className="w-[70px] h-[28px]"
-			/>
+		<header className="px-[10px] xl:px-[20px] flex justify-between items-center ">
+			<Logo />
 			<div className="flex gap-[20px]">
 				{!authentication && (
 					<>

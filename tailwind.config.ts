@@ -14,6 +14,13 @@ const config = {
 		},
 		extend: {
 			colors: {
+				"color-main": "var(--color-main)",
+				"color-main-hover": "var(--color-main-hover)",
+				"color-section-theme": "var(--color-section-theme)",
+				"color-gap-empty": "var(--color-gap-empty)",
+				"text-theme": "var(--text-theme)",
+				"border-color": "var(--border-color)",
+
 				formCoreBgColor: "rgb(253 242 248)",
 				textHeader: "rgb(119, 118, 114)",
 				textMain: "rgb(55, 53, 47)",

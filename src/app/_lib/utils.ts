@@ -1,4 +1,4 @@
-import { CustomRequest, FormCore, InputCore } from "@/type";
+import { CustomRequest, FormCore, InputCore, User } from "@/type";
 import { inputSettingText } from "../_constant/input.constant";
 import Http from "./http";
 import { ResponseApi } from "../_schema/api/response.shema";
@@ -6,6 +6,7 @@ import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 import store from "./redux/store";
 import { onCalculationData } from "./redux/features/dataForm.slice";
 import moment from "moment";
+import { UserType } from "../_schema/user/user.type";
 
 export const validateEmail = (email: string) => {
 	const regex = /[^\s@]+@[^\s@]+\.[^\s@]+/gi;
@@ -285,4 +286,19 @@ export const handleDataForm = (reports: FormCore.FormAnswer.FormAnswerCore["repo
 		})
 	);
 	return true;
+};
+
+export const generateContentToUrl = (url: string) => {
+	let content = "";
+	if (url === "/dashboard") return (content = "Trang chủ");
+	if (url === "/settings") return (content = "Cài đặt");
+	if (url.startsWith("/profile")) return (content = "Trang cá nhân");
+	if (url.endsWith("/edit")) return (content = "Trang chỉnh sửa");
+	if (url === "/notifications") return (content = "Trang thông báo");
+	if (url === "/trash") return (content = "Trang ");
+};
+
+export const generateFullNameUser = (user: UserType | undefined) => {
+	if (!user) return;
+	return user?.user_first_name + " " + user?.user_last_name;
 };

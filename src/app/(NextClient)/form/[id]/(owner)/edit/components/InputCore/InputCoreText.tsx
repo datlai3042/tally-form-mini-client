@@ -7,6 +7,7 @@ import InputCore from "./InputCore";
 import DivNativeRef from "@/app/(NextClient)/_components/ui/NativeHtml/DivNativeRef";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/_lib/redux/store";
+import { ThemeContext } from "@/app/(NextClient)/_components/provider/ThemeProvider";
 
 type TProps = {
 	inputItem: TInputCore.InputText.InputTypeText;
@@ -14,6 +15,7 @@ type TProps = {
 
 const InputCoreText = (props: TProps) => {
 	const { modeScreen } = useContext(FormModeScreenContext);
+	const { theme } = useContext(ThemeContext);
 
 	const { inputItem } = props;
 
@@ -61,7 +63,9 @@ const InputCoreText = (props: TProps) => {
 			<DivNativeRef
 				style={{ color: "#000" }}
 				ref={divContentRef}
-				className="relative group group-hover:!bg-[#ffffff] w-full min-h-[8rem] p-[1.6rem] break-words whitespace-pre-wrap h-max border-[.1rem] border-gray-300 rounded-lg outline-none resize-none "
+				className={`${
+					theme === "dark" ? "bg-text-theme" : ""
+				} relative group  group-hover:!bg-[#ffffff] w-full min-h-[8rem] p-[1.6rem] break-words whitespace-pre-wrap h-max border-[.1rem] border-gray-300 rounded-lg outline-none resize-none `}
 				// onClick={() => divContentRef.current?.focus()}
 				spellCheck={false}
 				onKeyDown={onPressEnter}
